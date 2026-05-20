@@ -1,0 +1,38 @@
+---
+layout: base.njk
+pageType: pillar
+---
+<div class="content-wrapper">
+  {# Breadcrumbs for pillar hubs #}
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span class="current" aria-current="page">{{ title }}</span>
+  </nav>
+
+  <article>
+    <header class="article-header">
+      <h1>{{ title }}</h1>
+    </header>
+    <div class="article-body">
+      {{ content | stripFirstH1 | safe }}
+    </div>
+
+    {# Child pages — items whose parent is this page's key #}
+    {% set children = collections.all | eleventyNavigation(eleventyNavigation.key) %}
+    {% if children.length > 0 %}
+    <nav class="related-content" aria-label="Topics in this section">
+      <h2>Topics in this Section</h2>
+      <div class="pillar-children">
+        {% for item in children %}
+        <a href="{{ item.url }}" class="child-card">
+          <h3>{{ item.title }}</h3>
+        </a>
+        {% endfor %}
+      </div>
+    </nav>
+    {% endif %}
+  </article>
+</div>
+
+

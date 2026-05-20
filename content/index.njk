@@ -1,0 +1,116 @@
+---
+layout: base.njk
+title: Client-Side Form State & Validation Architecture
+description: Production-ready architectural patterns for frontend teams building robust client-side forms — state lifecycles, schema validation, cross-field logic, and framework adapters.
+permalink: /
+---
+
+<section class="hero" aria-label="Site introduction">
+  <div class="hero-inner">
+    <h1>Client-Side Form State &amp;<br>Validation Architecture</h1>
+    <p class="hero-tagline">Production-ready patterns for deterministic state lifecycles, schema-driven validation, and cross-framework adapters.</p>
+    <p class="hero-desc">
+      This hub provides battle-tested architectural blueprints for frontend devs, UX/UI engineers, QA teams, and design system maintainers building robust client-side forms. We focus on real-world constraints — async latency, hydration, memory limits, and race conditions — not theoretical abstractions.
+    </p>
+    <div class="cta-group">
+      <a href="/form-state-fundamentals-architecture/" class="cta-btn cta-btn-primary">
+        <span class="btn-icon">📐</span> Form State Fundamentals
+      </a>
+      <a href="/framework-adapters-custom-hooks/" class="cta-btn cta-btn-outline">
+        <span class="btn-icon">🔌</span> Framework Adapters
+      </a>
+      <a href="/validation-logic-schema-integration/" class="cta-btn cta-btn-outline">
+        <span class="btn-icon">✅</span> Validation &amp; Schema
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="home-section">
+  <h2 class="section-heading">Why Client-Side Form Architecture Matters</h2>
+  <p class="section-sub">Forms are deceptively complex. A robust form system requires careful attention to state transitions, validation timing, error propagation, and accessibility — all while maintaining performance across devices.</p>
+
+  <p>Modern applications demand predictable, testable form pipelines that scale across component libraries and rendering frameworks. Whether you're managing a single login field or a multi-step enterprise workflow, the same architectural principles apply: isolate state from rendering, compose validation as pure functions, and design for async-first interactions.</p>
+
+  <p>Every pattern on this site is grounded in production constraints. You'll find TypeScript-first implementations, framework-agnostic adapter contracts, schema-driven validation pipelines with Zod, async cancellation strategies, and dirty/pristine lifecycle management — all with a focus on determinism, testability, and minimal re-render overhead.</p>
+
+  <p>Use these guides to establish shared vocabulary and architecture across your team, reduce form-related bugs, and build UI components that behave predictably regardless of the underlying framework.</p>
+</div>
+
+<div class="home-section" style="padding-top:0">
+  <h2 class="section-heading">Explore the Three Pillars</h2>
+  <p class="section-sub">Deep-dive technical guides organised into three interconnected knowledge areas.</p>
+
+  <div class="pillar-grid">
+    <div class="pillar-card">
+      <div class="pillar-card-icon">📐</div>
+      <h3>Form State Fundamentals &amp; Architecture</h3>
+      <p>Lifecycle mapping, dirty/pristine tracking, error state propagation, and the architectural patterns that govern how form data flows through your application.</p>
+      <ul>
+        <li><a href="/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/">Controlled vs Uncontrolled Forms</a></li>
+        <li><a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/">Dirty &amp; Pristine State Tracking</a></li>
+        <li><a href="/form-state-fundamentals-architecture/error-state-mapping-patterns/">Error State Mapping Patterns</a></li>
+        <li><a href="/form-state-fundamentals-architecture/form-validation-lifecycle/">Form Validation Lifecycle</a></li>
+      </ul>
+      <a href="/form-state-fundamentals-architecture/" class="pillar-card-link">Explore Form State →</a>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-card-icon">🔌</div>
+      <h3>Framework Adapters &amp; Custom Hooks</h3>
+      <p>Cross-framework adapter interfaces for React, Vue, and Svelte. Custom hook architecture, SSR hydration sync, and memory management patterns for long-lived SPA sessions.</p>
+      <ul>
+        <li><a href="/framework-adapters-custom-hooks/react-form-hook-architecture/">React Hook Architecture</a></li>
+        <li><a href="/framework-adapters-custom-hooks/vue-composition-api-form-adapters/">Vue Composition API Adapters</a></li>
+        <li><a href="/framework-adapters-custom-hooks/svelte-store-integration-for-forms/">Svelte Store Integration</a></li>
+        <li><a href="/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/">SSR Hydration Sync</a></li>
+      </ul>
+      <a href="/framework-adapters-custom-hooks/" class="pillar-card-link">Explore Adapters →</a>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-card-icon">✅</div>
+      <h3>Validation Logic &amp; Schema Integration</h3>
+      <p>Synchronous and async validation pipelines, Zod schema integration, cross-field dependency graphs, debouncing strategies, and server-schema synchronisation.</p>
+      <ul>
+        <li><a href="/validation-logic-schema-integration/integrating-zod-for-schema-validation/">Integrating Zod for Schema Validation</a></li>
+        <li><a href="/validation-logic-schema-integration/asynchronous-validation-strategies/">Asynchronous Validation Strategies</a></li>
+        <li><a href="/validation-logic-schema-integration/cross-field-dependency-logic/">Cross-Field Dependency Logic</a></li>
+        <li><a href="/validation-logic-schema-integration/synchronous-validation-patterns/">Synchronous Validation Patterns</a></li>
+      </ul>
+      <a href="/validation-logic-schema-integration/" class="pillar-card-link">Explore Validation →</a>
+    </div>
+  </div>
+</div>
+
+<div class="home-section" style="padding-top:0; padding-bottom: 4rem">
+  <h2 class="section-heading">Featured Articles</h2>
+  <p class="section-sub">Practical deep-dives for common implementation challenges.</p>
+  <div class="related-grid">
+    <a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/" class="related-card">
+      <span class="card-title">How to Track Dirty Fields in React Forms</span>
+      <span class="card-desc">Immutable snapshot comparisons and reducer-based dirty detection without re-render overhead.</span>
+    </a>
+    <a href="/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/" class="related-card">
+      <span class="card-title">Building a Custom useFormField Hook</span>
+      <span class="card-desc">Encapsulate validation pipelines and error mapping in reusable React composables.</span>
+    </a>
+    <a href="/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/" class="related-card">
+      <span class="card-title">Implementing Async Email Availability Checks</span>
+      <span class="card-desc">AbortController patterns and debounced async validators that prevent race conditions.</span>
+    </a>
+    <a href="/validation-logic-schema-integration/integrating-zod-for-schema-validation/how-to-validate-dependent-fields-with-zod/" class="related-card">
+      <span class="card-title">How to Validate Dependent Fields with Zod</span>
+      <span class="card-desc">Use <code>.refine()</code> and <code>.superRefine()</code> to handle cross-field constraints.</span>
+    </a>
+    <a href="/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/" class="related-card">
+      <span class="card-title">Handling Svelte Form Hydration Mismatches</span>
+      <span class="card-desc">Reconcile server markup with client state machines during Svelte SSR hydration.</span>
+    </a>
+    <a href="/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/best-practices-for-uncontrolled-form-state/" class="related-card">
+      <span class="card-title">Best Practices for Uncontrolled Form State</span>
+      <span class="card-desc">When and how to use refs without sacrificing validation integrity.</span>
+    </a>
+  </div>
+</div>
+

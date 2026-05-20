@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if title %}{{ title }} | Client-Side Form{% else %}Client-Side Form State & Validation Architecture{% endif %}</title>
+  <meta name="description" content="{% if description %}{{ description }}{% else %}Production-ready architectural patterns for building robust client-side forms — state lifecycles, schema validation, cross-field logic, and framework adapters.{% endif %}">
+
+  {# PWA / Icons #}
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/assets/icons/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ClientSideForm">
+  <meta name="theme-color" content="#1a1a3e">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  {# SEO #}
+  <meta name="robots" content="index, follow">
+  {% if page.url %}<link rel="canonical" href="https://www.client-side-form.com{{ page.url }}">{% endif %}
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+
+  {# Open Graph #}
+  {% if title %}{% set _ogTitle = title + " | Client-Side Form" %}{% else %}{% set _ogTitle = "Client-Side Form State & Validation Architecture" %}{% endif %}
+  {% set _ogDesc = description if description else "Production-ready architectural patterns for building robust client-side forms." %}
+  <meta property="og:title" content="{{ _ogTitle }}">
+  <meta property="og:description" content="{{ _ogDesc }}">
+  <meta property="og:type" content="{% if pageType == 'article' %}article{% else %}website{% endif %}">
+  {% if page.url %}<meta property="og:url" content="https://www.client-side-form.com{{ page.url }}">{% endif %}
+  <meta property="og:image" content="https://www.client-side-form.com/assets/icons/icon-512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:site_name" content="ClientSideForm">
+
+  {# Twitter / X Card #}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ _ogTitle }}">
+  <meta name="twitter:description" content="{{ _ogDesc }}">
+  <meta name="twitter:image" content="https://www.client-side-form.com/assets/icons/icon-512.png">
+
+  {# JSON-LD Structured Data #}
+  {% if page.url %}
+  {{ page.url | pageJsonLd(collections.all, title, description, pageType) | safe }}
+  {% endif %}
+
+  {# Stylesheets #}
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  {# Mermaid #}
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#ede5f2',
+        primaryTextColor: '#1a1a3e',
+        primaryBorderColor: '#cbb8d9',
+        lineColor: '#7b4f8a',
+        secondaryColor: '#f5f0fb',
+        tertiaryColor: '#f9f5fb',
+        background: '#f9f5fb',
+        mainBkg: '#ede5f2',
+        nodeBorder: '#cbb8d9',
+        clusterBkg: '#f5f0fb',
+        titleColor: '#1a1a3e',
+        edgeLabelBackground: '#f9f5fb',
+        fontFamily: 'Segoe UI, system-ui, sans-serif'
+      }
+    });
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  {# ===== HEADER ===== #}
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="/" class="site-logo" aria-label="Client-Side Form home">
+        <img src="/assets/icons/logo.svg" alt="" width="36" height="36">
+        <span>ClientSideForm</span>
+      </a>
+
+      <button class="nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+        <a href="/form-state-fundamentals-architecture/"
+           class="nav-link{% if page.url | startsWith('/form-state-fundamentals-architecture') %} active{% endif %}"
+           {% if page.url | startsWith('/form-state-fundamentals-architecture') %}aria-current="page"{% endif %}>
+          <span class="nav-icon">📐</span> Form State
+        </a>
+        <a href="/framework-adapters-custom-hooks/"
+           class="nav-link{% if page.url | startsWith('/framework-adapters-custom-hooks') %} active{% endif %}"
+           {% if page.url | startsWith('/framework-adapters-custom-hooks') %}aria-current="page"{% endif %}>
+          <span class="nav-icon">🔌</span> Framework Adapters
+        </a>
+        <a href="/validation-logic-schema-integration/"
+           class="nav-link{% if page.url | startsWith('/validation-logic-schema-integration') %} active{% endif %}"
+           {% if page.url | startsWith('/validation-logic-schema-integration') %}aria-current="page"{% endif %}>
+          <span class="nav-icon">✅</span> Validation & Schema
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  {# ===== MAIN ===== #}
+  <main id="main-content" class="site-main">
+    {{ content | safe }}
+  </main>
+
+  {# ===== FOOTER ===== #}
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-col footer-brand">
+        <h3>ClientSideForm</h3>
+        <p>Production-ready patterns for robust client-side form architecture.</p>
+        <p style="margin-top:0.5rem">
+          <a href="/">Home</a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <h3>📐 Form State</h3>
+        <ul>
+          <li><a href="/form-state-fundamentals-architecture/">Overview</a></li>
+          <li><a href="/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/">Controlled vs Uncontrolled</a></li>
+          <li><a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/">Dirty & Pristine Tracking</a></li>
+          <li><a href="/form-state-fundamentals-architecture/error-state-mapping-patterns/">Error State Mapping</a></li>
+          <li><a href="/form-state-fundamentals-architecture/form-validation-lifecycle/">Validation Lifecycle</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>🔌 Framework Adapters</h3>
+        <ul>
+          <li><a href="/framework-adapters-custom-hooks/">Overview</a></li>
+          <li><a href="/framework-adapters-custom-hooks/react-form-hook-architecture/">React Hook Architecture</a></li>
+          <li><a href="/framework-adapters-custom-hooks/vue-composition-api-form-adapters/">Vue Composition API</a></li>
+          <li><a href="/framework-adapters-custom-hooks/svelte-store-integration-for-forms/">Svelte Store Integration</a></li>
+          <li><a href="/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/">SSR Hydration Sync</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>✅ Validation & Schema</h3>
+        <ul>
+          <li><a href="/validation-logic-schema-integration/">Overview</a></li>
+          <li><a href="/validation-logic-schema-integration/integrating-zod-for-schema-validation/">Zod Integration</a></li>
+          <li><a href="/validation-logic-schema-integration/asynchronous-validation-strategies/">Async Validation</a></li>
+          <li><a href="/validation-logic-schema-integration/cross-field-dependency-logic/">Cross-Field Logic</a></li>
+          <li><a href="/validation-logic-schema-integration/synchronous-validation-patterns/">Sync Patterns</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; {% year %} Client-Side Form State &amp; Validation Architecture. Built with Eleventy.
+    </div>
+  </footer>
+
+  <script src="/assets/js/copy-code.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
+</body>
+</html>
+

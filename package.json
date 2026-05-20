@@ -1,0 +1,24 @@
+{
+  "name": "client-side-form.com",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy",
+    "deploy": "npm run build && wrangler pages deploy _site --project-name client-side-form-com",
+    "deploy:prod": "npm run build && wrangler pages deploy _site --project-name client-side-form-com --branch main",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.5",
+    "@11ty/eleventy-navigation": "^1.0.5",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
+    "markdown-it": "^14.1.1",
+    "markdown-it-checkbox": "^1.1.0"
+  }
+}

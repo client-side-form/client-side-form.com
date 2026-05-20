@@ -1,0 +1,52 @@
+---
+layout: base.njk
+pageType: article
+---
+<div class="content-wrapper">
+  {# Breadcrumbs #}
+  {% set breadcrumb = collections.all | eleventyNavigationBreadcrumb(eleventyNavigation.key) %}
+  {% if breadcrumb.length > 0 %}
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+    <span class="sep" aria-hidden="true">›</span>
+    {% for item in breadcrumb %}
+      {% if loop.last %}
+        <span class="current" aria-current="page">{{ item.title }}</span>
+      {% else %}
+        <a href="{{ item.url }}">{{ item.title }}</a>
+        <span class="sep" aria-hidden="true">›</span>
+      {% endif %}
+    {% endfor %}
+  </nav>
+  {% endif %}
+
+  <article>
+    <header class="article-header">
+      <h1>{{ title }}</h1>
+    </header>
+    <div class="article-body">
+      {{ content | stripFirstH1 | safe }}
+    </div>
+
+    {# Related / sibling navigation — other pages with same parent #}
+    {% if eleventyNavigation.parent %}
+      {% set siblings = collections.all | eleventyNavigation(eleventyNavigation.parent) %}
+      {% if siblings.length > 1 %}
+      <nav class="related-content" aria-label="Related articles">
+        <h2>Related Articles</h2>
+        <div class="related-grid">
+          {% for item in siblings %}
+            {% if item.url !== page.url %}
+            <a href="{{ item.url }}" class="related-card">
+              <span class="card-title">{{ item.title }}</span>
+            </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </nav>
+      {% endif %}
+    {% endif %}
+  </article>
+</div>
+
+
