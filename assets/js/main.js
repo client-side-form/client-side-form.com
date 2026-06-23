@@ -27,9 +27,17 @@
   const article = document.querySelector('.article-body');
   if (!article) return;
 
+  // Match the FAQ section heading across authoring variants. markdown-it may append a "#" permalink
+  // anchor, so normalise the text (strip leading/trailing #/¶/punctuation) before testing. Mirrors
+  // the QA gate's matcher so a section the gate inspects is always one the builder converts.
+  const faqHeadText = (h) => (h.textContent || '').replace(/\s+/g, ' ').trim()
+    .toLowerCase().replace(/^[\s#¶]+|[\s#¶?:.]+$/g, '');
+  const isFaqHead = (t) =>
+    /frequently asked questions?|^faqs?$|^common questions$|^q ?& ?a$|^questions?\s+(and|&)\s+answers$/.test(t);
+
   // Find headings that indicate an FAQ section (h2 or h3)
   Array.from(article.querySelectorAll('h2, h3')).forEach((heading) => {
-    if (!/frequently asked questions|^faq$/i.test(heading.textContent.trim())) return;
+    if (!isFaqHead(faqHeadText(heading))) return;
 
     // Wrap everything from the heading until the next same-level heading in a .faq-section
     const wrapper = document.createElement('div');
@@ -41,11 +49,47 @@
     while (node) {
       const next = node.nextSibling;
       const tag = node.nodeName.toLowerCase();
-      // Stop at the next heading of same or higher level
+      // Stop at the next heading of same or higher level...
       if (tag === heading.tagName.toLowerCase() || tag === 'h1') break;
+      // ...and at a thematic break (<hr>), which ends the FAQ and precedes the "Related" footer.
+      // Without this the footer's <p><strong>Related</strong></p> gets swept into the FAQ region.
+      if (tag === 'hr') break;
       wrapper.appendChild(node);
       node = next;
     }
+
+    // ---- Pattern D: pre-existing raw <details> authored server-side ----
+    // Some pages already ship <details><summary>Q</summary><p>A</p></details>. They are now inside
+    // .faq-section so the CSS styles them, but two things still need normalising:
+    //   (a) the summary question must be ONE element so an inline <code>/<em> can't fragment a flex
+    //       summary into multiple flex items (the faq-summary-broken regression);
+    //   (b) the answer nodes after the summary should live in a .faq-answer wrapper for padding.
+    Array.from(wrapper.querySelectorAll('details')).forEach((details) => {
+      const summary = details.querySelector(':scope > summary');
+      if (summary) {
+        // If the summary's question isn't already a single wrapping element, coalesce all of its
+        // children into one <span> so it behaves as a single flex item.
+        const kids = Array.from(summary.childNodes);
+        const onlyChildIsElement = kids.length === 1 && kids[0].nodeType === 1;
+        if (!onlyChildIsElement) {
+          const span = document.createElement('span');
+          while (summary.firstChild) span.appendChild(summary.firstChild);
+          summary.appendChild(span);
+        }
+      }
+      // Wrap everything after the summary in .faq-answer (skip if already wrapped).
+      if (!details.querySelector(':scope > .faq-answer')) {
+        const answerDiv = document.createElement('div');
+        answerDiv.className = 'faq-answer';
+        let sib = summary ? summary.nextSibling : details.firstChild;
+        while (sib) {
+          const after = sib.nextSibling;
+          answerDiv.appendChild(sib);
+          sib = after;
+        }
+        details.appendChild(answerDiv);
+      }
+    });
 
     // ---- Pattern B: <h3> sub-headings inside the FAQ wrapper ----
     Array.from(wrapper.querySelectorAll('h3, h4')).forEach((qHeading) => {
