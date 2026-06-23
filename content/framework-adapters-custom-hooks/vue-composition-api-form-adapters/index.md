@@ -127,7 +127,7 @@ Before writing a single `ref`, model the states the form can occupy. Every unexp
   <line x1="630" y1="118" x2="670" y2="80" stroke="currentColor" stroke-width="1.5" opacity="0.6" marker-end="url(#arrow)"/>
   <text x="648" y="92" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">ok</text>
   <!-- Arrow SUBMITTING -> ERROR -->
-  <line x1="630" y1="150" x2="668" y2="185" stroke="currentColor" stroke-width="1.5" opacity="0.6" marker-end="url(#arrow)"/>
+  <line x1="630" y1="150" x2="668" y2="205" stroke="currentColor" stroke-width="1.5" opacity="0.6" marker-end="url(#arrow)"/>
   <text x="648" y="175" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">error</text>
   <!-- SUBMITTED label -->
   <text x="670" y="72" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.6">DONE</text>
