@@ -1,7 +1,7 @@
 ---
 layout: base.njk
-title: Client-Side Form State & Validation Architecture
-description: Production-ready architectural patterns for frontend teams building robust client-side forms — state lifecycles, schema validation, cross-field logic, and framework adapters.
+title: Form State and Validation Architecture
+description: Production-ready patterns for client-side form state, schema validation, cross-field logic, and React/Vue/Svelte framework adapters.
 permalink: /
 ---
 
@@ -10,17 +10,17 @@ permalink: /
     <h1>Client-Side Form State &amp;<br>Validation Architecture</h1>
     <p class="hero-tagline">Production-ready patterns for deterministic state lifecycles, schema-driven validation, and cross-framework adapters.</p>
     <p class="hero-desc">
-      This hub provides battle-tested architectural blueprints for frontend devs, UX/UI engineers, QA teams, and design system maintainers building robust client-side forms. We focus on real-world constraints — async latency, hydration, memory limits, and race conditions — not theoretical abstractions.
+      Battle-tested architectural blueprints for frontend engineers, UX developers, and design-system maintainers building robust client-side forms. We focus on real-world constraints — async latency, SSR hydration, memory limits, and race conditions — not theoretical abstractions.
     </p>
     <div class="cta-group">
       <a href="/form-state-fundamentals-architecture/" class="cta-btn cta-btn-primary">
-        <span class="btn-icon">📐</span> Form State Fundamentals
+        <span class="btn-icon" aria-hidden="true">📐</span> Form State Fundamentals
       </a>
       <a href="/framework-adapters-custom-hooks/" class="cta-btn cta-btn-outline">
-        <span class="btn-icon">🔌</span> Framework Adapters
+        <span class="btn-icon" aria-hidden="true">🔌</span> Framework Adapters
       </a>
       <a href="/validation-logic-schema-integration/" class="cta-btn cta-btn-outline">
-        <span class="btn-icon">✅</span> Validation &amp; Schema
+        <span class="btn-icon" aria-hidden="true">✅</span> Validation &amp; Schema
       </a>
     </div>
   </div>
@@ -28,13 +28,11 @@ permalink: /
 
 <div class="home-section">
   <h2 class="section-heading">Why Client-Side Form Architecture Matters</h2>
-  <p class="section-sub">Forms are deceptively complex. A robust form system requires careful attention to state transitions, validation timing, error propagation, and accessibility — all while maintaining performance across devices.</p>
+  <p class="section-sub">Forms are deceptively complex. A robust form system requires careful attention to state transitions, validation timing, error propagation, and accessibility — all while maintaining performance across devices and rendering strategies.</p>
 
-  <p>Modern applications demand predictable, testable form pipelines that scale across component libraries and rendering frameworks. Whether you're managing a single login field or a multi-step enterprise workflow, the same architectural principles apply: isolate state from rendering, compose validation as pure functions, and design for async-first interactions.</p>
+  <p>Modern applications demand predictable, testable form pipelines that scale across component libraries and rendering frameworks. Whether you are managing a single login field or a multi-step enterprise workflow, the same architectural principles apply: isolate state from rendering, compose validation as pure functions, and design for async-first interactions.</p>
 
-  <p>Every pattern on this site is grounded in production constraints. You'll find TypeScript-first implementations, framework-agnostic adapter contracts, schema-driven validation pipelines with Zod, async cancellation strategies, and dirty/pristine lifecycle management — all with a focus on determinism, testability, and minimal re-render overhead.</p>
-
-  <p>Use these guides to establish shared vocabulary and architecture across your team, reduce form-related bugs, and build UI components that behave predictably regardless of the underlying framework.</p>
+  <p>Every pattern on this site is grounded in production constraints. You will find TypeScript-first implementations, framework-agnostic adapter contracts, schema-driven validation pipelines with Zod, async cancellation strategies, and dirty/pristine lifecycle management — all with a focus on determinism, testability, and minimal re-render overhead.</p>
 </div>
 
 <div class="home-section" style="padding-top:0">
@@ -43,7 +41,7 @@ permalink: /
 
   <div class="pillar-grid">
     <div class="pillar-card">
-      <div class="pillar-card-icon">📐</div>
+      <div class="pillar-card-icon" aria-hidden="true">📐</div>
       <h3>Form State Fundamentals &amp; Architecture</h3>
       <p>Lifecycle mapping, dirty/pristine tracking, error state propagation, and the architectural patterns that govern how form data flows through your application.</p>
       <ul>
@@ -52,24 +50,24 @@ permalink: /
         <li><a href="/form-state-fundamentals-architecture/error-state-mapping-patterns/">Error State Mapping Patterns</a></li>
         <li><a href="/form-state-fundamentals-architecture/form-validation-lifecycle/">Form Validation Lifecycle</a></li>
       </ul>
-      <a href="/form-state-fundamentals-architecture/" class="pillar-card-link">Explore Form State →</a>
+      <a href="/form-state-fundamentals-architecture/" class="pillar-card-link">Explore Form State &rarr;</a>
     </div>
 
     <div class="pillar-card">
-      <div class="pillar-card-icon">🔌</div>
+      <div class="pillar-card-icon" aria-hidden="true">🔌</div>
       <h3>Framework Adapters &amp; Custom Hooks</h3>
-      <p>Cross-framework adapter interfaces for React, Vue, and Svelte. Custom hook architecture, SSR hydration sync, and memory management patterns for long-lived SPA sessions.</p>
+      <p>Cross-framework adapter interfaces for React, Vue, and Svelte. Custom hook architecture, SSR hydration sync, and Pinia integration for long-lived SPA sessions.</p>
       <ul>
         <li><a href="/framework-adapters-custom-hooks/react-form-hook-architecture/">React Hook Architecture</a></li>
         <li><a href="/framework-adapters-custom-hooks/vue-composition-api-form-adapters/">Vue Composition API Adapters</a></li>
         <li><a href="/framework-adapters-custom-hooks/svelte-store-integration-for-forms/">Svelte Store Integration</a></li>
         <li><a href="/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/">SSR Hydration Sync</a></li>
       </ul>
-      <a href="/framework-adapters-custom-hooks/" class="pillar-card-link">Explore Adapters →</a>
+      <a href="/framework-adapters-custom-hooks/" class="pillar-card-link">Explore Adapters &rarr;</a>
     </div>
 
     <div class="pillar-card">
-      <div class="pillar-card-icon">✅</div>
+      <div class="pillar-card-icon" aria-hidden="true">✅</div>
       <h3>Validation Logic &amp; Schema Integration</h3>
       <p>Synchronous and async validation pipelines, Zod schema integration, cross-field dependency graphs, debouncing strategies, and server-schema synchronisation.</p>
       <ul>
@@ -78,14 +76,14 @@ permalink: /
         <li><a href="/validation-logic-schema-integration/cross-field-dependency-logic/">Cross-Field Dependency Logic</a></li>
         <li><a href="/validation-logic-schema-integration/synchronous-validation-patterns/">Synchronous Validation Patterns</a></li>
       </ul>
-      <a href="/validation-logic-schema-integration/" class="pillar-card-link">Explore Validation →</a>
+      <a href="/validation-logic-schema-integration/" class="pillar-card-link">Explore Validation &rarr;</a>
     </div>
   </div>
 </div>
 
-<div class="home-section" style="padding-top:0; padding-bottom: 4rem">
-  <h2 class="section-heading">Featured Articles</h2>
-  <p class="section-sub">Practical deep-dives for common implementation challenges.</p>
+<div class="home-section" style="padding-top:0">
+  <h2 class="section-heading">Start Here</h2>
+  <p class="section-sub">The highest-value articles for engineers new to form architecture.</p>
   <div class="related-grid">
     <a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/" class="related-card">
       <span class="card-title">How to Track Dirty Fields in React Forms</span>
@@ -114,3 +112,25 @@ permalink: /
   </div>
 </div>
 
+<div class="home-section" style="padding-top:0; padding-bottom: 4rem">
+  <h2 class="section-heading">More Articles</h2>
+  <p class="section-sub">Additional deep-dives across all three pillars.</p>
+  <div class="related-grid">
+    <a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/implementing-pristine-state-in-vue-3/" class="related-card">
+      <span class="card-title">Implementing Pristine State in Vue 3</span>
+      <span class="card-desc">Reactive watchers and composables for accurate pristine detection in Vue 3 forms.</span>
+    </a>
+    <a href="/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/" class="related-card">
+      <span class="card-title">Mapping Validation Errors to UI Components</span>
+      <span class="card-desc">Propagate schema errors to the right input components without prop-drilling.</span>
+    </a>
+    <a href="/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/" class="related-card">
+      <span class="card-title">Syncing Vue Form State with Pinia</span>
+      <span class="card-desc">Persist and share form state across views using Pinia stores and composables.</span>
+    </a>
+    <a href="/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/" class="related-card">
+      <span class="card-title">Debouncing Validation Triggers in React</span>
+      <span class="card-desc">Minimise unnecessary validation runs using custom debounce hooks and useCallback patterns.</span>
+    </a>
+  </div>
+</div>

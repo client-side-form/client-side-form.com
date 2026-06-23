@@ -20,6 +20,29 @@ module.exports = function (eleventyConfig) {
     ulClass: "task-list",
     liClass: "task-list-item",
   });
+
+  // Wrap fenced code blocks in .code-block-wrapper so the <pre> never pushes
+  // the page wider than the viewport (the wrapper clips via overflow:hidden).
+  const defaultFence = md.renderer.rules.fence.bind(md.renderer);
+  md.renderer.rules.fence = function (tokens, idx, options, env, self) {
+    return '<div class="code-block-wrapper">' + defaultFence(tokens, idx, options, env, self) + '</div>';
+  };
+
+  // Wrap tables in .table-scroll (overflow-x:auto) so wide tables scroll
+  // inside their container instead of pushing the page wider on mobile.
+  const defaultTableOpen = md.renderer.rules.table_open ||
+    function (tokens, idx, options, env, self) { return self.renderToken(tokens, idx, options); };
+  const defaultTableClose = md.renderer.rules.table_close ||
+    function (tokens, idx, options, env, self) { return self.renderToken(tokens, idx, options); };
+  md.renderer.rules.table_open = function (tokens, idx, options, env, self) {
+    return '<div class="table-scroll">' + (typeof defaultTableOpen === 'function'
+      ? defaultTableOpen(tokens, idx, options, env, self) : defaultTableOpen);
+  };
+  md.renderer.rules.table_close = function (tokens, idx, options, env, self) {
+    return (typeof defaultTableClose === 'function'
+      ? defaultTableClose(tokens, idx, options, env, self) : defaultTableClose) + '</div>';
+  };
+
   eleventyConfig.setLibrary("md", md);
 
   // Passthrough copies
@@ -32,7 +55,7 @@ module.exports = function (eleventyConfig) {
   // Filter: strip the first <h1> from rendered content (avoids duplicate with layout)
   eleventyConfig.addFilter("stripFirstH1", (content) => {
     if (typeof content !== "string") return content;
-    return content.replace(/^(\s*)<h1[^>]*>.*?<\/h1>\s*/i, "");
+    return content.replace(/<h1[^>]*>.*?<\/h1>\s*/i, "");
   });
 
   // Shortcode: current year for footer

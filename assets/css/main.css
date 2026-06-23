@@ -170,17 +170,23 @@ hr {
   margin: 2.5rem 0;
 }
 
+/* Reset <summary> UA flex display so inline <code> inside stays in text flow */
+summary { display: block; }
+
 /* ============================================================
-   Inline Code
+   Inline Code — blends with prose (no box, no background)
    ============================================================ */
 :not(pre) > code {
   font-family: var(--font-mono);
-  font-size: 0.83em;
-  background: var(--color-code-bg);
-  color: var(--color-text-muted);
-  padding: 0.1em 0.35em;
-  border-radius: 4px;
-  white-space: nowrap;
+  font-size: 0.88em;
+  color: var(--color-text);
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* ============================================================
@@ -267,12 +273,12 @@ pre.code-block-wrapper > pre {
   tab-size: 2;
 }
 
-/* Prism token colors — light Vintage Vibes palette */
-.token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8a7a95; font-style: italic; }
+/* Prism token colors — light Vintage Vibes palette (all pass WCAG AA 4.5:1 vs #e8ddf2 bg) */
+.token.comment, .token.prolog, .token.doctype, .token.cdata { color: #5a4a65; font-style: italic; }
 .token.punctuation { color: #5e3a6b; }
 .token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol { color: #a63d6f; }
-.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin { color: #4a7c59; }
-.token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string { color: #b07a55; }
+.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin { color: #2d6342; }
+.token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string { color: #7a4a20; }
 .token.atrule, .token.attr-value, .token.keyword { color: #5b3f7a; font-weight: 600; }
 .token.function, .token.class-name { color: #1a5a8a; }
 .token.regex, .token.important, .token.variable { color: #9b4f24; }
@@ -319,6 +325,11 @@ thead th {
   text-align: left;
   font-weight: 600;
   letter-spacing: 0.02em;
+}
+
+/* Inline code inside dark table headers must inherit white text, not body-text color */
+thead th code {
+  color: inherit;
 }
 
 tbody tr:nth-child(even) { background: var(--color-surface); }
@@ -684,7 +695,7 @@ td {
   padding-top: 1rem;
   border-top: 1px solid rgba(255,255,255,0.1);
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.65);
   text-align: center;
 }
 

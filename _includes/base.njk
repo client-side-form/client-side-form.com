@@ -29,16 +29,16 @@
   <meta property="og:description" content="{{ _ogDesc }}">
   <meta property="og:type" content="{% if pageType == 'article' %}article{% else %}website{% endif %}">
   {% if page.url %}<meta property="og:url" content="https://www.client-side-form.com{{ page.url }}">{% endif %}
-  <meta property="og:image" content="https://www.client-side-form.com/assets/icons/icon-512.png">
-  <meta property="og:image:width" content="512">
-  <meta property="og:image:height" content="512">
+  <meta property="og:image" content="https://www.client-side-form.com/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="ClientSideForm">
 
   {# Twitter / X Card #}
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ _ogTitle }}">
   <meta name="twitter:description" content="{{ _ogDesc }}">
-  <meta name="twitter:image" content="https://www.client-side-form.com/assets/icons/icon-512.png">
+  <meta name="twitter:image" content="https://www.client-side-form.com/assets/og-image.png">
 
   {# JSON-LD Structured Data #}
   {% if page.url %}
@@ -48,29 +48,6 @@
   {# Stylesheets #}
   <link rel="stylesheet" href="/assets/css/main.css">
 
-  {# Mermaid #}
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: 'base',
-      themeVariables: {
-        primaryColor: '#ede5f2',
-        primaryTextColor: '#1a1a3e',
-        primaryBorderColor: '#cbb8d9',
-        lineColor: '#7b4f8a',
-        secondaryColor: '#f5f0fb',
-        tertiaryColor: '#f9f5fb',
-        background: '#f9f5fb',
-        mainBkg: '#ede5f2',
-        nodeBorder: '#cbb8d9',
-        clusterBkg: '#f5f0fb',
-        titleColor: '#1a1a3e',
-        edgeLabelBackground: '#f9f5fb',
-        fontFamily: 'Segoe UI, system-ui, sans-serif'
-      }
-    });
-  </script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -127,8 +104,12 @@
         <ul>
           <li><a href="/form-state-fundamentals-architecture/">Overview</a></li>
           <li><a href="/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/">Controlled vs Uncontrolled</a></li>
-          <li><a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/">Dirty & Pristine Tracking</a></li>
+          <li><a href="/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/best-practices-for-uncontrolled-form-state/">Uncontrolled Form Best Practices</a></li>
+          <li><a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/">Dirty &amp; Pristine Tracking</a></li>
+          <li><a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/">Track Dirty Fields in React</a></li>
+          <li><a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/implementing-pristine-state-in-vue-3/">Pristine State in Vue 3</a></li>
           <li><a href="/form-state-fundamentals-architecture/error-state-mapping-patterns/">Error State Mapping</a></li>
+          <li><a href="/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/">Errors to UI Components</a></li>
           <li><a href="/form-state-fundamentals-architecture/form-validation-lifecycle/">Validation Lifecycle</a></li>
         </ul>
       </div>
@@ -137,19 +118,25 @@
         <ul>
           <li><a href="/framework-adapters-custom-hooks/">Overview</a></li>
           <li><a href="/framework-adapters-custom-hooks/react-form-hook-architecture/">React Hook Architecture</a></li>
+          <li><a href="/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/">Custom useFormField Hook</a></li>
           <li><a href="/framework-adapters-custom-hooks/vue-composition-api-form-adapters/">Vue Composition API</a></li>
+          <li><a href="/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/">Vue Form State &amp; Pinia</a></li>
           <li><a href="/framework-adapters-custom-hooks/svelte-store-integration-for-forms/">Svelte Store Integration</a></li>
           <li><a href="/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/">SSR Hydration Sync</a></li>
+          <li><a href="/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/">Svelte Hydration Mismatches</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h3>✅ Validation & Schema</h3>
+        <h3>✅ Validation &amp; Schema</h3>
         <ul>
           <li><a href="/validation-logic-schema-integration/">Overview</a></li>
           <li><a href="/validation-logic-schema-integration/integrating-zod-for-schema-validation/">Zod Integration</a></li>
+          <li><a href="/validation-logic-schema-integration/integrating-zod-for-schema-validation/how-to-validate-dependent-fields-with-zod/">Validate Dependent Fields with Zod</a></li>
           <li><a href="/validation-logic-schema-integration/asynchronous-validation-strategies/">Async Validation</a></li>
+          <li><a href="/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/">Async Email Availability Checks</a></li>
           <li><a href="/validation-logic-schema-integration/cross-field-dependency-logic/">Cross-Field Logic</a></li>
-          <li><a href="/validation-logic-schema-integration/synchronous-validation-patterns/">Sync Patterns</a></li>
+          <li><a href="/validation-logic-schema-integration/synchronous-validation-patterns/">Sync Validation Patterns</a></li>
+          <li><a href="/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/">Debouncing Validation in React</a></li>
         </ul>
       </div>
     </div>

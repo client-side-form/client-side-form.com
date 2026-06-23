@@ -6,8 +6,8 @@
   "scripts": {
     "start": "eleventy --serve",
     "build": "eleventy",
-    "deploy": "npm run build && wrangler pages deploy _site --project-name client-side-form-com",
-    "deploy:prod": "npm run build && wrangler pages deploy _site --project-name client-side-form-com --branch main",
+    "deploy": "npm run build && wrangler pages deploy _site --project-name client-side-form-com --branch production",
+    "deploy:prod": "npm run build && wrangler pages deploy _site --project-name client-side-form-com --branch production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
