@@ -689,6 +689,17 @@ td {
   max-width: none;
 }
 
+/* Footer social / GitHub icon link */
+.footer-social { margin-top: 0.75rem; }
+.footer-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: rgba(255,255,255,0.75);
+}
+.footer-social-link svg { display: block; flex: none; }
+.footer-social-link:hover { color: var(--color-accent-2); }
+
 .footer-bottom {
   max-width: var(--content-max);
   margin: 1.5rem auto 0;
