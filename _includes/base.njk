@@ -46,8 +46,7 @@
   {% endif %}
 
   {# Stylesheets #}
-  <link rel="stylesheet" href="/assets/css/main.css">
-
+  <link rel="stylesheet" href="/assets/css/main.css?v={{ assets.mainCss }}">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -80,6 +79,11 @@
            {% if page.url | startsWith('/validation-logic-schema-integration') %}aria-current="page"{% endif %}>
           <span class="nav-icon">✅</span> Validation & Schema
         </a>
+        <a href="/accessibility-and-error-ux/"
+           class="nav-link{% if page.url | startsWith('/accessibility-and-error-ux') %} active{% endif %}"
+           {% if page.url | startsWith('/accessibility-and-error-ux') %}aria-current="page"{% endif %}>
+          <span class="nav-icon">♿</span> Accessibility & UX
+        </a>
       </nav>
     </div>
   </header>
@@ -109,8 +113,9 @@
           <li><a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/">Track Dirty Fields in React</a></li>
           <li><a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/implementing-pristine-state-in-vue-3/">Pristine State in Vue 3</a></li>
           <li><a href="/form-state-fundamentals-architecture/error-state-mapping-patterns/">Error State Mapping</a></li>
-          <li><a href="/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/">Errors to UI Components</a></li>
           <li><a href="/form-state-fundamentals-architecture/form-validation-lifecycle/">Validation Lifecycle</a></li>
+          <li><a href="/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/">Performance &amp; Scale</a></li>
+          <li><a href="/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/">Submission &amp; Optimistic Updates</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -122,8 +127,8 @@
           <li><a href="/framework-adapters-custom-hooks/vue-composition-api-form-adapters/">Vue Composition API</a></li>
           <li><a href="/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/">Vue Form State &amp; Pinia</a></li>
           <li><a href="/framework-adapters-custom-hooks/svelte-store-integration-for-forms/">Svelte Store Integration</a></li>
+          <li><a href="/framework-adapters-custom-hooks/angular-reactive-forms-adapters/">Angular Reactive Forms</a></li>
           <li><a href="/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/">SSR Hydration Sync</a></li>
-          <li><a href="/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/">Svelte Hydration Mismatches</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -136,7 +141,16 @@
           <li><a href="/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/">Async Email Availability Checks</a></li>
           <li><a href="/validation-logic-schema-integration/cross-field-dependency-logic/">Cross-Field Logic</a></li>
           <li><a href="/validation-logic-schema-integration/synchronous-validation-patterns/">Sync Validation Patterns</a></li>
-          <li><a href="/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/">Debouncing Validation in React</a></li>
+          <li><a href="/validation-logic-schema-integration/choosing-a-schema-validation-library/">Choosing a Schema Library</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>♿ Accessibility &amp; UX</h3>
+        <ul>
+          <li><a href="/accessibility-and-error-ux/">Overview</a></li>
+          <li><a href="/accessibility-and-error-ux/aria-live-regions-for-form-errors/">ARIA Live Regions</a></li>
+          <li><a href="/accessibility-and-error-ux/focus-management-after-validation/">Focus Management</a></li>
+          <li><a href="/accessibility-and-error-ux/keyboard-navigation-patterns/">Keyboard Navigation</a></li>
         </ul>
       </div>
     </div>
@@ -145,8 +159,8 @@
     </div>
   </footer>
 
-  <script src="/assets/js/copy-code.js" defer></script>
-  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/copy-code.js?v={{ assets.copyCodeJs }}" defer></script>
+  <script src="/assets/js/main.js?v={{ assets.mainJs }}" defer></script>
 </body>
 </html>
 

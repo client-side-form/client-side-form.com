@@ -6,7 +6,7 @@ slug: "handling-svelte-form-hydration-mismatches"
 type: "long_tail"
 breadcrumb: "Handling Svelte Form Hydration Mismatches"
 datePublished: "2025-09-01"
-dateModified: "2026-06-23"
+dateModified: "2026-07-09"
 eleventyNavigation:
   key: "Handling Svelte Form Hydration Mismatches"
   parent: "Hydration Sync for SSR Forms"
@@ -100,7 +100,7 @@ The diagram below shows the two timelines — server render and client hydration
   <rect x="80" y="128" width="80" height="24" rx="4" fill="#4a6080" opacity="0.85"/>
   <text x="120" y="145" font-size="11" fill="#fff" text-anchor="middle" font-family="sans-serif">JS parse</text>
   <!-- hydration checksum — danger zone start -->
-  <rect x="162" y="128" width="100" height="24" rx="4" fill="#b85c5c" opacity="0.85"/>
+  <rect x="162" y="128" width="100" height="24" rx="4" fill="#9e3d3d"/>
   <text x="212" y="145" font-size="11" fill="#fff" text-anchor="middle" font-family="sans-serif">Hydration checksum</text>
   <!-- mismatch zone shading -->
   <rect x="162" y="100" width="100" height="68" rx="4" fill="#b85c5c" opacity="0.10"/>

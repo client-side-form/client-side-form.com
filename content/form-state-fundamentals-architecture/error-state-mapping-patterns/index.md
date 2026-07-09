@@ -10,7 +10,7 @@ breadcrumb:
   - label: "Error State Mapping Patterns"
     url: "/form-state-fundamentals-architecture/error-state-mapping-patterns/"
 datePublished: "2025-01-15"
-dateModified: "2026-06-23"
+dateModified: "2026-07-09"
 eleventyNavigation:
   key: "Error State Mapping Patterns"
   parent: "Form State Fundamentals"
@@ -131,10 +131,10 @@ Error mapping is not a function call; it is a state machine. The transitions bel
   <line x1="310" y1="132" x2="418" y2="172" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)"/>
   <text x="370" y="168" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.8">errors found</text>
   <!-- VALID → CLEARING -->
-  <line x1="520" y1="60" x2="600" y2="108" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.6"/>
+  <line x1="520" y1="60" x2="584" y2="98" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.6"/>
   <text x="572" y="78" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">reset</text>
   <!-- INVALID → CLEARING -->
-  <line x1="520" y1="180" x2="600" y2="132" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.6"/>
+  <line x1="520" y1="180" x2="584" y2="142" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.6"/>
   <text x="572" y="168" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">reset / re-valid</text>
   <!-- CLEARING → IDLE (arc back) -->
   <path d="M640,100 Q640,20 70,95" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)" opacity="0.4"/>

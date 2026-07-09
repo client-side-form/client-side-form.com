@@ -204,7 +204,40 @@
   });
 })();
 
-// 4. Service Worker registration
+// 4. Scrollable code blocks and wide tables must be keyboard-operable (WCAG 2.1.1).
+// Only regions that actually overflow horizontally get a tab stop, so we don't add
+// noise for code/tables that fit. Runs on load and on resize (debounced).
+(function () {
+  function markScrollable() {
+    const regions = document.querySelectorAll(
+      '.article-body pre, .article-body .table-scroll'
+    );
+    regions.forEach((el) => {
+      const overflows = el.scrollWidth > el.clientWidth + 1;
+      if (overflows) {
+        if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+        if (!el.hasAttribute('role')) el.setAttribute('role', 'region');
+        if (!el.hasAttribute('aria-label')) {
+          el.setAttribute('aria-label', el.matches('.table-scroll') ? 'Table, scrollable' : 'Code, scrollable');
+        }
+      } else if (el.getAttribute('aria-label') && /scrollable$/.test(el.getAttribute('aria-label'))) {
+        // No longer overflowing after a resize — remove the tab stop we added.
+        el.removeAttribute('tabindex');
+        el.removeAttribute('role');
+        el.removeAttribute('aria-label');
+      }
+    });
+  }
+  let t = null;
+  window.addEventListener('resize', () => {
+    if (t) clearTimeout(t);
+    t = setTimeout(markScrollable, 150);
+  });
+  if (document.readyState !== 'loading') markScrollable();
+  else document.addEventListener('DOMContentLoaded', markScrollable);
+})();
+
+// 5. Service Worker registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
