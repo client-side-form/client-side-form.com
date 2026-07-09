@@ -3,7 +3,7 @@ layout: page.njk
 title: "Syncing Angular FormControl with a State Machine"
 description: "Bridge Angular valueChanges and statusChanges into an explicit state machine with no feedback loops, using emitEvent:false, distinctUntilChanged, and teardown."
 slug: syncing-angular-formcontrol-with-a-state-machine
-type: long_tail
+type: guide
 breadcrumb: "Syncing FormControl with a State Machine"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -75,7 +75,7 @@ The exact problem: a state machine that both reads `FormControl.valueChanges` an
 
 ## Context and Prerequisites
 
-This page is the mechanical detail behind the [Angular Reactive Forms adapters](/framework-adapters-custom-hooks/angular-reactive-forms-adapters/) pattern — read that first for the full snapshot contract and the status-to-state mapping. The goal here is narrower: fold `valueChanges` and `statusChanges` into one reducer that drives an explicit machine, and reconcile the machine's output back into the control without the write re-triggering the read.
+This page is the mechanical detail behind the [Angular Reactive Forms adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/angular-reactive-forms-adapters/) pattern — read that first for the full snapshot contract and the status-to-state mapping. The goal here is narrower: fold `valueChanges` and `statusChanges` into one reducer that drives an explicit machine, and reconcile the machine's output back into the control without the write re-triggering the read.
 
 ## The Feedback-Loop Problem
 
@@ -190,7 +190,7 @@ function normalize<T>(value: T): T {
 
 4. **Reconcile without emitting.** When the reducer normalizes a value and writes it back with `setValue(normalized, { emitEvent: false })`, the write updates the control model but does not fire `valueChanges`. This is the one cut edge that prevents the loop. The guard `normalized !== control.value` avoids an unnecessary write when nothing changed.
 
-5. **Complete on destroy.** `takeUntilDestroyed(destroyRef)` completes the merged subscription when the component is torn down, releasing the reducer closure. No `destroy$` Subject, no `ngOnDestroy` — the same teardown discipline the parent adapter uses. This machine-driven bridge is the low-level counterpart to the schema-driven validation in [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/), where `switchMap` plays the cancellation role `emitEvent:false` plays for loop-breaking.
+5. **Complete on destroy.** `takeUntilDestroyed(destroyRef)` completes the merged subscription when the component is torn down, releasing the reducer closure. No `destroy$` Subject, no `ngOnDestroy` — the same teardown discipline the parent adapter uses. This machine-driven bridge is the low-level counterpart to the schema-driven validation in [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/), where `switchMap` plays the cancellation role `emitEvent:false` plays for loop-breaking.
 
 ## Failure Modes and Edge Cases
 
@@ -263,8 +263,8 @@ Inject `DestroyRef` and pipe the merged stream through `takeUntilDestroyed(destr
 
 **Related**
 
-- [Angular Reactive Forms Adapters](/framework-adapters-custom-hooks/angular-reactive-forms-adapters/) — the full adapter and status-to-state mapping this bridge plugs into
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — the switchMap cancellation model that complements loop-breaking
-- [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) — the same explicit-machine discipline in a reducer-driven React hook
+- [Angular Reactive Forms Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/angular-reactive-forms-adapters/) — the full adapter and status-to-state mapping this bridge plugs into
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — the switchMap cancellation model that complements loop-breaking
+- [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) — the same explicit-machine discipline in a reducer-driven React hook
 
-← [Angular Reactive Forms Adapters](/framework-adapters-custom-hooks/angular-reactive-forms-adapters/)
+← [Angular Reactive Forms Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/angular-reactive-forms-adapters/)

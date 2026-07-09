@@ -3,7 +3,7 @@ layout: page.njk
 title: "Custom useFormField Hook Performance Tuning"
 description: "Eliminate wasted re-renders in a custom useFormField hook with useSyncExternalStore selectors, stable callbacks, and useRef for transient values."
 slug: custom-useformfield-hook-performance-tuning
-type: long_tail
+type: guide
 breadcrumb: "useFormField Performance Tuning"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -75,7 +75,7 @@ The exact problem: a custom `useFormField` hook re-renders every field in a larg
 
 ## Context and Prerequisites
 
-This page assumes you already have the hook from [building a custom useFormField hook](/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) and now need to make it fast at 50-plus fields. The parent [React form hook architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) covers the reducer and subscription model; here we cut the wasted renders that model can leak when every field reads the same state object.
+This page assumes you already have the hook from [building a custom useFormField hook](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) and now need to make it fast at 50-plus fields. The parent [React form hook architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) covers the reducer and subscription model; here we cut the wasted renders that model can leak when every field reads the same state object.
 
 ## The Re-Render Storm
 
@@ -207,7 +207,7 @@ export function useDebouncedField(store: FormStore, name: string, ms = 200) {
 }
 ```
 
-This is the read-side complement to [debouncing validation triggers in React](/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/): the ref keeps intermediate keystrokes out of render, and only the settled value reaches the store and any validation it triggers.
+This is the read-side complement to [debouncing validation triggers in React](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/): the ref keeps intermediate keystrokes out of render, and only the settled value reaches the store and any validation it triggers.
 
 ## Failure Modes and Edge Cases
 
@@ -282,8 +282,8 @@ Use a ref when the value changes rapidly but the UI does not need to repaint on 
 
 **Related**
 
-- [Building a Custom useFormField Hook](/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) — the base hook this page tunes
-- [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) — the reducer and subscription model behind the field hook
-- [Debouncing Validation Triggers in React](/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) — pair with the ref buffer to keep keystrokes out of render
+- [Building a Custom useFormField Hook](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) — the base hook this page tunes
+- [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) — the reducer and subscription model behind the field hook
+- [Debouncing Validation Triggers in React](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) — pair with the ref buffer to keep keystrokes out of render
 
-← [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/)
+← [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/)

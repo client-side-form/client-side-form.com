@@ -3,7 +3,7 @@ layout: page.njk
 title: "Angular Reactive Forms Adapters"
 description: "Adapt Angular Reactive Forms FormControl and FormGroup streams onto a framework-agnostic state machine with Zod validation and cancellable async validators."
 slug: angular-reactive-forms-adapters
-type: cluster
+type: topic
 breadcrumb: "Angular Reactive Forms"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -78,7 +78,7 @@ eleventyNavigation:
 
 Angular Reactive Forms already model a form as a tree of `FormControl`, `FormGroup`, and `FormArray` nodes, each exposing `valueChanges` and `statusChanges` observables plus a synchronous `status` field. That looks like a state machine — but it is Angular's state machine, coupled to `@angular/forms`, RxJS operators, and Angular's change detection. The moment you need the same validation contract in a React screen, a background worker, or a server route, that coupling becomes the bug: the rules live inside `Validators` closures you cannot reuse, the "is this field pending?" logic is scattered across templates, and teardown is an afterthought that leaks subscriptions on every route change.
 
-This page specifies an adapter that projects the Angular control tree onto a framework-agnostic state machine and drives validation from a shared schema. The adapter treats `FormGroup` as the transport layer and a plain, serializable snapshot as the source of truth other subsystems read. It sits alongside the [React form hook architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) adapter and the [Vue Composition API form adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) so that all three frameworks resolve to one validation pipeline and one set of typed errors. For the underlying model, see the [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/) architecture guide.
+This page specifies an adapter that projects the Angular control tree onto a framework-agnostic state machine and drives validation from a shared schema. The adapter treats `FormGroup` as the transport layer and a plain, serializable snapshot as the source of truth other subsystems read. It sits alongside the [React form hook architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) adapter and the [Vue Composition API form adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) so that all three frameworks resolve to one validation pipeline and one set of typed errors. For the underlying model, see the [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/) architecture guide.
 
 ---
 
@@ -165,7 +165,7 @@ The critical distinction production teams miss is `PENDING` versus `INVALID`. Wh
 
 ## Core Implementation
 
-The adapter subscribes to the `FormGroup` once, folds `valueChanges` and `statusChanges` into a single snapshot stream, and maps Angular's status onto the machine. Validation is delegated to a shared schema — see [integrating Zod for schema validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) for the schema-authoring side of this contract.
+The adapter subscribes to the `FormGroup` once, folds `valueChanges` and `statusChanges` into a single snapshot stream, and maps Angular's status onto the machine. Validation is delegated to a shared schema — see [integrating Zod for schema validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) for the schema-authoring side of this contract.
 
 ```typescript
 import { FormGroup } from '@angular/forms';
@@ -292,7 +292,7 @@ export function zodValidator<S extends z.ZodTypeAny>(schema: S): ValidatorFn {
 
 ### A cancellable AsyncValidatorFn
 
-Server-side checks — uniqueness, cross-account rules — belong in an `AsyncValidatorFn`. The cancellation model is RxJS `switchMap`: Angular re-invokes the validator on each value change and unsubscribes the previous inner observable, which cancels the outstanding `HttpClient` request. This is the RxJS equivalent of aborting the prior fetch with an `AbortController` — the same discipline covered in [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/).
+Server-side checks — uniqueness, cross-account rules — belong in an `AsyncValidatorFn`. The cancellation model is RxJS `switchMap`: Angular re-invokes the validator on each value change and unsubscribes the previous inner observable, which cancels the outstanding `HttpClient` request. This is the RxJS equivalent of aborting the prior fetch with an `AbortController` — the same discipline covered in [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/).
 
 ```typescript
 import { AsyncValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
@@ -477,9 +477,9 @@ export class SignupComponent {
 
 The adapter is the boundary between Angular's control tree and every other subsystem. Because it emits a plain `FormSnapshot<T>`, consumers never import `@angular/forms`.
 
-- **Shared schema.** The same Zod schema feeds the Angular `zodValidator`, the [React form hook architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) resolver, and the server route. One rule set, three runtimes. When a rule changes, it changes in one file.
-- **Cross-field rules.** Dependencies such as "confirm password must match password" belong in a schema `refine`, not in a per-control validator, so they survive the framework boundary — see [cross-field dependency logic](/validation-logic-schema-integration/cross-field-dependency-logic/) for the schema-side pattern.
-- **State machine hand-off.** The `FormMachineState` union is the same vocabulary used across the site's adapters. Downstream code reads `snapshot.state`, never Angular's raw `status` string, so a React screen and an Angular screen make identical rendering decisions. The bridging of `valueChanges`/`statusChanges` into that machine without feedback loops is detailed in [syncing Angular FormControl with a state machine](/framework-adapters-custom-hooks/angular-reactive-forms-adapters/syncing-angular-formcontrol-with-a-state-machine/).
+- **Shared schema.** The same Zod schema feeds the Angular `zodValidator`, the [React form hook architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) resolver, and the server route. One rule set, three runtimes. When a rule changes, it changes in one file.
+- **Cross-field rules.** Dependencies such as "confirm password must match password" belong in a schema `refine`, not in a per-control validator, so they survive the framework boundary — see [cross-field dependency logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/) for the schema-side pattern.
+- **State machine hand-off.** The `FormMachineState` union is the same vocabulary used across the site's adapters. Downstream code reads `snapshot.state`, never Angular's raw `status` string, so a React screen and an Angular screen make identical rendering decisions. The bridging of `valueChanges`/`statusChanges` into that machine without feedback loops is detailed in [syncing Angular FormControl with a state machine](https://www.client-side-form.com/framework-adapters-custom-hooks/angular-reactive-forms-adapters/syncing-angular-formcontrol-with-a-state-machine/).
 
 ---
 
@@ -546,7 +546,7 @@ await expect(page.locator('form')).toHaveAttribute('data-state', 'INVALID');
 await expect(page.locator('#email-err')).toHaveText(/already registered/i);
 ```
 
-For ARIA regression coverage, assert that the error paragraph carries `role="alert"` and is referenced by the input's `aria-describedby` only while `state === 'INVALID'`, and that the `VALIDATING` spinner uses `aria-live="polite"` — the accessible-announcement discipline shared with the [accessibility and error UX](/accessibility-and-error-ux/) guide. Axe-core will flag `aria-invalid="true"` left on a control that has returned to `VALID`.
+For ARIA regression coverage, assert that the error paragraph carries `role="alert"` and is referenced by the input's `aria-describedby` only while `state === 'INVALID'`, and that the `VALIDATING` spinner uses `aria-live="polite"` — the accessible-announcement discipline shared with the [accessibility and error UX](https://www.client-side-form.com/accessibility-and-error-ux/) guide. Axe-core will flag `aria-invalid="true"` left on a control that has returned to `VALID`.
 
 ---
 
@@ -598,9 +598,9 @@ The `async` pipe unsubscribes the streams it renders when the component is destr
 
 ## Related
 
-- [Syncing Angular FormControl with a State Machine](/framework-adapters-custom-hooks/angular-reactive-forms-adapters/syncing-angular-formcontrol-with-a-state-machine/)
-- [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/)
-- [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/)
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/)
+- [Syncing Angular FormControl with a State Machine](https://www.client-side-form.com/framework-adapters-custom-hooks/angular-reactive-forms-adapters/syncing-angular-formcontrol-with-a-state-machine/)
+- [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/)
+- [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/)
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/)
 
-← [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/)
+← [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/)

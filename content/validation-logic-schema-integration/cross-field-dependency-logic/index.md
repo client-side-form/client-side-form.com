@@ -3,7 +3,7 @@ layout: page.njk
 title: "Cross-Field Dependency Logic"
 description: "Directed acyclic graph patterns for reactive cross-field validation — trigger re-validation only on affected fields, abort stale async requests, and handle role-based rule activation without coupling components."
 slug: cross-field-dependency-logic
-type: cluster
+type: topic
 breadcrumb: "Validation Logic & Schema Integration > Cross-Field Dependency Logic"
 datePublished: "2025-01-15"
 dateModified: "2026-06-23"
@@ -88,7 +88,7 @@ eleventyNavigation:
 
 Multi-field forms break down in predictable ways: a "confirm password" field does not re-validate when the original password changes, a shipping address silently ignores a "same as billing" toggle, or an async uniqueness check overwrites the current result with a stale response from a previous keystroke. These are not edge cases — they are the default outcome when validation rules are added field-by-field without a shared coordination layer.
 
-This page covers the directed acyclic graph (DAG) approach to cross-field validation, including how to wire it into the broader [Validation Logic & Schema Integration](/validation-logic-schema-integration/) pipeline, handle async race conditions, activate rules conditionally by user role, and tear down cleanly on unmount.
+This page covers the directed acyclic graph (DAG) approach to cross-field validation, including how to wire it into the broader [Validation Logic & Schema Integration](https://www.client-side-form.com/validation-logic-schema-integration/) pipeline, handle async race conditions, activate rules conditionally by user role, and tear down cleanly on unmount.
 
 ## Problem Statement
 
@@ -104,7 +104,7 @@ Without a coordination layer, each field's `onChange` handler becomes an implici
 
 ## State Machine Specification
 
-The validator for each dependent field moves through six explicit states. Understanding these transitions is the prerequisite for implementing [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) that sit on top of this graph.
+The validator for each dependent field moves through six explicit states. Understanding these transitions is the prerequisite for implementing [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) that sit on top of this graph.
 
 <svg role="img" aria-label="State machine diagram for cross-field dependency validation showing transitions between IDLE, PENDING, VALIDATING, VALID, INVALID, and RETRYABLE states" viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;height:auto;display:block;margin:1.5rem auto;">
   <title>Cross-Field Dependency Validation State Machine</title>
@@ -318,7 +318,7 @@ class CrossFieldValidator {
 
 ## Integration Guidance
 
-This validator sits at the coordination layer between raw DOM events and the parent [Validation Logic & Schema Integration](/validation-logic-schema-integration/) pipeline. Wire it up at the form level, not inside individual field components:
+This validator sits at the coordination layer between raw DOM events and the parent [Validation Logic & Schema Integration](https://www.client-side-form.com/validation-logic-schema-integration/) pipeline. Wire it up at the form level, not inside individual field components:
 
 ```typescript
 // Instantiate once per form, not per field
@@ -360,9 +360,9 @@ async function onPasswordChange(values: Record<string, unknown>) {
 validator.destroy();
 ```
 
-For [Zod schema integration](/validation-logic-schema-integration/integrating-zod-for-schema-validation/), the `evaluate` function wraps a Zod `safeParse` call and maps the returned `ZodError` issues to the `ValidationError` shape above. This keeps Zod as the rule source-of-truth while the DAG controls evaluation order.
+For [Zod schema integration](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/), the `evaluate` function wraps a Zod `safeParse` call and maps the returned `ZodError` issues to the `ValidationError` shape above. This keeps Zod as the rule source-of-truth while the DAG controls evaluation order.
 
-[Synchronous validation patterns](/validation-logic-schema-integration/synchronous-validation-patterns/) (keystroke-level checks like required and min-length) run independently of this graph. Wire them to the `onChange` event before calling `resolveDownstream`, so immediate feedback arrives without waiting for async evaluations.
+[Synchronous validation patterns](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/) (keystroke-level checks like required and min-length) run independently of this graph. Wire them to the `onChange` event before calling `resolveDownstream`, so immediate feedback arrives without waiting for async evaluations.
 
 ## Role-Based and Contextual Rule Activation
 
@@ -492,9 +492,9 @@ Yes. Every node's `evaluate` function returns a `Promise`, so synchronous rules 
 
 ## Related
 
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — debounce patterns, retry logic, and race condition handling for single-field async checks
-- [Synchronous Validation Patterns](/validation-logic-schema-integration/synchronous-validation-patterns/) — keystroke-level rules that compose with the dependency graph
-- [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — mapping Zod refinements and superRefine to the ValidationError shape
-- [Implementing Async Email Availability Checks](/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/) — concrete AbortController and debounce implementation
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — debounce patterns, retry logic, and race condition handling for single-field async checks
+- [Synchronous Validation Patterns](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/) — keystroke-level rules that compose with the dependency graph
+- [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — mapping Zod refinements and superRefine to the ValidationError shape
+- [Implementing Async Email Availability Checks](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/) — concrete AbortController and debounce implementation
 
-← [Validation Logic & Schema Integration](/validation-logic-schema-integration/)
+← [Validation Logic & Schema Integration](https://www.client-side-form.com/validation-logic-schema-integration/)

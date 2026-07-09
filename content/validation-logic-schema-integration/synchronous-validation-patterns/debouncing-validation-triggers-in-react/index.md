@@ -3,7 +3,7 @@ layout: page.njk
 title: "Debouncing Validation Triggers in React"
 description: "Stop validation from firing on every keystroke: a production-ready useDebouncedValidation hook with race-condition safety, stale closure prevention, and accessibility wiring."
 slug: debouncing-validation-triggers-in-react
-type: long_tail
+type: guide
 breadcrumb:
   - label: "Validation Logic & Schema Integration"
     url: "/validation-logic-schema-integration/"
@@ -98,7 +98,7 @@ eleventyNavigation:
 
 ## Context and Prerequisites
 
-This page focuses narrowly on the debounce mechanism inside React. It sits under [Synchronous Validation Patterns](/validation-logic-schema-integration/synchronous-validation-patterns/), which defines the broader evaluation pipeline — read that first to understand where debouncing fits in the `INPUT_CHANGE → VALIDATE_SYNC → UPDATE_ERROR_MAP` chain. If your validators are async (remote uniqueness checks, email availability), the race-condition techniques here also apply, but the full async story lives in [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/).
+This page focuses narrowly on the debounce mechanism inside React. It sits under [Synchronous Validation Patterns](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/), which defines the broader evaluation pipeline — read that first to understand where debouncing fits in the `INPUT_CHANGE → VALIDATE_SYNC → UPDATE_ERROR_MAP` chain. If your validators are async (remote uniqueness checks, email availability), the race-condition techniques here also apply, but the full async story lives in [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/).
 
 The debounce hook described below is a React-specific adapter. The underlying validation predicate it wraps is framework-agnostic and can be sourced from any schema library.
 
@@ -318,7 +318,7 @@ No. Debouncing optimises intermediate keystrokes; it does not replace the synchr
 <details>
 <summary><strong>What is the optimal debounce delay for form validation?</strong></summary>
 
-300–500 ms covers the vast majority of typing cadences. Start at 350 ms for most fields. For validators that are expensive — a [Zod schema](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) parsing a large nested object — add the schema's median execution time (measure in DevTools Performance panel) to your base delay. On entry-level Android devices, Zod parsing can take 20–80 ms, pushing the effective delay close to 500 ms before it becomes imperceptible.
+300–500 ms covers the vast majority of typing cadences. Start at 350 ms for most fields. For validators that are expensive — a [Zod schema](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) parsing a large nested object — add the schema's median execution time (measure in DevTools Performance panel) to your base delay. On entry-level Android devices, Zod parsing can take 20–80 ms, pushing the effective delay close to 500 ms before it becomes imperceptible.
 
 </details>
 
@@ -340,8 +340,8 @@ An `aria-live="polite"` region will announce error text only after the debounce 
 
 ## Related
 
-- [Synchronous Validation Patterns](/validation-logic-schema-integration/synchronous-validation-patterns/) — the evaluation pipeline this hook participates in
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — when the predicate makes network calls
-- [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — pairing Zod parse with the debounce hook
+- [Synchronous Validation Patterns](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/) — the evaluation pipeline this hook participates in
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — when the predicate makes network calls
+- [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — pairing Zod parse with the debounce hook
 
-← [Synchronous Validation Patterns](/validation-logic-schema-integration/synchronous-validation-patterns/)
+← [Synchronous Validation Patterns](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/)

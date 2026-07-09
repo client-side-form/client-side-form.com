@@ -3,7 +3,7 @@ layout: page.njk
 title: "Focus Management in Multi-Step Form Wizards"
 description: "Move focus to the step heading on navigation, trap focus within a step, restore focus on Back, and announce step X of N — the full a11y contract for wizard flows."
 slug: focus-management-in-multi-step-wizards
-type: long_tail
+type: guide
 breadcrumb: "Multi-Step Wizard Focus"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -75,7 +75,7 @@ A multi-step wizard has an accessibility contract with four clauses — move foc
 
 The bug this page fixes: the user clicks Next, the new step renders, but focus is orphaned on the now-removed Next button or reset to the top of the document. A screen-reader user hears nothing about which step they are on; a keyboard user is tabbing from `<body>`. Clicking Back is worse — focus jumps to the top instead of returning to where the user left off.
 
-This extends [focus management after validation](/accessibility-and-error-ux/focus-management-after-validation/) across step boundaries, and it leans on the same [keyboard navigation patterns](/accessibility-and-error-ux/keyboard-navigation-patterns/) that govern focus order within a single view.
+This extends [focus management after validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/) across step boundaries, and it leans on the same [keyboard navigation patterns](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/) that govern focus order within a single view.
 
 ---
 
@@ -287,7 +287,7 @@ Some screen readers drop a live-region update that lands in the same tick as a f
 
 ### Trap listener leaks across steps
 
-Installing a new trap without removing the old one stacks keydown listeners, and after several steps Tab behaves erratically. `trapFocus` removes the previous listener before adding a new one, and `destroy` removes the last one on teardown — the same discipline any [keyboard navigation pattern](/accessibility-and-error-ux/keyboard-navigation-patterns/) requires.
+Installing a new trap without removing the old one stacks keydown listeners, and after several steps Tab behaves erratically. `trapFocus` removes the previous listener before adding a new one, and `destroy` removes the last one on teardown — the same discipline any [keyboard navigation pattern](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/) requires.
 
 ---
 
@@ -332,8 +332,8 @@ Only if the wizard is presented as a modal dialog that overlays the page. An inl
 
 ## Related
 
-- [Moving Focus to the First Invalid Field](/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/)
-- [Focus Management After Validation](/accessibility-and-error-ux/focus-management-after-validation/)
-- [Keyboard Navigation Patterns](/accessibility-and-error-ux/keyboard-navigation-patterns/)
+- [Moving Focus to the First Invalid Field](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/)
+- [Focus Management After Validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/)
+- [Keyboard Navigation Patterns](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/)
 
-← [Focus Management After Validation](/accessibility-and-error-ux/focus-management-after-validation/)
+← [Focus Management After Validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/)

@@ -3,7 +3,7 @@ layout: page.njk
 title: "Preventing Hydration Mismatch in Next.js Forms"
 description: "Fix React 18 and Next.js App Router hydration mismatches in forms — server/client value divergence, suppressHydrationWarning misuse, useEffect-gated client state, and stable useId ids."
 slug: preventing-hydration-mismatch-in-nextjs-forms
-type: long_tail
+type: guide
 breadcrumb: "Next.js Hydration Mismatch"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -78,7 +78,7 @@ eleventyNavigation:
 
 A hydration mismatch in a Next.js form means React rendered one set of field values, ids, or attributes on the server and a different set on the client's first paint, so it throws away the server DOM for that subtree and your inputs flash, lose focus, or reset.
 
-This page builds on the synchronization model in [hydration sync for SSR forms](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/) and its Svelte counterpart, [handling Svelte form hydration mismatches](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/). It targets React 18 and the Next.js App Router specifically, where Client Components hydrate under a server-rendered shell and the failure modes are narrower but sharper than in the Pages Router.
+This page builds on the synchronization model in [hydration sync for SSR forms](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/) and its Svelte counterpart, [handling Svelte form hydration mismatches](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/). It targets React 18 and the Next.js App Router specifically, where Client Components hydrate under a server-rendered shell and the failure modes are narrower but sharper than in the Pages Router.
 
 ---
 
@@ -169,7 +169,7 @@ export function ProfileForm({ initialEmail, initialName }: Props) {
 
 ## Step-by-step walkthrough
 
-1. **Render the first client paint from server data.** Seed `useState` (or `defaultValue`) from props the server also rendered from. The server and the first client render then produce identical HTML, satisfying the hydration contract. See [controlled vs uncontrolled forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) for choosing which fields even need controlled state — uncontrolled `defaultValue` fields cannot mismatch on value.
+1. **Render the first client paint from server data.** Seed `useState` (or `defaultValue`) from props the server also rendered from. The server and the first client render then produce identical HTML, satisfying the hydration contract. See [controlled vs uncontrolled forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) for choosing which fields even need controlled state — uncontrolled `defaultValue` fields cannot mismatch on value.
 
 2. **Generate ids with `useId`.** Feed the same value to the input `id` and the label `htmlFor`. `useId` is deterministic across the server and client passes; counters and `Math.random` are not.
 
@@ -287,8 +287,8 @@ Hand-rolled ids from a counter or `Math.random` differ between the server and cl
 
 ## Related
 
-- [Hydration Sync for SSR Forms](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/)
-- [Handling Svelte Form Hydration Mismatches](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/)
-- [Controlled vs Uncontrolled Forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/)
+- [Hydration Sync for SSR Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/)
+- [Handling Svelte Form Hydration Mismatches](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/)
+- [Controlled vs Uncontrolled Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/)
 
-← [Hydration Sync for SSR Forms](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/)
+← [Hydration Sync for SSR Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/)

@@ -3,7 +3,7 @@ layout: page.njk
 title: "Submission State and Optimistic Updates"
 description: "Model the submit lifecycle as a state machine — optimistic apply with rollback snapshots, server errors mapped to a FieldErrorMap, retry with backoff, and idempotent duplicate-submit guards."
 slug: submission-state-and-optimistic-updates
-type: cluster
+type: topic
 breadcrumb: "Submission & Optimistic Updates"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 Submission is where a form stops being a local state problem and becomes a distributed-systems problem. Between the click and the server's acknowledgement, the network can stall, the user can click again, a previous request can land late, and the server can reject the payload field by field. A form that models this window as a single `isSubmitting` boolean will eventually double-charge a customer, strand the UI in a permanent spinner, or paint a validation error that belongs to a request the user already abandoned.
 
-This page specifies the submit lifecycle as an explicit state machine — `idle → submitting → success | error` — and layers on the three patterns that make it survive production: an optimistic apply backed by a rollback snapshot, a server rejection mapped onto a typed [error state map](/form-state-fundamentals-architecture/error-state-mapping-patterns/), and a duplicate-submit guard built from an in-flight lock plus a client-generated idempotency key. The controller here is framework-agnostic; the React, Vue, and Svelte adapters wrap it the same way they wrap every other subsystem in [form state fundamentals](/form-state-fundamentals-architecture/).
+This page specifies the submit lifecycle as an explicit state machine — `idle → submitting → success | error` — and layers on the three patterns that make it survive production: an optimistic apply backed by a rollback snapshot, a server rejection mapped onto a typed [error state map](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/), and a duplicate-submit guard built from an in-flight lock plus a client-generated idempotency key. The controller here is framework-agnostic; the React, Vue, and Svelte adapters wrap it the same way they wrap every other subsystem in [form state fundamentals](https://www.client-side-form.com/form-state-fundamentals-architecture/).
 
 ---
 
@@ -316,7 +316,7 @@ export function createSubmitController<T, R>(config: SubmitConfig<T, R>) {
 
 Three design decisions carry the weight:
 
-- **The rollback snapshot is a closure, not serialized state.** `apply(payload)` returns a function that reverses exactly the mutation it made. This keeps rollback O(1) and scoped — it never has to diff the whole model — and it composes with the immutable snapshots described in [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/).
+- **The rollback snapshot is a closure, not serialized state.** `apply(payload)` returns a function that reverses exactly the mutation it made. This keeps rollback O(1) and scoped — it never has to diff the whole model — and it composes with the immutable snapshots described in [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/).
 - **The lock is a plain boolean checked before the first `await`.** JavaScript's run-to-completion guarantees that everything up to the first `await` in `submit()` executes atomically, so two synchronous clicks cannot both pass the `if (inFlight) return` gate. The disabled attribute cannot make that guarantee.
 - **One idempotency key spans all retries of a logical submit.** The key is minted in `submit()` and left untouched by `retry()` and the internal backoff loop, so the server can collapse a superseded-but-succeeded request into a single write.
 
@@ -324,7 +324,7 @@ Three design decisions carry the weight:
 
 ## Mapping Server Errors to a FieldErrorMap
 
-A 422 is a structured verdict, not a message. The server must return something reducible; the client's job is to key it by the same field paths the form uses so each control can render its own error. This is the same `FieldErrorMap` contract the [error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) page consumes downstream.
+A 422 is a structured verdict, not a message. The server must return something reducible; the client's job is to key it by the same field paths the form uses so each control can render its own error. This is the same `FieldErrorMap` contract the [error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) page consumes downstream.
 
 ```typescript
 interface ApiErrorBody {
@@ -368,7 +368,7 @@ async function parseApiError(err: unknown): Promise<SubmitError> {
 }
 ```
 
-The rules that keep this robust: never retry a 4xx (it is deterministic), always reserve a form-level slot for codes with no field owner (409, 429, 5xx), and take only the first error per field so a single control never stacks three messages. Async uniqueness checks that ran before submit — the ones covered in [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — should feed the same map so pre-submit and post-submit errors render identically.
+The rules that keep this robust: never retry a 4xx (it is deterministic), always reserve a form-level slot for codes with no field owner (409, 429, 5xx), and take only the first error per field so a single control never stacks three messages. Async uniqueness checks that ran before submit — the ones covered in [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — should feed the same map so pre-submit and post-submit errors render identically.
 
 ---
 
@@ -377,11 +377,11 @@ The rules that keep this robust: never retry a 4xx (it is deterministic), always
 The submit controller sits at the top of the form's data flow, above validation and below the network:
 
 1. **Gate submission on the resolved form state.** Call `submit()` only after synchronous validation passes and no async validation is in flight. The controller does not validate; it assumes the payload is already the value validation produced.
-2. **Feed `fieldErrors` back into the shared error map.** Do not render from `SubmitState.fieldErrors` directly — merge it into the same error store your validation writes to, so a field shows exactly one error regardless of origin. The routing rules live in [error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/).
-3. **Advance the pristine baseline on success.** After a 2xx, call `hydrate(result)` on your dirty-tracker so the just-saved values become the new pristine baseline and the unsaved-changes guard goes quiet — see [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/).
-4. **Mirror `phase` into the view via a subscription.** In [React hook architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) that is a `useSyncExternalStore` over `subscribe`/`getState`; in [Vue composition adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) it is a `shallowRef` updated in the subscription callback.
+2. **Feed `fieldErrors` back into the shared error map.** Do not render from `SubmitState.fieldErrors` directly — merge it into the same error store your validation writes to, so a field shows exactly one error regardless of origin. The routing rules live in [error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/).
+3. **Advance the pristine baseline on success.** After a 2xx, call `hydrate(result)` on your dirty-tracker so the just-saved values become the new pristine baseline and the unsaved-changes guard goes quiet — see [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/).
+4. **Mirror `phase` into the view via a subscription.** In [React hook architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) that is a `useSyncExternalStore` over `subscribe`/`getState`; in [Vue composition adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) it is a `shallowRef` updated in the subscription callback.
 
-The dedicated duplicate-submit mechanics — the Enter-key double fire, the disable-on-submit race, and the server-side dedup contract — are detailed in [handling double-submit and idempotency](/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/handling-double-submit-and-idempotency/).
+The dedicated duplicate-submit mechanics — the Enter-key double fire, the disable-on-submit race, and the server-side dedup contract — are detailed in [handling double-submit and idempotency](https://www.client-side-form.com/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/handling-double-submit-and-idempotency/).
 
 ---
 
@@ -527,9 +527,9 @@ Only auto-retry idempotent failures that are plausibly transient — network err
 
 ## Related
 
-- [Handling Double-Submit and Idempotency](/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/handling-double-submit-and-idempotency/)
-- [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/)
-- [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/)
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/)
+- [Handling Double-Submit and Idempotency](https://www.client-side-form.com/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/handling-double-submit-and-idempotency/)
+- [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/)
+- [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/)
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/)
 
-← [Form State Fundamentals & Architecture](/form-state-fundamentals-architecture/)
+← [Form State Fundamentals & Architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/)

@@ -3,7 +3,7 @@ layout: page.njk
 title: "Dirty and Pristine State Tracking"
 description: "Production patterns for tracking which form fields have been modified — preventing false-positive validation triggers, submission gating failures, and stale baseline bugs."
 slug: dirty-and-pristine-state-tracking
-type: cluster
+type: topic
 breadcrumb: "Dirty and Pristine State Tracking"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 The moment a user types in a field your form must answer two questions simultaneously: has this field changed from its initial value, and should validation fire yet? Getting either wrong produces the failure modes production engineers debug most often — validation errors shown before the user has typed anything, submit buttons that stay disabled after a programmatic reset, or dirty flags that survive an API hydration and confuse unsaved-change guards.
 
-This page details the adapter pattern that distinguishes user-driven mutations from programmatic initialization, tracks change granularity down to individual fields, and integrates with [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) gating without introducing render-budget problems.
+This page details the adapter pattern that distinguishes user-driven mutations from programmatic initialization, tracks change granularity down to individual fields, and integrates with [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) gating without introducing render-budget problems.
 
 ---
 
@@ -158,7 +158,7 @@ The pattern described here separates them at the adapter boundary: `update()` fo
 
 ## Core Implementation
 
-The adapter is framework-agnostic TypeScript. React and Vue consumers wrap it in a hook or a reactive store — see [How to Track Dirty Fields in React Forms](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/) and [Implementing Pristine State in Vue 3](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/implementing-pristine-state-in-vue-3/) for those integration layers.
+The adapter is framework-agnostic TypeScript. React and Vue consumers wrap it in a hook or a reactive store — see [How to Track Dirty Fields in React Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/) and [Implementing Pristine State in Vue 3](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/implementing-pristine-state-in-vue-3/) for those integration layers.
 
 ```typescript
 export type FieldEqualityFn<V> = (a: V, b: V) => boolean;
@@ -305,16 +305,16 @@ Pass the appropriate normalizer as the `FieldEqualityFn` in the registry, or cal
 
 ## Integration Guidance
 
-Dirty and pristine tracking sits between raw DOM events and the [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) pipeline. The adapter answers two questions that other subsystems depend on:
+Dirty and pristine tracking sits between raw DOM events and the [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) pipeline. The adapter answers two questions that other subsystems depend on:
 
 1. **Should validation fire?** Suppress async validation while a field is pristine. Only trigger expensive async checks on dirty fields or at submit time.
 2. **Should the submit button be enabled?** Gate the button on `isDirty && !isSubmitting` (or on the form-level error map) — never on field count alone.
 
-[Error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) consume the same dirty flags to decide which errors to surface: a field error is shown only after that field has been dirtied (touched) or after a global submit attempt.
+[Error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) consume the same dirty flags to decide which errors to surface: a field error is shown only after that field has been dirtied (touched) or after a global submit attempt.
 
-[Controlled vs uncontrolled forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) determines where the source of truth lives, but the dirty-tracking adapter works identically in both modes — it stores its own snapshot independently of React controlled state or an uncontrolled ref.
+[Controlled vs uncontrolled forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) determines where the source of truth lives, but the dirty-tracking adapter works identically in both modes — it stores its own snapshot independently of React controlled state or an uncontrolled ref.
 
-For [React hook architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/), the adapter's `subscribe()` method maps cleanly onto a `useEffect` subscription pattern. For Vue, watch the adapter's `isDirty` getter via a shallowRef wrapper.
+For [React hook architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/), the adapter's `subscribe()` method maps cleanly onto a `useEffect` subscription pattern. For Vue, watch the adapter's `isDirty` getter via a shallowRef wrapper.
 
 ---
 
@@ -497,9 +497,9 @@ Call `adapter.hydrate(serverResponse)` in the submission success handler, passin
 
 ## Related
 
-- [How to Track Dirty Fields in React Forms](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/)
-- [Implementing Pristine State in Vue 3](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/implementing-pristine-state-in-vue-3/)
-- [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/)
-- [Form Validation Lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/)
+- [How to Track Dirty Fields in React Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/)
+- [Implementing Pristine State in Vue 3](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/implementing-pristine-state-in-vue-3/)
+- [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/)
+- [Form Validation Lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/)
 
-← [Form State Fundamentals & Architecture](/form-state-fundamentals-architecture/)
+← [Form State Fundamentals & Architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/)

@@ -1,9 +1,9 @@
 ---
-layout: pillar.njk
+layout: section.njk
 title: "Accessibility & Error UX for Forms"
 description: "Reference for accessible form error handling: ARIA live regions, aria-describedby and aria-invalid wiring, focus management, and keyboard navigation for production forms."
 slug: accessibility-and-error-ux
-type: pillar
+type: section
 breadcrumb: "Accessibility & Error UX"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -166,7 +166,7 @@ function fieldAriaProps(field: string, errors: FieldErrorMap) {
 }
 ```
 
-This mirrors the [error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) adapter that translates Zod, Yup, and custom error shapes into a predictable `FieldErrorMap`. The accessibility layer is a pure consumer of that map: give it a normalized, field-keyed object and it can wire every surface deterministically. Everything downstream — announcement, focus, keyboard behavior — depends on that map being trustworthy, which is why the normalization work belongs in the [validation logic and schema integration](/validation-logic-schema-integration/) layer rather than in view code.
+This mirrors the [error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) adapter that translates Zod, Yup, and custom error shapes into a predictable `FieldErrorMap`. The accessibility layer is a pure consumer of that map: give it a normalized, field-keyed object and it can wire every surface deterministically. Everything downstream — announcement, focus, keyboard behavior — depends on that map being trustworthy, which is why the normalization work belongs in the [validation logic and schema integration](https://www.client-side-form.com/validation-logic-schema-integration/) layer rather than in view code.
 
 ## Architecture and Design Principles
 
@@ -184,7 +184,7 @@ This mirrors the [error state mapping patterns](/form-state-fundamentals-archite
 
 The first subsystem is announcement. When an error appears while a user is working — mid-word in a text field, halfway through a set of radio buttons — a screen reader is often already speaking. How and whether you interrupt that speech is the core design decision, and it is governed by the live region's politeness setting and by how you mutate the region's contents.
 
-[ARIA live regions for form errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/) covers this end to end: the difference between `aria-live="polite"` and `aria-live="assertive"`, the equivalent roles `role="status"` and `role="alert"`, the notorious double-announcement bug, debouncing announcements so a burst of validation results does not become a burst of interruptions, and the virtual-buffer quirks that make NVDA, JAWS, and VoiceOver behave differently for the same markup.
+[ARIA live regions for form errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/) covers this end to end: the difference between `aria-live="polite"` and `aria-live="assertive"`, the equivalent roles `role="status"` and `role="alert"`, the notorious double-announcement bug, debouncing announcements so a burst of validation results does not become a burst of interruptions, and the virtual-buffer quirks that make NVDA, JAWS, and VoiceOver behave differently for the same markup.
 
 ```typescript
 // A minimal live-region contract. Field errors go through 'polite';
@@ -203,7 +203,7 @@ The guiding rule: inline errors that surface as a side effect of the user's own 
 
 The second subsystem is focus. A failed submission is useless to a keyboard or screen-reader user if it leaves focus sitting on the (now disabled or unchanged) submit button while the errors are three thousand pixels up the page. But an over-eager focus manager that moves focus on every blur is equally hostile.
 
-[Focus management after validation](/accessibility-and-error-ux/focus-management-after-validation/) covers the exact rules: when to move focus (an explicit submit or step-advance that fails), where to move it (the first invalid control in DOM order, or an error summary that itself links to each field), and how to move it safely (making a non-focusable summary temporarily focusable, restoring focus after an async validation round, and never fighting the browser's own scroll-into-view).
+[Focus management after validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/) covers the exact rules: when to move focus (an explicit submit or step-advance that fails), where to move it (the first invalid control in DOM order, or an error summary that itself links to each field), and how to move it safely (making a non-focusable summary temporarily focusable, restoring focus after an async validation round, and never fighting the browser's own scroll-into-view).
 
 ```typescript
 // Move focus to the first invalid control in DOM order after a failed submit.
@@ -229,7 +229,7 @@ The focus target and the announcement are complementary, not redundant. Focus te
 
 The third subsystem is keyboard operability, and it is where custom components quietly fail. Native `<input>`, `<select>`, and `<button>` elements are keyboard-accessible for free. The moment a design system replaces them with `<div>`-based comboboxes, custom radio cards, segmented toggles, or drag-to-reorder lists, keyboard support becomes something you must build and test explicitly.
 
-[Keyboard navigation patterns](/accessibility-and-error-ux/keyboard-navigation-patterns/) covers the operability contract: logical tab order that follows reading order, roving `tabindex` for composite widgets like radio and option groups, arrow-key semantics for grouped controls, visible focus indicators that survive `:focus-visible` and forced-colors mode, and how error states interact with keyboard flow so that jumping to an invalid field never traps the user.
+[Keyboard navigation patterns](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/) covers the operability contract: logical tab order that follows reading order, roving `tabindex` for composite widgets like radio and option groups, arrow-key semantics for grouped controls, visible focus indicators that survive `:focus-visible` and forced-colors mode, and how error states interact with keyboard flow so that jumping to an invalid field never traps the user.
 
 ```typescript
 // Roving tabindex: exactly one control in a group is Tab-reachable (tabindex=0);
@@ -302,7 +302,7 @@ Principles for message quality:
 
 - **Specific and actionable, not just "invalid".** "Enter a date in DD/MM/YYYY format" beats "Invalid date". The message should say what to do, not merely that something is wrong.
 - **Non-punishing tone.** Avoid "You failed to…" phrasing. State the requirement neutrally. The user is trying to give you their money or their information; do not scold them.
-- **Timed to the interaction.** Do not validate an empty required field the instant it mounts. Surface a field error after the user has left it (on blur) or at submit, in line with the [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/). Real-time validation is appropriate for password-strength meters and availability checks, not for punishing an untouched field.
+- **Timed to the interaction.** Do not validate an empty required field the instant it mounts. Surface a field error after the user has left it (on blur) or at submit, in line with the [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/). Real-time validation is appropriate for password-strength meters and availability checks, not for punishing an untouched field.
 - **One error per field at a time.** Fail-fast per field and show the highest-priority message rather than a stacked list. Screen-reader users especially benefit from a single, clear reason.
 - **A stable summary at the top on submit.** A submission that fails should offer a summary the user can return to — a heading like "There are 3 problems" followed by links to each field. This serves screen-reader users (announced in a live region) and sighted users with attention or memory constraints equally.
 
@@ -368,8 +368,8 @@ Double announcement usually has one of two causes. Either the same text lives in
 
 ## Related
 
-- [ARIA Live Regions for Form Errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/) — polite vs assertive, role="alert" vs role="status", and the double-announcement bug
-- [Focus Management After Validation](/accessibility-and-error-ux/focus-management-after-validation/) — moving focus to the first invalid control or error summary, deterministically
-- [Keyboard Navigation Patterns](/accessibility-and-error-ux/keyboard-navigation-patterns/) — tab order, roving tabindex, and visible focus for custom controls
+- [ARIA Live Regions for Form Errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/) — polite vs assertive, role="alert" vs role="status", and the double-announcement bug
+- [Focus Management After Validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/) — moving focus to the first invalid control or error summary, deterministically
+- [Keyboard Navigation Patterns](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/) — tab order, roving tabindex, and visible focus for custom controls
 
-← [Home](/)
+← [Home](https://www.client-side-form.com/)

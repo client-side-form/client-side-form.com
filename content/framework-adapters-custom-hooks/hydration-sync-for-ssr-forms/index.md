@@ -3,7 +3,7 @@ layout: page.njk
 title: "Hydration Sync for SSR Forms"
 description: "State reconciliation strategies for server-rendered forms during client hydration — preventing UI flicker, validation overrides, and accessibility regressions."
 slug: hydration-sync-for-ssr-forms
-type: cluster
+type: topic
 breadcrumb: "Hydration Sync for SSR Forms"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -273,7 +273,7 @@ export default async function CheckoutPage() {
 
 ## Integration with the Parent Adapter Pipeline
 
-This pattern slots into [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/) as the SSR entry point for any adapter's state initialisation lifecycle. Instead of calling the adapter's normal `init(defaultValues)` path, the adapter checks for a server-embedded payload first:
+This pattern slots into [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/) as the SSR entry point for any adapter's state initialisation lifecycle. Instead of calling the adapter's normal `init(defaultValues)` path, the adapter checks for a server-embedded payload first:
 
 ```typescript
 // Adapter initialisation with SSR-aware branching
@@ -293,9 +293,9 @@ export function createFormAdapter<T extends Record<string, unknown>>(formId: str
 }
 ```
 
-The `isHydrated` flag also integrates with [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) — specifically the `useEffect` dependency array discipline that prevents premature effect execution during the `RECONCILING` phase.
+The `isHydrated` flag also integrates with [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) — specifically the `useEffect` dependency array discipline that prevents premature effect execution during the `RECONCILING` phase.
 
-For Vue, the equivalent guard is a `watchEffect` with an early return on `!isHydrated`. See [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) for how reactive proxies interact with the hydration window.
+For Vue, the equivalent guard is a `watchEffect` with an early return on `!isHydrated`. See [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) for how reactive proxies interact with the hydration window.
 
 ---
 
@@ -319,7 +319,7 @@ Web components using shadow DOM do not expose `data-*` attributes to `document.q
 
 ### SvelteKit's `$page.data` vs DOM attributes
 
-SvelteKit pre-populates `$page.data` with server data, which is a cleaner SSR primitive than `data-*` attributes. However, mixing `$page.data` with DOM-attribute-based hydration in the same form causes two competing initialisation sources. See [Handling Svelte Form Hydration Mismatches](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/) for the canonical resolution pattern.
+SvelteKit pre-populates `$page.data` with server data, which is a cleaner SSR primitive than `data-*` attributes. However, mixing `$page.data` with DOM-attribute-based hydration in the same form causes two competing initialisation sources. See [Handling Svelte Form Hydration Mismatches](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/) for the canonical resolution pattern.
 
 ---
 
@@ -406,7 +406,7 @@ SSR forms carry two conflicting accessibility timelines: the server's static ARI
 - **Focus management:** Preserve SSR focus targets. Autofocus hijacking during the hydration window moves keyboard focus without the user's intent — block `element.focus()` calls until `isHydrated` is true.
 - **`aria-busy`:** Set `aria-busy="true"` on the form element during `RECONCILING` and clear it at `HYDRATED`. This signals to assistive technology that the form's content is temporarily indeterminate.
 
-The [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) layer must also respect the hydration window: a field is never `dirty` during `RECONCILING`, even if the DOM value differs from the client store's initial value.
+The [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) layer must also respect the hydration window: a field is never `dirty` during `RECONCILING`, even if the DOM value differs from the client store's initial value.
 
 ---
 
@@ -458,9 +458,9 @@ Validation state changes that happen during `PARSING` and `RECONCILING` update t
 
 ## Related
 
-- [Handling Svelte Form Hydration Mismatches](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/) — Svelte-specific store initialisation order issues that cause input flicker
-- [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) — `useEffect` dependency discipline and deferred effect execution
-- [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) — reactive proxy binding without premature computed evaluation
-- [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — why the hydration window must suppress dirty-marking
+- [Handling Svelte Form Hydration Mismatches](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/) — Svelte-specific store initialisation order issues that cause input flicker
+- [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) — `useEffect` dependency discipline and deferred effect execution
+- [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) — reactive proxy binding without premature computed evaluation
+- [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — why the hydration window must suppress dirty-marking
 
-← [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/)
+← [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/)

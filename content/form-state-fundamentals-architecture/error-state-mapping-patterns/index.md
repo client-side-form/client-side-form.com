@@ -3,7 +3,7 @@ layout: page.njk
 title: "Error State Mapping Patterns"
 description: "How to normalize heterogeneous validation payloads into a deterministic FieldErrorMap, route errors to the right UI components, and keep error state in sync across async boundaries — with production-ready TypeScript."
 slug: error-state-mapping-patterns
-type: cluster
+type: topic
 breadcrumb:
   - label: "Form State Fundamentals & Architecture"
     url: "/form-state-fundamentals-architecture/"
@@ -82,7 +82,7 @@ eleventyNavigation:
 
 When a validation pipeline fires, the error payload it emits rarely matches the shape your UI components expect. Zod produces `ZodError.issues`, Yup returns a `ValidationError.inner` array, and AJV outputs an `ErrorObject[]` — three incompatible formats, all describing the same domain: which fields are wrong and why. The error mapping layer is the seam that normalises these heterogeneous payloads into a single, deterministic `FieldErrorMap` your component tree can consume without caring which schema library produced it.
 
-This page covers: the state machine that governs when errors surface, the adapter class that performs normalisation, async-safe validation patterns using `AbortController`, how this layer wires into the broader [Form State Fundamentals & Architecture](/form-state-fundamentals-architecture/) pipeline, and the edge cases most teams only discover under production load.
+This page covers: the state machine that governs when errors surface, the adapter class that performs normalisation, async-safe validation patterns using `AbortController`, how this layer wires into the broader [Form State Fundamentals & Architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/) pipeline, and the edge cases most teams only discover under production load.
 
 ---
 
@@ -149,7 +149,7 @@ Error mapping is not a function call; it is a state machine. The transitions bel
 | `INVALID` | One or more errors mapped to this field | `mapSchemaErrors` with ≥1 matching error | Re-validate to `VALID`, or `reset` |
 | `CLEARING` | `clearAll()` / `clearField()` called, pending DOM flush | `reset` event or submit success | Next microtask; returns to `IDLE` |
 
-The key constraint: transitions from `VALIDATING` only apply if the field is in the `touchedFields` set. If it is not, the result is discarded silently — no `VALID`, no `INVALID`. This is what prevents premature error surfacing, and it depends directly on [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) to know which fields the user has actually interacted with.
+The key constraint: transitions from `VALIDATING` only apply if the field is in the `touchedFields` set. If it is not, the result is discarded silently — no `VALID`, no `INVALID`. This is what prevents premature error surfacing, and it depends directly on [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) to know which fields the user has actually interacted with.
 
 ---
 
@@ -311,16 +311,16 @@ function scheduleErrorUpdate(map: ReadonlyMap<string, FieldErrorState>) {
 
 This adapter slots into the validation lifecycle at the normalisation stage — after the schema library fires and before any component reads error state.
 
-The [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) page defines the four canonical trigger points (`onBlur`, `onChange`, `onSubmit`, `reset`). The adapter is called at all four:
+The [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) page defines the four canonical trigger points (`onBlur`, `onChange`, `onSubmit`, `reset`). The adapter is called at all four:
 
 - **`onBlur`** — call `validateAndMap` with a fresh `AbortController`. Store the controller reference so the next blur on the same field cancels the previous one.
 - **`onChange`** — call `mapSchemaErrors` synchronously for schema libraries that expose synchronous parse (e.g. `z.safeParse`), or `validateAndMap` for async ones. Debounce to 300–500 ms.
 - **`onSubmit`** — call `validateAndMap` without the touched-field guard: pass the full field set so all errors surface regardless of interaction history.
 - **`reset`** — call `clearAll()` and reset the `touchedFields` set to empty.
 
-When bridging [controlled vs uncontrolled forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/), the error mapping layer must receive updates from both paths. Uncontrolled inputs emit native `input` / `change` events rather than framework state updates; wire those events to the same adapter call via a lightweight event bus so the normalised map stays unified.
+When bridging [controlled vs uncontrolled forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/), the error mapping layer must receive updates from both paths. Uncontrolled inputs emit native `input` / `change` events rather than framework state updates; wire those events to the same adapter call via a lightweight event bus so the normalised map stays unified.
 
-For [binding the normalised map to specific DOM nodes](/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/), see the child page on mapping validation errors to UI components — it covers `aria-describedby` wiring, live-region injection, and design-system token propagation.
+For [binding the normalised map to specific DOM nodes](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/), see the child page on mapping validation errors to UI components — it covers `aria-describedby` wiring, live-region injection, and design-system token propagation.
 
 ---
 
@@ -494,9 +494,9 @@ Normalise root-level or cross-field errors to the most relevant field path using
 
 ## Related
 
-- [Mapping Validation Errors to UI Components](/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/) — binding the normalised `FieldErrorMap` to `aria-describedby`, live regions, and design-system tokens
-- [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — the touched-field set that gates which errors the adapter is allowed to surface
-- [Form Validation Lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) — the four trigger points (`onBlur`, `onChange`, `onSubmit`, `reset`) that drive the error mapping state machine
-- [Controlled vs Uncontrolled Forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — bridging the two input models so the error mapping layer receives a unified event stream
+- [Mapping Validation Errors to UI Components](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/) — binding the normalised `FieldErrorMap` to `aria-describedby`, live regions, and design-system tokens
+- [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — the touched-field set that gates which errors the adapter is allowed to surface
+- [Form Validation Lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) — the four trigger points (`onBlur`, `onChange`, `onSubmit`, `reset`) that drive the error mapping state machine
+- [Controlled vs Uncontrolled Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — bridging the two input models so the error mapping layer receives a unified event stream
 
-← [Form State Fundamentals & Architecture](/form-state-fundamentals-architecture/)
+← [Form State Fundamentals & Architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/)

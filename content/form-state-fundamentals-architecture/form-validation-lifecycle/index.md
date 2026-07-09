@@ -3,7 +3,7 @@ layout: page.njk
 title: "Form Validation Lifecycle"
 description: "Architecture and state transitions for the full form validation lifecycle: initialization, active validation with AbortController cancellation, cross-field dependency resolution, and server-side error reconciliation."
 slug: "form-validation-lifecycle"
-type: "cluster"
+type: topic
 breadcrumb: "Form Validation Lifecycle"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -269,15 +269,15 @@ The `RETRYABLE` state and the `source` field on `FieldError` are the two additio
 
 ## Integration Guidance
 
-This lifecycle class is the validation pipeline component within [Form State Fundamentals & Architecture](/form-state-fundamentals-architecture/). It wires into the parent pipeline at two seams:
+This lifecycle class is the validation pipeline component within [Form State Fundamentals & Architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/). It wires into the parent pipeline at two seams:
 
 **Field-level:** integrate `validate()` in the field's change/blur handler. Use debounce (300–500 ms) before calling for async rules; synchronous rules can run immediately on every keystroke if they are O(n) or cheaper. The `canSubmit()` check belongs in the form-level submit handler, not in a button `disabled` prop — that avoids React's batched state update timing bugs where `disabled` lags one render behind actual state.
 
-**[Dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/)** determines when `validate()` is first called per field. A field that has never been touched should stay `IDLE`; premature validation on pristine fields fills the screen with red before the user has had a chance to type. The lifecycle class deliberately does not contain dirty tracking — that is a separate concern. Wire it so that `validate()` is only invoked once `isDirty(field)` returns `true`, or on explicit form submission.
+**[Dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/)** determines when `validate()` is first called per field. A field that has never been touched should stay `IDLE`; premature validation on pristine fields fills the screen with red before the user has had a chance to type. The lifecycle class deliberately does not contain dirty tracking — that is a separate concern. Wire it so that `validate()` is only invoked once `isDirty(field)` returns `true`, or on explicit form submission.
 
-**[Error state mapping](/form-state-fundamentals-architecture/error-state-mapping-patterns/)** consumes `getStatus().errors` to render `aria-describedby` targets and ARIA live region announcements. The `source` field enables the UI to differentiate "you typed an invalid format" (dismissible on change) from "the server rejected this value" (requires a new submission to clear).
+**[Error state mapping](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/)** consumes `getStatus().errors` to render `aria-describedby` targets and ARIA live region announcements. The `source` field enables the UI to differentiate "you typed an invalid format" (dismissible on change) from "the server rejected this value" (requires a new submission to clear).
 
-For cross-field validation — password confirmation, date ranges, dependent dropdowns — see the [Cross-Field Dependency Logic](/validation-logic-schema-integration/cross-field-dependency-logic/) pattern, which runs a dependency graph pass before `canSubmit()` is evaluated.
+For cross-field validation — password confirmation, date ranges, dependent dropdowns — see the [Cross-Field Dependency Logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/) pattern, which runs a dependency graph pass before `canSubmit()` is evaluated.
 
 ## Edge Cases & Failure Modes
 
@@ -353,7 +353,7 @@ Use one `AbortController` per field per validation cycle. Abort the previous con
 <details>
 <summary><strong>When does validation transition from IDLE to VALIDATING?</strong></summary>
 
-On `blur`, `change`, or an explicit `validate()` call — but only after the field is marked dirty by [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/). Firing validation on a pristine field (one the user has never touched) fills the form with premature error messages. The lifecycle class does not enforce this — it is the responsibility of the caller to check `isDirty()` before invoking `validate()`.
+On `blur`, `change`, or an explicit `validate()` call — but only after the field is marked dirty by [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/). Firing validation on a pristine field (one the user has never touched) fills the form with premature error messages. The lifecycle class does not enforce this — it is the responsibility of the caller to check `isDirty()` before invoking `validate()`.
 
 </details>
 
@@ -375,9 +375,9 @@ Stale results occur when a pending async check resolves after the user has alrea
 
 ## Related
 
-- [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — determines when `validate()` fires for the first time per field
-- [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) — wires lifecycle errors to ARIA attributes and live regions
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — remote uniqueness checks, debounce patterns, and retry logic
-- [Cross-Field Dependency Logic](/validation-logic-schema-integration/cross-field-dependency-logic/) — dependency graph evaluation before submission
+- [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — determines when `validate()` fires for the first time per field
+- [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) — wires lifecycle errors to ARIA attributes and live regions
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — remote uniqueness checks, debounce patterns, and retry logic
+- [Cross-Field Dependency Logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/) — dependency graph evaluation before submission
 
-← [Form State Fundamentals & Architecture](/form-state-fundamentals-architecture/)
+← [Form State Fundamentals & Architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/)

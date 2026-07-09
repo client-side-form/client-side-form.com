@@ -802,13 +802,13 @@ td {
 }
 
 /* Pillar cards */
-.pillar-grid {
+.area-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 1.5rem;
 }
 
-.pillar-card {
+.area-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -819,39 +819,39 @@ td {
   transition: var(--transition);
 }
 
-.pillar-card:hover {
+.area-card:hover {
   box-shadow: var(--shadow-lg);
   transform: translateY(-3px);
   border-color: var(--color-accent);
 }
 
-.pillar-card-icon {
+.area-card-icon {
   font-size: 2.2rem;
   line-height: 1;
 }
 
-.pillar-card h3 {
+.area-card h3 {
   margin: 0;
   font-size: 1.15rem;
   color: var(--color-primary);
 }
 
-.pillar-card p {
+.area-card p {
   color: var(--color-text-muted);
   font-size: 0.9rem;
   margin: 0;
   max-width: none;
 }
 
-.pillar-card ul {
+.area-card ul {
   margin: 0;
   padding-left: 0;
   font-size: 0.875rem;
 }
-.pillar-card ul li { margin-bottom: 0.25rem; padding-left: 1.4rem; }
-.pillar-card ul li::before { width: 5px; height: 5px; top: 0.65em; }
+.area-card ul li { margin-bottom: 0.25rem; padding-left: 1.4rem; }
+.area-card ul li::before { width: 5px; height: 5px; top: 0.65em; }
 
-.pillar-card-link {
+.area-card-link {
   margin-top: auto;
   display: inline-flex;
   align-items: center;
@@ -861,7 +861,7 @@ td {
   font-size: 0.875rem;
   text-decoration: none;
 }
-.pillar-card-link:hover { color: var(--color-accent-hover); }
+.area-card-link:hover { color: var(--color-accent-hover); }
 
 /* ============================================================
    Content article page
@@ -907,7 +907,7 @@ td {
 }
 
 /* Pillar hub page columns */
-.pillar-children {
+.area-children {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.25rem;
@@ -947,7 +947,7 @@ td {
    Responsive utilities
    ============================================================ */
 @media (max-width: 640px) {
-  .pillar-grid { grid-template-columns: 1fr; }
+  .area-grid { grid-template-columns: 1fr; }
   .related-grid { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; }
   .cta-group { flex-direction: column; align-items: center; }

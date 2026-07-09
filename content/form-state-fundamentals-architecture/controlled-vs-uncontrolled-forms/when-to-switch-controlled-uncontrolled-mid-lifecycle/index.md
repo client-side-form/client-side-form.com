@@ -3,7 +3,7 @@ layout: page.njk
 title: "Controlled vs Uncontrolled: When to Switch Mid-Lifecycle"
 description: "Fix React's changing-an-uncontrolled-input-to-controlled warning — defaultValue vs value, the key-remount escape hatch, and preserving field value and focus during a safe mode switch."
 slug: "when-to-switch-controlled-uncontrolled-mid-lifecycle"
-type: "long_tail"
+type: guide
 breadcrumb: "Switching Mid-Lifecycle"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -74,11 +74,11 @@ eleventyNavigation:
 
 The precise problem: an input mounts uncontrolled with a `defaultValue`, then later receives a `value` prop once async data or a feature flag resolves, and React logs "A component is changing an uncontrolled input to be controlled" — after which the field's behavior is undefined.
 
-This page is the mid-lifecycle companion to [controlled vs uncontrolled forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/): it covers exactly when a switch is legitimate, the `defaultValue` versus `value` rule that prevents the accidental switch, and the `key`-remount technique that performs a deliberate switch without losing the user's typed value or their caret position.
+This page is the mid-lifecycle companion to [controlled vs uncontrolled forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/): it covers exactly when a switch is legitimate, the `defaultValue` versus `value` rule that prevents the accidental switch, and the `key`-remount technique that performs a deliberate switch without losing the user's typed value or their caret position.
 
 ## Context and Prerequisites
 
-You should already know the split from [controlled vs uncontrolled forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — controlled means React owns the value via `value` + `onChange`, uncontrolled means the DOM owns it and you read it through a ref. This page assumes that baseline and focuses on the transition between the two. The value you carry across the switch is a pristine baseline in disguise, so the snapshot discipline from [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) applies directly: capture the live value first, then re-seed.
+You should already know the split from [controlled vs uncontrolled forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — controlled means React owns the value via `value` + `onChange`, uncontrolled means the DOM owns it and you read it through a ref. This page assumes that baseline and focuses on the transition between the two. The value you carry across the switch is a pristine baseline in disguise, so the snapshot discipline from [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) applies directly: capture the live value first, then re-seed.
 
 ## The Rule That Prevents the Accidental Switch
 
@@ -208,7 +208,7 @@ useLayoutEffect(() => { stale?.focus(); }, [mode]);
 
 ### 4. Number and date inputs round-trip through strings
 
-`el.value` is always a string. Switching a `type="number"` field carries `"42"`, not `42`; re-seed with the string and let the input reparse, or normalize before comparing against a numeric baseline — the same coercion trap covered in [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/).
+`el.value` is always a string. Switching a `type="number"` field carries `"42"`, not `42`; re-seed with the string and let the input reparse, or normalize before comparing against a numeric baseline — the same coercion trap covered in [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/).
 
 ### 5. The switch marks the field dirty
 
@@ -252,8 +252,8 @@ Changing an element's `key` tells React the old element is a different element, 
 
 **Related**
 
-- [Controlled vs Uncontrolled Forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — the mode split this switch operates on
-- [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — snapshot discipline for the value you carry across the switch
-- [Best Practices for Uncontrolled Form State](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/best-practices-for-uncontrolled-form-state/) — reading values via refs once the field is uncontrolled
+- [Controlled vs Uncontrolled Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — the mode split this switch operates on
+- [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — snapshot discipline for the value you carry across the switch
+- [Best Practices for Uncontrolled Form State](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/best-practices-for-uncontrolled-form-state/) — reading values via refs once the field is uncontrolled
 
-← [Controlled vs Uncontrolled Forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/)
+← [Controlled vs Uncontrolled Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/)

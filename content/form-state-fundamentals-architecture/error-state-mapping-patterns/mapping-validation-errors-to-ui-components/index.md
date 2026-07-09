@@ -3,7 +3,7 @@ layout: page.njk
 title: "Mapping Validation Errors to UI Components"
 description: "Build a deterministic pipeline from validation output to field-level UI: normalize error payloads, wire aria-describedby and aria-invalid, guard async race conditions, and handle SSR hydration safely."
 slug: "mapping-validation-errors-to-ui-components"
-type: "long_tail"
+type: guide
 breadcrumb: "Mapping Validation Errors to UI Components"
 datePublished: "2025-11-01"
 dateModified: "2026-06-23"
@@ -92,7 +92,7 @@ eleventyNavigation:
 
 ## Context and prerequisites
 
-This page is a focused implementation guide sitting inside the [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) topic. Before continuing, you should understand how the broader [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) moves a field through `IDLE → VALIDATING → VALID/INVALID` states, and how [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) determines whether a field should show errors at all.
+This page is a focused implementation guide sitting inside the [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) topic. Before continuing, you should understand how the broader [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) moves a field through `IDLE → VALIDATING → VALID/INVALID` states, and how [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) determines whether a field should show errors at all.
 
 The mapping problem has three sub-problems that must be solved together:
 
@@ -333,9 +333,9 @@ Run your SSR framework in development mode and delay client hydration via a `set
 
 **Related**
 
-- [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) — the broader strategy for categorizing and distributing error state across a form
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — debounce patterns and `AbortController` lifecycle for remote validators
-- [Form Validation Lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) — how `IDLE → VALIDATING → VALID/INVALID` state transitions gate when errors should appear
-- [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — determining whether a field has been touched before showing errors
+- [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) — the broader strategy for categorizing and distributing error state across a form
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — debounce patterns and `AbortController` lifecycle for remote validators
+- [Form Validation Lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) — how `IDLE → VALIDATING → VALID/INVALID` state transitions gate when errors should appear
+- [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — determining whether a field has been touched before showing errors
 
-← [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/)
+← [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/)

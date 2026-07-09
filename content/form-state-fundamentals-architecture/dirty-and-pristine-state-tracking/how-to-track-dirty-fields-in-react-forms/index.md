@@ -3,7 +3,7 @@ layout: page.njk
 title: "How to Track Dirty Fields in React Forms"
 description: "Build a type-safe useDirtyTracker hook using immutable baseline snapshots and useMemo diffing to detect field-level mutations in React without re-render overhead."
 slug: "how-to-track-dirty-fields-in-react-forms"
-type: "long_tail"
+type: guide
 breadcrumb: "How to Track Dirty Fields in React Forms"
 datePublished: "2025-03-10"
 dateModified: "2026-06-23"
@@ -95,7 +95,7 @@ This page shows how to capture a stable baseline snapshot in a ref, derive a per
 
 ## Context and Prerequisites
 
-This pattern builds on [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — the distinction between a user-driven mutation and a programmatic reset. Before reading further, make sure you understand [controlled vs uncontrolled forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) because the hook here assumes fully controlled inputs where React owns every field value.
+This pattern builds on [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — the distinction between a user-driven mutation and a programmatic reset. Before reading further, make sure you understand [controlled vs uncontrolled forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) because the hook here assumes fully controlled inputs where React owns every field value.
 
 ## How the Baseline-Ref Pattern Works
 
@@ -392,14 +392,14 @@ The hook defaults to shallow strict-equality (`!==`), which is correct for primi
 <details>
 <summary>Can this hook work alongside React Hook Form or Formik?</summary>
 
-Yes. The hook is self-contained and does not touch any library's internal state. You can mount it in the same component as a React Hook Form `useForm` call and use its `dirtyMap` to drive auto-save logic, unsaved-changes warnings, or custom submission guards. If you are using React Hook Form, note that it already exposes `formState.dirtyFields` — this hook is most useful when you need dirty tracking outside React Hook Form's controlled lifecycle, for example in a hybrid uncontrolled form where some fields are managed by refs. See [building a custom useFormField hook](/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) for a pattern that composes well with this approach.
+Yes. The hook is self-contained and does not touch any library's internal state. You can mount it in the same component as a React Hook Form `useForm` call and use its `dirtyMap` to drive auto-save logic, unsaved-changes warnings, or custom submission guards. If you are using React Hook Form, note that it already exposes `formState.dirtyFields` — this hook is most useful when you need dirty tracking outside React Hook Form's controlled lifecycle, for example in a hybrid uncontrolled form where some fields are managed by refs. See [building a custom useFormField hook](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) for a pattern that composes well with this approach.
 
 </details>
 
 <details>
 <summary>What is the performance impact on large forms?</summary>
 
-`useMemo` runs in O(n) time relative to field count, but only when `current` changes. For forms with roughly 100 or more fields, two strategies help: (1) debounce rapid typing so `setCurrent` is called at most once every 150 ms rather than on every keystroke; (2) split the form into subsections with their own `useDirtyTracker` instances so only the relevant section's memo runs on each update. For [debouncing validation triggers](/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) the same debounce wrapper applies here.
+`useMemo` runs in O(n) time relative to field count, but only when `current` changes. For forms with roughly 100 or more fields, two strategies help: (1) debounce rapid typing so `setCurrent` is called at most once every 150 ms rather than on every keystroke; (2) split the form into subsections with their own `useDirtyTracker` instances so only the relevant section's memo runs on each update. For [debouncing validation triggers](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) the same debounce wrapper applies here.
 
 </details>
 
@@ -407,9 +407,9 @@ Yes. The hook is self-contained and does not touch any library's internal state.
 
 **Related**
 
-- [Implementing Pristine State in Vue 3](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/implementing-pristine-state-in-vue-3/) — equivalent pattern using Vue 3's reactive refs and watchers
-- [Building a Custom useFormField Hook](/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) — composable hook architecture that this tracker plugs into
-- [Debouncing Validation Triggers in React](/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) — pair with dirty tracking to avoid validation on every keystroke
-- [Mapping Validation Errors to UI Components](/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/) — wire dirty flags to error display so errors only surface on touched fields
+- [Implementing Pristine State in Vue 3](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/implementing-pristine-state-in-vue-3/) — equivalent pattern using Vue 3's reactive refs and watchers
+- [Building a Custom useFormField Hook](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) — composable hook architecture that this tracker plugs into
+- [Debouncing Validation Triggers in React](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) — pair with dirty tracking to avoid validation on every keystroke
+- [Mapping Validation Errors to UI Components](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/) — wire dirty flags to error display so errors only surface on touched fields
 
-← [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/)
+← [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/)

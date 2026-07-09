@@ -3,7 +3,7 @@ layout: page.njk
 title: "Handling Double-Submit and Idempotency"
 description: "Stop duplicate form submissions at the source — a synchronous in-flight guard, the disable-on-submit race, the Enter-key double fire, and a client-generated idempotency key the server deduplicates."
 slug: "handling-double-submit-and-idempotency"
-type: "long_tail"
+type: guide
 breadcrumb: "Double-Submit & Idempotency"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -74,11 +74,11 @@ eleventyNavigation:
 
 The precise problem: a user clicks Submit twice on a slow connection — or presses Enter while a click handler is also bound — and the form issues two identical POSTs, creating two orders, two charges, or two records.
 
-This builds directly on the submit lifecycle described in [submission state and optimistic updates](/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/); here we isolate the single concern of never letting one user intent become two server writes. The defense has two layers that must both exist: a synchronous client guard that stops most duplicates before they leave the browser, and a server-deduplicated idempotency key that catches the ones a client guard structurally cannot.
+This builds directly on the submit lifecycle described in [submission state and optimistic updates](https://www.client-side-form.com/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/); here we isolate the single concern of never letting one user intent become two server writes. The defense has two layers that must both exist: a synchronous client guard that stops most duplicates before they leave the browser, and a server-deduplicated idempotency key that catches the ones a client guard structurally cannot.
 
 ## Context and Prerequisites
 
-You need the submit controller's in-flight lock from the parent page — the boolean checked before the first `await`. If you have not read [submission state and optimistic updates](/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/), start there, because the idempotency key lives in the same controller closure that owns that lock, and the key's reuse-across-retries rule only makes sense against that machine.
+You need the submit controller's in-flight lock from the parent page — the boolean checked before the first `await`. If you have not read [submission state and optimistic updates](https://www.client-side-form.com/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/), start there, because the idempotency key lives in the same controller closure that owns that lock, and the key's reuse-across-retries rule only makes sense against that machine.
 
 ## Why the Client Guard and the Key Are Both Required
 
@@ -274,8 +274,8 @@ Enter in a single-line input triggers the form's implicit submit, which can coin
 
 **Related**
 
-- [Submission State and Optimistic Updates](/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/) — the full submit state machine this guard plugs into
-- [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) — route a server rejection onto the right field after a guarded submit
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — cancel and dedup pre-submit checks with the same discipline
+- [Submission State and Optimistic Updates](https://www.client-side-form.com/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/) — the full submit state machine this guard plugs into
+- [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) — route a server rejection onto the right field after a guarded submit
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — cancel and dedup pre-submit checks with the same discipline
 
-← [Submission State and Optimistic Updates](/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/)
+← [Submission State and Optimistic Updates](https://www.client-side-form.com/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/)

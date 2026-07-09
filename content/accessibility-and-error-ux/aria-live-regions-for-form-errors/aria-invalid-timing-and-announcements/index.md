@@ -3,7 +3,7 @@ layout: page.njk
 title: "aria-invalid Timing and Screen Reader Announcements"
 description: "When to flip aria-invalid true — only after a field is touched or the form submits, never on pristine — and how to debounce so screen readers do not announce mid-typing."
 slug: aria-invalid-timing-and-announcements
-type: long_tail
+type: guide
 breadcrumb: "aria-invalid Timing"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -75,7 +75,7 @@ eleventyNavigation:
 
 The failure this page fixes: your form computes validity correctly, but a screen reader announces every field as invalid on page load, or re-announces the same error on every keystroke while the user is still typing. Both come from wiring `aria-invalid` to raw validity instead of to *interaction state*. The attribute must follow the touched/dirty lifecycle, not the millisecond-by-millisecond result of the validator.
 
-This is the counterpart to the [ARIA live regions for form errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/) work — the live region carries the message text, `aria-invalid` marks the field as the thing that message is about — and it depends directly on [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) to know when a field has actually been interacted with.
+This is the counterpart to the [ARIA live regions for form errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/) work — the live region carries the message text, `aria-invalid` marks the field as the thing that message is about — and it depends directly on [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) to know when a field has actually been interacted with.
 
 ---
 
@@ -228,7 +228,7 @@ class AriaInvalidController {
 1. **Input events compute, they do not commit.** Every keystroke calls `onInput`, which resets a per-field debounce timer. `aria-invalid` is untouched until the user pauses for `debounceMs`.
 2. **Blur commits immediately.** Leaving a field is an intentional boundary, so `onBlur` cancels the debounce and commits now, marking the field `touched`. This is when a pristine field first becomes eligible.
 3. **The eligibility gate blocks pristine fields.** Inside `commit`, a field that is neither touched nor submitted has its `aria-invalid` *removed*, guaranteeing no announcement before interaction.
-4. **Submit flushes everything.** `onSubmit` walks every field, cancels pending debounces, and commits with `submitted: true`, so even untouched required fields flip to `aria-invalid="true"` in one pass — after which the caller [moves focus to the first invalid field](/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/).
+4. **Submit flushes everything.** `onSubmit` walks every field, cancels pending debounces, and commits with `submitted: true`, so even untouched required fields flip to `aria-invalid="true"` in one pass — after which the caller [moves focus to the first invalid field](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/).
 5. **Announcements fire only on transitions.** `commit` compares the previous attribute value to the new one, so a field that stays invalid across two blurs announces once, and a corrected field announces its recovery.
 
 ---
@@ -315,9 +315,9 @@ Set `aria-invalid="false"` rather than removing the attribute. An explicit false
 
 ## Related
 
-- [Wiring aria-describedby for Multiple Errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/wiring-aria-describedby-for-multiple-errors/)
-- [ARIA Live Regions for Form Errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/)
-- [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/)
-- [Moving Focus to the First Invalid Field](/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/)
+- [Wiring aria-describedby for Multiple Errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/wiring-aria-describedby-for-multiple-errors/)
+- [ARIA Live Regions for Form Errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/)
+- [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/)
+- [Moving Focus to the First Invalid Field](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/)
 
-← [ARIA Live Regions for Form Errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/)
+← [ARIA Live Regions for Form Errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/)

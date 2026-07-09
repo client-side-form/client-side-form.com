@@ -3,7 +3,7 @@ layout: page.njk
 title: "React Form Hook Architecture"
 description: "Production patterns for custom React form hooks: reducer-driven state machines, debounced validation pipelines, AbortController cancellation, and granular field-selector subscriptions."
 slug: "react-form-hook-architecture"
-type: "cluster"
+type: topic
 breadcrumb: "React Form Hook Architecture"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 Building custom React form hooks is straightforward until a form hits production: a 12-field checkout flow starts dropping keystrokes because every change re-renders 200 components; async email-availability checks race each other and resolve out of order; a user navigates away mid-submission and a stale `setState` call fires on an unmounted component. These failures share a root cause — the hook was designed around the happy path, not around the lifecycle of a real user session.
 
-This page covers the architecture decisions that prevent those failures: an explicit state machine instead of ad-hoc boolean flags, a debounced validation pipeline wired to `AbortController`, partitioned context slices that isolate re-renders, and a teardown contract that leaves no timers or subscriptions behind. The patterns here integrate directly with the parent [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/) architecture and link forward to the concrete `useFormField` implementation in [Building a Custom useFormField Hook](/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/).
+This page covers the architecture decisions that prevent those failures: an explicit state machine instead of ad-hoc boolean flags, a debounced validation pipeline wired to `AbortController`, partitioned context slices that isolate re-renders, and a teardown contract that leaves no timers or subscriptions behind. The patterns here integrate directly with the parent [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/) architecture and link forward to the concrete `useFormField` implementation in [Building a Custom useFormField Hook](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/).
 
 ## State Machine: Explicit Lifecycle States
 
@@ -160,7 +160,7 @@ A `useReducer`-driven controller dispatches typed actions against this shape. Be
 
 Field registration is where most hook architectures introduce the first memory leak. A field mounts, calls `register('email')`, and the parent controller stores a reference to the field's `setValue` callback. When the field unmounts — because the user toggles a conditional section — that reference stays in the registry and the closure keeps the stale component alive.
 
-The fix is a cleanup contract: `register` returns an unsubscribe function, and the field's `useEffect` calls it on teardown. [Building a Custom useFormField Hook](/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) covers the isolated dirty/touched tracking and the exact unsubscribe pattern in detail.
+The fix is a cleanup contract: `register` returns an unsubscribe function, and the field's `useEffect` calls it on teardown. [Building a Custom useFormField Hook](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) covers the isolated dirty/touched tracking and the exact unsubscribe pattern in detail.
 
 **Skeleton registration interface:**
 
@@ -207,7 +207,7 @@ function useFormField<T extends Record<string, unknown>, K extends keyof T>(
 
 The validation pipeline has three responsibilities that are easy to conflate: **throttling** (don't validate on every keystroke), **cancellation** (don't apply results from a superseded request), and **normalization** (map Zod's nested issue list to a flat `Record<fieldKey, string>` the UI can consume).
 
-The [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) page covers when each trigger fires; this section focuses on the implementation contract inside the hook itself.
+The [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) page covers when each trigger fires; this section focuses on the implementation contract inside the hook itself.
 
 ```typescript
 import { useCallback, useRef, useState } from 'react';
@@ -301,7 +301,7 @@ export function useFormValidator<T extends Record<string, unknown>>(
 | `onSubmit` | Calls `schema.parseAsync` directly — no debounce, no abort tolerance |
 | Unmount | Calls `cancel()` — clears timer, aborts pending request |
 
-For the [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) pattern (email uniqueness checks, username availability), the same `AbortController` approach applies at the network layer — pass `signal` to `fetch` so the browser cancels the HTTP request, not just the JavaScript promise chain.
+For the [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) pattern (email uniqueness checks, username availability), the same `AbortController` approach applies at the network layer — pass `signal` to `fetch` so the browser cancels the HTTP request, not just the JavaScript promise chain.
 
 ## Context Propagation: Partitioned Slices, Not One Giant Object
 
@@ -378,15 +378,15 @@ export function useFieldValue<T, K extends keyof T>(field: K) {
 }
 ```
 
-This pattern directly addresses the re-render cascade listed in [error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/): because `ErrorsCtx` is updated only when validation resolves, a user typing into a field that has no pending validation never triggers a re-render in components that only read `errors`.
+This pattern directly addresses the re-render cascade listed in [error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/): because `ErrorsCtx` is updated only when validation resolves, a user typing into a field that has no pending validation never triggers a re-render in components that only read `errors`.
 
 ## Integration with the Parent Pipeline
 
-This hook architecture slots into the [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/) pipeline at two boundaries:
+This hook architecture slots into the [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/) pipeline at two boundaries:
 
-1. **Inbound (external store hydration):** When a form loads pre-filled data from Redux, Zustand, or a server component, dispatch a `HYDRATE` action from a `useEffect`. Never merge external store values inside the reducer itself — that creates a coupling where store updates bypass [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) and field registrations race each other.
+1. **Inbound (external store hydration):** When a form loads pre-filled data from Redux, Zustand, or a server component, dispatch a `HYDRATE` action from a `useEffect`. Never merge external store values inside the reducer itself — that creates a coupling where store updates bypass [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) and field registrations race each other.
 
-2. **Outbound (cross-framework micro-frontend boundary):** If the React form is embedded in a Vue or Svelte shell (see [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) and [Svelte Store Integration for Forms](/framework-adapters-custom-hooks/svelte-store-integration-for-forms/)), expose a plain object event bus — `CustomEvent` on a shared DOM node — rather than trying to pass React context across the framework boundary. The hook publishes normalized `{ field, value, errors }` payloads; the shell subscribes and updates its own reactive store.
+2. **Outbound (cross-framework micro-frontend boundary):** If the React form is embedded in a Vue or Svelte shell (see [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) and [Svelte Store Integration for Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/)), expose a plain object event bus — `CustomEvent` on a shared DOM node — rather than trying to pass React context across the framework boundary. The hook publishes normalized `{ field, value, errors }` payloads; the shell subscribes and updates its own reactive store.
 
 ## Edge Cases and Failure Modes
 
@@ -468,9 +468,9 @@ Yes. The registration routine accepts a schema fragment at mount time. The paren
 
 ## Related
 
-- [Building a Custom useFormField Hook](/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) — isolated dirty/touched tracking per field with stable teardown
-- [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) — proxy-based reactivity patterns for the same pipeline
-- [Svelte Store Integration for Forms](/framework-adapters-custom-hooks/svelte-store-integration-for-forms/) — compile-time subscription model and store contract
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — AbortController cancellation at the network layer
+- [Building a Custom useFormField Hook](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) — isolated dirty/touched tracking per field with stable teardown
+- [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) — proxy-based reactivity patterns for the same pipeline
+- [Svelte Store Integration for Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/) — compile-time subscription model and store contract
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — AbortController cancellation at the network layer
 
-← [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/)
+← [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/)

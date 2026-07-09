@@ -3,7 +3,7 @@ layout: page.njk
 title: "Memoization Boundaries for Form Fields"
 description: "Where to place React.memo, useMemo, and selector boundaries so one field's keystroke never re-renders its siblings — plus handler stability and Vue computed boundaries."
 slug: memoization-boundaries-for-form-fields
-type: long_tail
+type: guide
 breadcrumb: "Memoization Boundaries"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -75,7 +75,7 @@ Place a memoization boundary at each field component, keyed on that field's own 
 
 ## Context
 
-This is the render-scoping half of [performance and scale for large forms](/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/): subscription isolation stops the store from *notifying* unrelated fields, but a memo boundary is what stops the *framework* from re-rendering a child just because its parent re-rendered. The two techniques are complementary — a subscription store without memo boundaries still re-renders siblings when a shared parent commits, and memo boundaries without stable props are silently bypassed. The hook layer these boundaries live inside is covered in [React form hook architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/).
+This is the render-scoping half of [performance and scale for large forms](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/): subscription isolation stops the store from *notifying* unrelated fields, but a memo boundary is what stops the *framework* from re-rendering a child just because its parent re-rendered. The two techniques are complementary — a subscription store without memo boundaries still re-renders siblings when a shared parent commits, and memo boundaries without stable props are silently bypassed. The hook layer these boundaries live inside is covered in [React form hook architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/).
 
 ## Core Pattern
 
@@ -131,7 +131,7 @@ The load-bearing detail is `onChange`: one handler for the whole form, taking `n
 
 1. **Draw the boundary at the leaf.** Wrap the field component (`Field`) in `React.memo`, not the fieldset or the form. The leaf is where you want the re-render to stop; a boundary higher up still re-renders every child inside it.
 
-2. **Feed the boundary its own slice.** `FieldRow` subscribes with `useSyncExternalStore` to just `store.get(name)`. When another field changes, this selector returns an `Object.is`-equal value and the row does not re-render — the same slice-isolation principle used for [dirty and pristine tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/).
+2. **Feed the boundary its own slice.** `FieldRow` subscribes with `useSyncExternalStore` to just `store.get(name)`. When another field changes, this selector returns an `Object.is`-equal value and the row does not re-render — the same slice-isolation principle used for [dirty and pristine tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/).
 
 3. **Stabilize the handler.** Define one `onChange` behind `useCallback([store])`. Pass `name` at call time so you never need a per-field closure. Every `Field` receives the identical function reference, so the memo's shallow compare on `onChange` passes.
 
@@ -163,7 +163,7 @@ const rules = React.useMemo(() => [required, maxLength(limit)], [limit]);
 
 **useMemo with a missing dependency serves stale data.** Over-aggressive memoization that omits a dependency freezes a value the field should have updated. Keep dependency arrays honest; a boundary that shows stale values is worse than an extra render.
 
-**Vue: spreading whole form state into a child.** Vue gives you the memo skip for free through its dependency graph, but only if the child reads a narrow computed. `<Field v-bind="formState" />` makes the child depend on the entire state object, so any field change re-renders it — the [Vue composition API adapter](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) should pass a per-field computed instead.
+**Vue: spreading whole form state into a child.** Vue gives you the memo skip for free through its dependency graph, but only if the child reads a narrow computed. `<Field v-bind="formState" />` makes the child depend on the entire state object, so any field change re-renders it — the [Vue composition API adapter](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) should pass a per-field computed instead.
 
 ## Verification Checklist
 
@@ -203,7 +203,7 @@ A `computed` per field plus a child component that reads only that computed. Vue
 
 ## Related
 
-- [Rendering 100+ Field Forms Without Jank](/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/rendering-100-plus-field-forms-without-jank/) — windowing that pairs with per-field memo boundaries
-- [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) — the hook layer these boundaries live inside
+- [Rendering 100+ Field Forms Without Jank](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/rendering-100-plus-field-forms-without-jank/) — windowing that pairs with per-field memo boundaries
+- [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) — the hook layer these boundaries live inside
 
-← [Performance and Scale for Large Forms](/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/)
+← [Performance and Scale for Large Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/)

@@ -1,9 +1,9 @@
 ---
-layout: pillar.njk
+layout: section.njk
 title: "Validation Logic & Schema Integration"
 description: "Schema-driven validation pipelines with Zod, async strategies, cross-field dependency graphs, and synchronous validation patterns for production-grade client-side form state."
 slug: "validation-logic-schema-integration"
-type: "pillar"
+type: section
 breadcrumb: "Validation Logic & Schema Integration"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -170,7 +170,7 @@ interface FormState<T extends Record<string, unknown>> {
 
 The `FormStatus` rolls up individual `FieldStatus` values: the form enters `validating` if any field is `validating`, and only enters `submitting` once all fields are `valid`. This avoids the common mistake of letting a submit proceed while an async uniqueness check is still in-flight.
 
-The relationship between field lifecycle and [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) matters here: `dirty` and `pristine` are not validation outcomes — they are user-intent signals that determine *when* validation should run, not *what* it should check.
+The relationship between field lifecycle and [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) matters here: `dirty` and `pristine` are not validation outcomes — they are user-intent signals that determine *when* validation should run, not *what* it should check.
 
 ## Architecture & Design Principles
 
@@ -213,9 +213,9 @@ function registerController(
 
 ## Subsystem: Synchronous Schema Validation
 
-[Synchronous validation patterns](/validation-logic-schema-integration/synchronous-validation-patterns/) are the backbone of the pipeline. They run inline — on blur, on change when a field has already been `touched`, and always on submit — producing errors within the same microtask that processes the input event.
+[Synchronous validation patterns](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/) are the backbone of the pipeline. They run inline — on blur, on change when a field has already been `touched`, and always on submit — producing errors within the same microtask that processes the input event.
 
-[Integrating Zod for schema validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) makes this declarative. A `z.object` schema defines the entire form's contract; `safeParse` returns a typed result without throwing, and Zod's `ZodError.flatten()` produces the flat field-keyed structure the render layer expects directly:
+[Integrating Zod for schema validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) makes this declarative. A `z.object` schema defines the entire form's contract; `safeParse` returns a typed result without throwing, and Zod's `ZodError.flatten()` produces the flat field-keyed structure the render layer expects directly:
 
 ```typescript
 import { z } from 'zod';
@@ -251,7 +251,7 @@ Note that cross-field rules (`confirmPassword` refinement) live inside the schem
 
 ## Subsystem: Asynchronous & Network-Aware Validation
 
-[Asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) introduce three failure modes not present in synchronous checks: stale responses, abandoned requests that keep connections open, and pending UI state that blocks submit before the check resolves.
+[Asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) introduce three failure modes not present in synchronous checks: stale responses, abandoned requests that keep connections open, and pending UI state that blocks submit before the check resolves.
 
 The full pipeline for a single async field check:
 
@@ -311,7 +311,7 @@ The `signal` is passed directly into `fetch()` as `fetch(url, { signal })`, whic
 
 ## Subsystem: Cross-Field Dependency Orchestration
 
-[Cross-field dependency logic](/validation-logic-schema-integration/cross-field-dependency-logic/) is necessary whenever changing one field's value must trigger re-validation of another. A flat re-run of the whole schema on every change is correct but expensive for large forms — and causes cascading async re-checks that compound the race condition problem.
+[Cross-field dependency logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/) is necessary whenever changing one field's value must trigger re-validation of another. A flat re-run of the whole schema on every change is correct but expensive for large forms — and causes cascading async re-checks that compound the race condition problem.
 
 Model dependencies explicitly as a directed acyclic graph:
 
@@ -385,7 +385,7 @@ The matching error container in markup:
 
 Never rely solely on color to communicate invalid state. Always pair `border-color: red` with a visible text message and the `aria-invalid` attribute.
 
-See [error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) for the full normalization layer that translates raw schema errors into display-ready messages with severity levels.
+See [error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) for the full normalization layer that translates raw schema errors into display-ready messages with severity levels.
 
 ## Lifecycle Teardown
 
@@ -477,9 +477,9 @@ Maintain an immutable snapshot of the initial field values taken at form initial
 
 ## Related
 
-- [Synchronous Validation Patterns](/validation-logic-schema-integration/synchronous-validation-patterns/) — immediate feedback on blur and change events without blocking the main thread
-- [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — runtime type parsing, schema composition, and typed error extraction
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — AbortController lifecycle, debounce coordination, and retry logic for network-bound checks
-- [Cross-Field Dependency Logic](/validation-logic-schema-integration/cross-field-dependency-logic/) — DAG-based re-validation triggers for interdependent fields
+- [Synchronous Validation Patterns](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/) — immediate feedback on blur and change events without blocking the main thread
+- [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — runtime type parsing, schema composition, and typed error extraction
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — AbortController lifecycle, debounce coordination, and retry logic for network-bound checks
+- [Cross-Field Dependency Logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/) — DAG-based re-validation triggers for interdependent fields
 
-← [Home](/)
+← [Home](https://www.client-side-form.com/)

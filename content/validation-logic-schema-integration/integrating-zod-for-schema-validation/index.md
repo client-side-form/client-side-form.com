@@ -3,7 +3,7 @@ layout: page.njk
 title: "Integrating Zod for Schema Validation"
 description: "Schema-to-state adapter architecture for wiring Zod into reactive form state with deterministic validation triggers, AbortController-safe async refinements, and normalised error propagation."
 slug: "integrating-zod-for-schema-validation"
-type: "cluster"
+type: topic
 breadcrumb: "Integrating Zod for Schema Validation"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 **The specific sub-problem:** form validation code that lets Zod's raw parse output reach framework component state directly — no adapter layer, no normalisation — produces inconsistent error shapes, swallows type coercion, and makes cross-field rules impossible to test in isolation. This page details a production adapter architecture that fixes all three failure modes.
 
-This pattern is part of the broader [Validation Logic & Schema Integration](/validation-logic-schema-integration/) pipeline. It assumes your project already has Zod installed and that you are working inside a TypeScript-compiled build.
+This pattern is part of the broader [Validation Logic & Schema Integration](https://www.client-side-form.com/validation-logic-schema-integration/) pipeline. It assumes your project already has Zod installed and that you are working inside a TypeScript-compiled build.
 
 ---
 
@@ -317,17 +317,17 @@ export function useZodForm<T extends ZodTypeAny>(schema: T) {
 
 ## Integration with the Validation Pipeline
 
-This adapter slots into [the parent validation pipeline](/validation-logic-schema-integration/) at the boundary between raw DOM events and typed state. The sequence:
+This adapter slots into [the parent validation pipeline](https://www.client-side-form.com/validation-logic-schema-integration/) at the boundary between raw DOM events and typed state. The sequence:
 
 1. **DOM event fires** (`onChange` / `onBlur`) → event handler calls `validate(formPayload)`.
 2. **Adapter normalises types** → Zod receives a well-typed object, not raw string inputs from `event.target.value`.
 3. **`safeParse` runs synchronously** → errors are committed to state immediately; no flicker.
-4. If sync passes and the field has an async refinement (for example an email-uniqueness check handled by [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/)), the async path fires with a fresh `AbortController` signal.
+4. If sync passes and the field has an async refinement (for example an email-uniqueness check handled by [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/)), the async path fires with a fresh `AbortController` signal.
 5. **Errors are propagated to ARIA attributes** (see Testing & QA Hooks below).
 
-For [cross-field dependency rules](/validation-logic-schema-integration/integrating-zod-for-schema-validation/how-to-validate-dependent-fields-with-zod/) — passwords matching, end-date after start-date, conditional required fields — use `.superRefine()` rather than chaining `.refine()` calls. `superRefine` can add multiple issues in one pass and lets you short-circuit with `ctx.addIssue` + `return z.NEVER` when a field is already empty, preventing misleading downstream errors.
+For [cross-field dependency rules](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/how-to-validate-dependent-fields-with-zod/) — passwords matching, end-date after start-date, conditional required fields — use `.superRefine()` rather than chaining `.refine()` calls. `superRefine` can add multiple issues in one pass and lets you short-circuit with `ctx.addIssue` + `return z.NEVER` when a field is already empty, preventing misleading downstream errors.
 
-[Synchronous validation patterns](/validation-logic-schema-integration/synchronous-validation-patterns/) cover the complementary debounce wiring that prevents `validate()` from firing on every keypress.
+[Synchronous validation patterns](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/) cover the complementary debounce wiring that prevents `validate()` from firing on every keypress.
 
 ---
 
@@ -450,9 +450,9 @@ Add `data-testid` attributes to each field and its error container. After trigge
 
 ## Related
 
-- [How to Validate Dependent Fields with Zod](/validation-logic-schema-integration/integrating-zod-for-schema-validation/how-to-validate-dependent-fields-with-zod/) — `.superRefine()` patterns for cross-field rules
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — debounce, AbortController, and retry orchestration
-- [Synchronous Validation Patterns](/validation-logic-schema-integration/synchronous-validation-patterns/) — lightweight per-field checks and trigger lifecycle
-- [Cross-Field Dependency Logic](/validation-logic-schema-integration/cross-field-dependency-logic/) — dependency graph evaluation order and memoisation
+- [How to Validate Dependent Fields with Zod](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/how-to-validate-dependent-fields-with-zod/) — `.superRefine()` patterns for cross-field rules
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — debounce, AbortController, and retry orchestration
+- [Synchronous Validation Patterns](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/) — lightweight per-field checks and trigger lifecycle
+- [Cross-Field Dependency Logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/) — dependency graph evaluation order and memoisation
 
-← [Validation Logic & Schema Integration](/validation-logic-schema-integration/)
+← [Validation Logic & Schema Integration](https://www.client-side-form.com/validation-logic-schema-integration/)

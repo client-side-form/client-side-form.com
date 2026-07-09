@@ -3,7 +3,7 @@ layout: page.njk
 title: "Choosing a Schema Validation Library"
 description: "Compare Zod, Yup, and Valibot for client-side form validation across type inference, bundle size, tree-shaking, and async refinement support."
 slug: choosing-a-schema-validation-library
-type: cluster
+type: topic
 breadcrumb: "Choosing a Schema Library"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 By the time you are choosing a schema library, the decision is rarely academic — you have a form that is slow to load, a `SchemaType` that will not line up with your API model, or an async refinement that fires a network request on every keystroke and never gets cancelled. Zod, Yup, and Valibot solve the same nominal problem, parsing untrusted input into a typed value, but they make different trade-offs on the four axes that actually bite in production: static type inference, gzipped bundle contribution, tree-shaking granularity, and async refinement ergonomics.
 
-This page gives you a decision framework rather than a verdict. The right choice depends on whether your bottleneck is bundle size on a public marketing form, inference fidelity on a large typed model, or migration cost in a codebase already committed to one library. It sits under [validation logic and schema integration](/validation-logic-schema-integration/) and feeds directly into [integrating Zod for schema validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) and [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/).
+This page gives you a decision framework rather than a verdict. The right choice depends on whether your bottleneck is bundle size on a public marketing form, inference fidelity on a large typed model, or migration cost in a codebase already committed to one library. It sits under [validation logic and schema integration](https://www.client-side-form.com/validation-logic-schema-integration/) and feeds directly into [integrating Zod for schema validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) and [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/).
 
 ---
 
@@ -156,13 +156,13 @@ The same data in table form, with the nuance the matrix cannot hold:
 | Resolver availability | React Hook Form, Formik, VeeValidate, etc. | Broad, long-established | React Hook Form and growing |
 | Maturity | Large, stable, widely adopted | Oldest, very stable | Newest, active development |
 
-For the raw measurement methodology behind the size and throughput numbers, see [Zod vs Yup vs Valibot: bundle size and performance](/validation-logic-schema-integration/choosing-a-schema-validation-library/zod-vs-yup-vs-valibot-bundle-size-and-performance/).
+For the raw measurement methodology behind the size and throughput numbers, see [Zod vs Yup vs Valibot: bundle size and performance](https://www.client-side-form.com/validation-logic-schema-integration/choosing-a-schema-validation-library/zod-vs-yup-vs-valibot-bundle-size-and-performance/).
 
 ---
 
 ## The Same Schema in All Three
 
-Nothing exposes ergonomic differences faster than writing one non-trivial schema in each library. The example below is a signup form: a trimmed username, an email, a password with a complexity rule, and a confirmation that must match — the cross-field case detailed in [password confirmation validation pattern](/validation-logic-schema-integration/cross-field-dependency-logic/password-confirmation-validation-pattern/).
+Nothing exposes ergonomic differences faster than writing one non-trivial schema in each library. The example below is a signup form: a trimmed username, an email, a password with a complexity rule, and a confirmation that must match — the cross-field case detailed in [password confirmation validation pattern](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/password-confirmation-validation-pattern/).
 
 ```typescript
 // ----- Zod -----
@@ -238,7 +238,7 @@ Three observations that matter more than syntax taste:
 
 ### Abort-aware async refinement
 
-Server-backed rules are the real test. Below is an async refinement that checks username availability while cooperating with a caller-supplied `AbortSignal`, so a stale in-flight check never resolves onto a newer input. This is the pattern generalized in [cancelling stale async validation with AbortController](/validation-logic-schema-integration/asynchronous-validation-strategies/cancelling-stale-async-validation-with-abortcontroller/).
+Server-backed rules are the real test. Below is an async refinement that checks username availability while cooperating with a caller-supplied `AbortSignal`, so a stale in-flight check never resolves onto a newer input. This is the pattern generalized in [cancelling stale async validation with AbortController](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/cancelling-stale-async-validation-with-abortcontroller/).
 
 ```typescript
 import { z } from "zod";
@@ -287,7 +287,7 @@ The matrix rows do not carry equal weight for every form. The correct choice fal
 
 **Public marketing or landing-page form.** The constraint is Largest Contentful Paint on a route with almost no other JavaScript, so the bundle row dominates. Here Valibot's modular design is decisive: a three-field newsletter or contact form imports a handful of validators and ships a gzipped chunk a fraction of Zod's. Inference and ecosystem barely register because the schema is tiny and there is no form library to resolve into. Choose the smallest thing that tree-shakes.
 
-**Authenticated enterprise dashboard.** The route already ships a framework, a component kit, and a data layer; the schema library is a rounding error on the payload. The constraint is inference fidelity against a large, evolving typed model and the maintenance cost of keeping validation in sync with it. Zod's precise `z.infer` and its broad resolver ecosystem win here — the few kilobytes it costs over Valibot are invisible next to the correctness leverage of types that cannot drift from the schema. This is also where an existing [React form hook architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) or [Vue Composition API adapter](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) usually already assumes one library, raising the switching cost further.
+**Authenticated enterprise dashboard.** The route already ships a framework, a component kit, and a data layer; the schema library is a rounding error on the payload. The constraint is inference fidelity against a large, evolving typed model and the maintenance cost of keeping validation in sync with it. Zod's precise `z.infer` and its broad resolver ecosystem win here — the few kilobytes it costs over Valibot are invisible next to the correctness leverage of types that cannot drift from the schema. This is also where an existing [React form hook architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) or [Vue Composition API adapter](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) usually already assumes one library, raising the switching cost further.
 
 **Design-system component library.** You are shipping form primitives other teams consume, so both size and inference matter, and you cannot know downstream bundlers' tree-shaking guarantees. The safe move is to keep the schema behind an interface and let consumers supply the resolver, rather than baking a library into the published package. Peer-dependency the schema library so you do not force two runtimes into a consumer's bundle.
 
@@ -301,9 +301,9 @@ The anti-pattern is optimizing a row that is not your constraint — shaving thr
 
 Whichever library wins, it plugs into the same three seams:
 
-- **Resolver into your form library.** The schema becomes a resolver that returns a `{ values, errors }` shape keyed by field path. If you are hand-rolling the adapter, see how the validation seam is structured in the parent [validation logic and schema integration](/validation-logic-schema-integration/) overview, and how Zod specifically wires in at [integrating Zod for schema validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/).
-- **Async pipeline with cancellation and debounce.** Server-backed refinements belong on the debounced, abortable path documented in [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/), never in the synchronous keystroke path.
-- **Cross-field dependency ordering.** Rules that compare fields need a defined evaluation order; that ordering, and its revalidation triggers, is covered under [cross-field dependency logic](/validation-logic-schema-integration/cross-field-dependency-logic/).
+- **Resolver into your form library.** The schema becomes a resolver that returns a `{ values, errors }` shape keyed by field path. If you are hand-rolling the adapter, see how the validation seam is structured in the parent [validation logic and schema integration](https://www.client-side-form.com/validation-logic-schema-integration/) overview, and how Zod specifically wires in at [integrating Zod for schema validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/).
+- **Async pipeline with cancellation and debounce.** Server-backed refinements belong on the debounced, abortable path documented in [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/), never in the synchronous keystroke path.
+- **Cross-field dependency ordering.** Rules that compare fields need a defined evaluation order; that ordering, and its revalidation triggers, is covered under [cross-field dependency logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/).
 
 Keep the schema behind a thin interface — one function that takes raw values and returns typed output or path-keyed errors. Then a library swap touches one module, not every form.
 
@@ -376,7 +376,7 @@ Run the same contract fixtures through each candidate resolver in CI. If all thr
 
 ## Common Pitfalls
 
-**Choosing on the headline core size.** Valibot's ~1.4 kB core is real, but the delivered size is core plus every validator you import. Measure the actual gzipped chunk for your schema, as covered in the [bundle size and performance](/validation-logic-schema-integration/choosing-a-schema-validation-library/zod-vs-yup-vs-valibot-bundle-size-and-performance/) breakdown, before treating size as the deciding factor.
+**Choosing on the headline core size.** Valibot's ~1.4 kB core is real, but the delivered size is core plus every validator you import. Measure the actual gzipped chunk for your schema, as covered in the [bundle size and performance](https://www.client-side-form.com/validation-logic-schema-integration/choosing-a-schema-validation-library/zod-vs-yup-vs-valibot-bundle-size-and-performance/) breakdown, before treating size as the deciding factor.
 
 **Ignoring inference until the types drift.** Yup's looser inference does not hurt on day one; it hurts three months in when the form type and API type have quietly diverged and you are patching with `as` casts. Score inference against your real model up front.
 
@@ -422,9 +422,9 @@ Yes, but scope it deliberately. Standardize on one library for the shared valida
 
 ## Related
 
-- [Zod vs Yup vs Valibot: Bundle Size and Performance](/validation-logic-schema-integration/choosing-a-schema-validation-library/zod-vs-yup-vs-valibot-bundle-size-and-performance/)
-- [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/)
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/)
-- [Cross-Field Dependency Logic](/validation-logic-schema-integration/cross-field-dependency-logic/)
+- [Zod vs Yup vs Valibot: Bundle Size and Performance](https://www.client-side-form.com/validation-logic-schema-integration/choosing-a-schema-validation-library/zod-vs-yup-vs-valibot-bundle-size-and-performance/)
+- [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/)
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/)
+- [Cross-Field Dependency Logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/)
 
-← [Validation Logic & Schema Integration](/validation-logic-schema-integration/)
+← [Validation Logic & Schema Integration](https://www.client-side-form.com/validation-logic-schema-integration/)

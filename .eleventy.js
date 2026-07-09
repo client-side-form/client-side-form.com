@@ -130,7 +130,7 @@ module.exports = function (eleventyConfig) {
           "inLanguage": "en",
         });
       } else {
-        // pillar / collection page
+        // section / collection page
         schemas.push({
           "@context": "https://schema.org",
           "@type": "CollectionPage",

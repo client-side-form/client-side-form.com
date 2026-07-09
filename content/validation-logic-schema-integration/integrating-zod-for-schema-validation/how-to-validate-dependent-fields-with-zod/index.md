@@ -3,7 +3,7 @@ layout: page.njk
 title: "How to Validate Dependent Fields with Zod"
 description: "Use Zod .superRefine() to implement cross-field validation constraints — password confirmation, date ranges, conditional requirements — with full TypeScript type safety and per-field ARIA error wiring."
 slug: how-to-validate-dependent-fields-with-zod
-type: long_tail
+type: guide
 breadcrumb: "How to Validate Dependent Fields with Zod"
 datePublished: "2024-11-01"
 dateModified: "2026-06-23"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 **The problem this page solves:** `.refine()` attaches its error to the schema root (or a single path you hard-code up front), so when two fields must agree — a password and its confirmation, a date range's start and end, a conditional billing address — the error lands in the wrong place and the per-field inline feedback breaks. `.superRefine()` fixes this by letting you call `ctx.addIssue()` with any `path` you choose, including multiple paths in one callback.
 
-This page covers the exact `superRefine` workflow. Before reading further, make sure you understand how schemas feed into the broader [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) adapter layer, because the refinements here slot into that pipeline's `safeParse` call-site.
+This page covers the exact `superRefine` workflow. Before reading further, make sure you understand how schemas feed into the broader [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) adapter layer, because the refinements here slot into that pipeline's `safeParse` call-site.
 
 ---
 
@@ -287,7 +287,7 @@ function handleSubmit(rawValues: unknown): void {
 }
 ```
 
-Apply the resulting map to each input's ARIA attributes. Pair [mapping validation errors to UI components](/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/) with a live region on the error container so screen readers announce messages without interrupting typing:
+Apply the resulting map to each input's ARIA attributes. Pair [mapping validation errors to UI components](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/) with a live region on the error container so screen readers announce messages without interrupting typing:
 
 ```typescript
 /**
@@ -326,7 +326,7 @@ This is expected behaviour: Zod runs field-level checks first, then the refineme
 You are only running `safeParse` on blur, but the user fixed the issue via keyboard without triggering another blur. Add an `onChange` handler that re-runs `safeParse` and updates the error map; the performance cost is negligible for synchronous schemas. For expensive schemas, debounce `onChange` to 200 ms.
 
 **Stale `.refine()` output persists after a programmatic form reset.**
-When you call a reset function that clears input values programmatically, the error map does not update automatically unless you also re-run `safeParse` against the cleared data. On reset, call `schema.safeParse(emptyDefaults)` and write the (empty) result to your error state. This aligns with how [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) distinguishes user-driven from programmatic mutations.
+When you call a reset function that clears input values programmatically, the error map does not update automatically unless you also re-run `safeParse` against the cleared data. On reset, call `schema.safeParse(emptyDefaults)` and write the (empty) result to your error state. This aligns with how [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) distinguishes user-driven from programmatic mutations.
 
 **Using `.transform()` inside the schema before `.superRefine()`.**
 `.transform()` changes the output type, and any `.superRefine()` chained after it operates on the *transformed* type, not the raw input. If you need to compare raw input values (e.g., the literal strings the user typed), place `.superRefine()` before `.transform()`, or apply transformations in a separate step after validation.
@@ -353,7 +353,7 @@ When you call a reset function that clears input values programmatically, the er
 Pass `path: ['fieldName']` inside `ctx.addIssue()`. The path array is what your error-mapping function joins into a dot-separated key; it must exactly match the key your UI uses for that control. For nested schemas, use `['parentKey', 'childKey']`.
 
 **Does `superRefine` run synchronously or asynchronously?**
-Synchronously inside `.safeParse()` and `.parse()`. This makes validation deterministic and avoids race conditions in [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) where you might otherwise interleave sync and async error state. When you need async refinements (e.g., a uniqueness check), pass an async callback and call `.safeParseAsync()` instead.
+Synchronously inside `.safeParse()` and `.parse()`. This makes validation deterministic and avoids race conditions in [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) where you might otherwise interleave sync and async error state. When you need async refinements (e.g., a uniqueness check), pass an async callback and call `.safeParseAsync()` instead.
 
 **How do I handle optional dependent fields?**
 Apply `.optional()` to the field in the base schema and add an explicit `undefined` guard before any comparison: `if (data.billingAddress === undefined) return;`. Zod skips validation for missing optional keys at the field level, but your refinement callback still receives the full object — the optional field will simply be `undefined` in `data`.
@@ -365,9 +365,9 @@ Yes. Each call runs in declaration order. If you `return z.NEVER` from a refinem
 
 ## Related
 
-- [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — the adapter layer that calls `safeParse` and feeds errors to UI state
-- [Cross-Field Dependency Logic](/validation-logic-schema-integration/cross-field-dependency-logic/) — DAG-based dependency graphs for reactive multi-field re-validation
-- [Mapping Validation Errors to UI Components](/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/) — error map patterns and ARIA wiring
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — when cross-field rules require network round-trips
+- [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — the adapter layer that calls `safeParse` and feeds errors to UI state
+- [Cross-Field Dependency Logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/) — DAG-based dependency graphs for reactive multi-field re-validation
+- [Mapping Validation Errors to UI Components](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/) — error map patterns and ARIA wiring
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — when cross-field rules require network round-trips
 
-← [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/)
+← [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/)

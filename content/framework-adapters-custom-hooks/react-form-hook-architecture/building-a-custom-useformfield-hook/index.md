@@ -3,7 +3,7 @@ layout: page.njk
 title: "Building a Custom useFormField Hook"
 description: "Step-by-step guide to encapsulating validation pipelines and error mapping in a reusable React useFormField hook, with AbortController race-condition guards and SSR hydration safety."
 slug: building-a-custom-useformfield-hook
-type: long_tail
+type: guide
 breadcrumb:
   - label: "Framework Adapters & Custom Hooks"
     url: "/framework-adapters-custom-hooks/"
@@ -84,7 +84,7 @@ eleventyNavigation:
 
 **Exact problem this page addresses:** how to encapsulate async validation, error state, and SSR hydration safety into a single, reusable `useFormField` hook — without leaking stale async results into the UI after a component unmounts or a faster request supersedes a slower one.
 
-Before diving in, make sure you understand the broader context in [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/), which covers how individual field hooks compose into a full form pipeline.
+Before diving in, make sure you understand the broader context in [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/), which covers how individual field hooks compose into a full form pipeline.
 
 ---
 
@@ -123,7 +123,7 @@ Using `useReducer` here instead of multiple `useState` calls guarantees that co-
 
 ## Step-by-step walkthrough
 
-The full hook is assembled in five stages. Each stage maps to a concept from the [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/).
+The full hook is assembled in five stages. Each stage maps to a concept from the [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/).
 
 ### Stage 1 — Bind DOM events to dispatch
 
@@ -233,7 +233,7 @@ function useAsyncValidation(
 
 **Debugging tip:** open the Network panel, throttle to Slow 3G, and type rapidly. Only the final request should complete; previous ones should appear as `(cancelled)`.
 
-This pattern is closely related to [implementing async email availability checks](/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/), which applies the same AbortController technique to a live uniqueness endpoint.
+This pattern is closely related to [implementing async email availability checks](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/), which applies the same AbortController technique to a live uniqueness endpoint.
 
 ### Stage 3 — SSR hydration guard
 
@@ -278,7 +278,7 @@ export function useFormField(validateAsync: ValidateAsync) {
 
 **QA step:** run `next build && next start`, open `view-source:`, and compare the server-rendered markup to the hydrated DOM. No `Hydration failed` warning should appear in the console.
 
-For a broader treatment of hydration mismatches across frameworks, see [Hydration Sync for SSR Forms](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/).
+For a broader treatment of hydration mismatches across frameworks, see [Hydration Sync for SSR Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/).
 
 ---
 
@@ -407,7 +407,7 @@ Use `page.route()` in Playwright or `cy.intercept()` in Cypress to delay validat
 
 **Q: Can this hook work with Zod or Yup schemas?**
 
-Yes. The `validateAsync` and `validateSync` parameters are schema-agnostic interfaces. Wire Zod's `.parseAsync()` or Yup's `.validate()` to the async slot, and `.safeParse()` / `.validateSync()` (with `{ abortEarly: true }`) to the sync fallback. See [integrating Zod for schema validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) for the full wiring pattern.
+Yes. The `validateAsync` and `validateSync` parameters are schema-agnostic interfaces. Wire Zod's `.parseAsync()` or Yup's `.validate()` to the async slot, and `.safeParse()` / `.validateSync()` (with `{ abortEarly: true }`) to the sync fallback. See [integrating Zod for schema validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) for the full wiring pattern.
 
 **Q: Why `useLayoutEffect` instead of `useEffect` for the hydration guard?**
 
@@ -421,9 +421,9 @@ Pair `aria-invalid` with `aria-describedby` pointing to an error container. Duri
 
 ## Related
 
-- [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) — the parent context for how this hook fits into a complete form pipeline
-- [Hydration Sync for SSR Forms](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/) — deeper treatment of server/client reconciliation across frameworks
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — patterns for debouncing, cancellation, and retry at the validation-layer level
-- [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) — how to propagate field-level errors up to form-level and UI components
+- [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) — the parent context for how this hook fits into a complete form pipeline
+- [Hydration Sync for SSR Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/) — deeper treatment of server/client reconciliation across frameworks
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — patterns for debouncing, cancellation, and retry at the validation-layer level
+- [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) — how to propagate field-level errors up to form-level and UI components
 
-← [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/)
+← [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/)

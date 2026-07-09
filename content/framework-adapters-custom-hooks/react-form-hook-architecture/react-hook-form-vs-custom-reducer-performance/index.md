@@ -3,7 +3,7 @@ layout: page.njk
 title: "React Hook Form vs Custom Reducer: Performance Tradeoffs"
 description: "Compare React Hook Form's uncontrolled subscription model against a controlled useReducer form: re-render counts, when each wins, and the migration path."
 slug: react-hook-form-vs-custom-reducer-performance
-type: long_tail
+type: guide
 breadcrumb: "React Hook Form vs Custom Reducer"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -75,7 +75,7 @@ The exact problem: a controlled `useReducer` form re-renders the entire tree on 
 
 ## Context and Prerequisites
 
-This comparison sits under [React form hook architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/), which specifies the reducer-driven hook in full. The question here is architectural: React Hook Form and a hand-rolled reducer make opposite bets about where field values live, and that single decision drives their re-render profiles. Understanding [controlled vs uncontrolled forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) is the prerequisite, because it is exactly the axis these two libraries diverge on.
+This comparison sits under [React form hook architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/), which specifies the reducer-driven hook in full. The question here is architectural: React Hook Form and a hand-rolled reducer make opposite bets about where field values live, and that single decision drives their re-render profiles. Understanding [controlled vs uncontrolled forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) is the prerequisite, because it is exactly the axis these two libraries diverge on.
 
 ## The Core Tradeoff
 
@@ -136,7 +136,7 @@ The table below is the empirical shape of the tradeoff. Numbers are renders trig
 | Submit | 1 render | 1 render | 1 render |
 | Programmatic reset | 1 render | 1 render | affected fields |
 
-The pattern is clear. React Hook Form wins raw input throughput because it does not route keystrokes through React state at all. A naive controlled reducer loses badly on typing but wins on derived state, because the reducer computes dependent values in one deterministic pass. Adding selector subscriptions — the technique in [custom useFormField hook performance tuning](/framework-adapters-custom-hooks/react-form-hook-architecture/custom-useformfield-hook-performance-tuning/) — closes most of the keystroke gap while keeping the reducer's explicit-state advantage.
+The pattern is clear. React Hook Form wins raw input throughput because it does not route keystrokes through React state at all. A naive controlled reducer loses badly on typing but wins on derived state, because the reducer computes dependent values in one deterministic pass. Adding selector subscriptions — the technique in [custom useFormField hook performance tuning](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/custom-useformfield-hook-performance-tuning/) — closes most of the keystroke gap while keeping the reducer's explicit-state advantage.
 
 ## Minimal Implementations Side by Side
 
@@ -192,7 +192,7 @@ function ReducerForm() {
 
 4. **Pick a reducer for logic.** For logic-heavy forms, a `useReducer` gives one deterministic transition function, derived fields for free, and serializable state you can unit-test without rendering. Recover keystroke cost with selector subscriptions.
 
-5. **Plan migration through a shared schema.** Keep one validation schema — see [integrating Zod for schema validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — so behaviour is stable while you move fields between models one section at a time.
+5. **Plan migration through a shared schema.** Keep one validation schema — see [integrating Zod for schema validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — so behaviour is stable while you move fields between models one section at a time.
 
 ## Failure Modes and Edge Cases
 
@@ -215,7 +215,7 @@ A single `useContext(state)` at the leaf makes every field a full-state subscrib
 
 ### 4. Reset semantics differ between models
 
-React Hook Form's `reset()` rewrites the DOM refs; a reducer's reset dispatches an action producing a new state. Migrating between them silently changes what "dirty after reset" means — re-verify your dirty tracking, covered in [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/).
+React Hook Form's `reset()` rewrites the DOM refs; a reducer's reset dispatches an action producing a new state. Migrating between them silently changes what "dirty after reset" means — re-verify your dirty tracking, covered in [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/).
 
 ## Verification Checklist
 
@@ -254,8 +254,8 @@ Yes, if both share one validation schema. Keep the schema as the source of truth
 
 **Related**
 
-- [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) — the reducer-driven hook this comparison measures against
-- [Custom useFormField Hook Performance Tuning](/framework-adapters-custom-hooks/react-form-hook-architecture/custom-useformfield-hook-performance-tuning/) — selector subscriptions that close the reducer's keystroke gap
-- [Controlled vs Uncontrolled Forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — the axis these two models diverge on
+- [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) — the reducer-driven hook this comparison measures against
+- [Custom useFormField Hook Performance Tuning](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/custom-useformfield-hook-performance-tuning/) — selector subscriptions that close the reducer's keystroke gap
+- [Controlled vs Uncontrolled Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — the axis these two models diverge on
 
-← [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/)
+← [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/)

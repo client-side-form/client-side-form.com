@@ -3,7 +3,7 @@ layout: page.njk
 title: "Zod vs Yup vs Valibot: Bundle Size and Performance"
 description: "Measure the gzipped bundle contribution and parse throughput of Zod, Yup, and Valibot, and where Valibot's modular tree-shaking actually wins."
 slug: zod-vs-yup-vs-valibot-bundle-size-and-performance
-type: long_tail
+type: guide
 breadcrumb: "Zod vs Yup vs Valibot"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -70,13 +70,13 @@ eleventyNavigation:
 
 # Zod vs Yup vs Valibot: Bundle Size and Performance
 
-You need a defensible number for how many gzipped kilobytes and how much parse time each schema library adds to a specific form route — not a headline from a package page. This is the measurement companion to [choosing a schema validation library](/validation-logic-schema-integration/choosing-a-schema-validation-library/): that overview weighs inference, ecosystem, and migration cost; this page is only about size and speed, and how to measure both so the decision is grounded in your bundle rather than someone else's benchmark.
+You need a defensible number for how many gzipped kilobytes and how much parse time each schema library adds to a specific form route — not a headline from a package page. This is the measurement companion to [choosing a schema validation library](https://www.client-side-form.com/validation-logic-schema-integration/choosing-a-schema-validation-library/): that overview weighs inference, ecosystem, and migration cost; this page is only about size and speed, and how to measure both so the decision is grounded in your bundle rather than someone else's benchmark.
 
 ---
 
 ## Context and Prerequisites
 
-The trap in every "X is smaller than Y" claim is that the number describes the package, not what you ship. Your delivered cost is a function of three things the headline ignores: which validators you import, whether your bundler tree-shakes them, and how much of the runtime is shared with code you already ship. Before trusting any figure, read it as *the gzipped size of the exact module my form route imports, after tree-shaking, measured by my bundler* — anything else is marketing. The parent [choosing a schema validation library](/validation-logic-schema-integration/choosing-a-schema-validation-library/) page frames where this fits in the overall decision.
+The trap in every "X is smaller than Y" claim is that the number describes the package, not what you ship. Your delivered cost is a function of three things the headline ignores: which validators you import, whether your bundler tree-shakes them, and how much of the runtime is shared with code you already ship. Before trusting any figure, read it as *the gzipped size of the exact module my form route imports, after tree-shaking, measured by my bundler* — anything else is marketing. The parent [choosing a schema validation library](https://www.client-side-form.com/validation-logic-schema-integration/choosing-a-schema-validation-library/) page frames where this fits in the overall decision.
 
 ---
 
@@ -160,7 +160,7 @@ bench("zod valid", () => zodSignup.safeParse(validInput));
 bench("zod invalid", () => zodSignup.safeParse(invalidInput));
 ```
 
-For a single form field, all three libraries parse in well under a microsecond after warm-up. The difference is real but irrelevant at human typing speed and behind a debounce — see [debouncing validation triggers in React](/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) for why the keystroke path is throttled anyway. Throughput only becomes a budget line when you validate large arrays: a bulk import validating 5,000 rows on submit multiplies per-item cost into tens of milliseconds of main-thread blocking, and that is the one place the fastest parser earns its keep.
+For a single form field, all three libraries parse in well under a microsecond after warm-up. The difference is real but irrelevant at human typing speed and behind a debounce — see [debouncing validation triggers in React](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) for why the keystroke path is throttled anyway. Throughput only becomes a budget line when you validate large arrays: a bulk import validating 5,000 rows on submit multiplies per-item cost into tens of milliseconds of main-thread blocking, and that is the one place the fastest parser earns its keep.
 
 ---
 
@@ -188,7 +188,7 @@ And the conditions where the difference is noise:
 - **Lazily loaded form routes** where the schema is not on the initial bundle at all. Optimizing bytes the user downloads only after navigating to the form rarely helps the metrics that matter.
 - **Single-field keystroke validation** where throughput is irrelevant behind a debounce.
 
-The discipline is to divide the measured size delta by the route's total gzipped payload and the measured throughput delta by the number of parses per interaction. If neither ratio is material, size and speed are not your deciding factors, and you should defer to the broader [selection framework](/validation-logic-schema-integration/choosing-a-schema-validation-library/).
+The discipline is to divide the measured size delta by the route's total gzipped payload and the measured throughput delta by the number of parses per interaction. If neither ratio is material, size and speed are not your deciding factors, and you should defer to the broader [selection framework](https://www.client-side-form.com/validation-logic-schema-integration/choosing-a-schema-validation-library/).
 
 ---
 
@@ -252,8 +252,8 @@ Use a bundle analyzer that reports per-module gzipped size and read the schema l
 
 ## Related
 
-- [Choosing a Schema Validation Library](/validation-logic-schema-integration/choosing-a-schema-validation-library/)
-- [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/)
-- [Debouncing Validation Triggers in React](/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/)
+- [Choosing a Schema Validation Library](https://www.client-side-form.com/validation-logic-schema-integration/choosing-a-schema-validation-library/)
+- [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/)
+- [Debouncing Validation Triggers in React](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/)
 
-← [Choosing a Schema Validation Library](/validation-logic-schema-integration/choosing-a-schema-validation-library/)
+← [Choosing a Schema Validation Library](https://www.client-side-form.com/validation-logic-schema-integration/choosing-a-schema-validation-library/)

@@ -3,7 +3,7 @@ layout: page.njk
 title: "Svelte 5 Runes Migration for Form Stores"
 description: "Migrate a writable-store form model to Svelte 5 $state/$derived/$effect runes — with equivalences, deep-proxy gotchas, $effect cleanup, and cross-component sharing via .svelte.ts."
 slug: svelte-5-runes-migration-for-form-stores
-type: long_tail
+type: guide
 breadcrumb: "Svelte 5 Runes Migration"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -78,7 +78,7 @@ eleventyNavigation:
 
 You have a form model built on `writable()` and `derived()` stores, and moving to Svelte 5 means translating that store graph into `$state`, `$derived`, and `$effect` without silently losing reactivity on nested field mutations or leaking subscriptions.
 
-This walkthrough assumes you already have a working store-based adapter of the kind described in [Svelte store integration for forms](/framework-adapters-custom-hooks/svelte-store-integration-for-forms/), and it focuses narrowly on the mechanical and semantic differences you hit during migration. It is not an introduction to runes; it is a field guide for the three bugs that bite when you convert a real form.
+This walkthrough assumes you already have a working store-based adapter of the kind described in [Svelte store integration for forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/), and it focuses narrowly on the mechanical and semantic differences you hit during migration. It is not an introduction to runes; it is a field guide for the three bugs that bite when you convert a real form.
 
 ---
 
@@ -301,8 +301,8 @@ For reactive side-effects, yes. The function you return from `$effect` runs befo
 
 ## Related
 
-- [Svelte Store Integration for Forms](/framework-adapters-custom-hooks/svelte-store-integration-for-forms/)
-- [Handling Svelte Form Hydration Mismatches](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/)
-- [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/)
+- [Svelte Store Integration for Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/)
+- [Handling Svelte Form Hydration Mismatches](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/)
+- [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/)
 
-← [Svelte Store Integration for Forms](/framework-adapters-custom-hooks/svelte-store-integration-for-forms/)
+← [Svelte Store Integration for Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/)

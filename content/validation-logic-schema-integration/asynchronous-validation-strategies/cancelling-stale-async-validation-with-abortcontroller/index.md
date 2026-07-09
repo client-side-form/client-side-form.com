@@ -3,7 +3,7 @@ layout: page.njk
 title: "Cancelling Stale Async Validation with AbortController"
 description: "The canonical abort-before-refire pattern for async form validation: signal.aborted guards, AbortError handling, and a per-field controller map."
 slug: cancelling-stale-async-validation-with-abortcontroller
-type: long_tail
+type: guide
 breadcrumb: "Cancelling Stale Async Validation"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -83,7 +83,7 @@ Ensure that when a field's async validation refires, only the latest round can c
 
 ## Context and Prerequisites
 
-This is the cancellation mechanism underneath the debounced async pipeline in [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/). Debouncing reduces how often you fire; cancellation guarantees correctness when you do fire twice in quick succession — the two are complementary, not alternatives. The concrete case of an availability lookup, which this generalizes, is [implementing async email availability checks](/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/). The core primitive is the `AbortController`, and getting its lifecycle wrong is what produces stale results.
+This is the cancellation mechanism underneath the debounced async pipeline in [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/). Debouncing reduces how often you fire; cancellation guarantees correctness when you do fire twice in quick succession — the two are complementary, not alternatives. The concrete case of an availability lookup, which this generalizes, is [implementing async email availability checks](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/). The core primitive is the `AbortController`, and getting its lifecycle wrong is what produces stale results.
 
 ---
 
@@ -197,7 +197,7 @@ function scheduleValidation(
 }
 ```
 
-The general debounce mechanics are covered in [debouncing validation triggers in React](/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/); the point here is that debounce alone is not sufficient. It reduces overlap frequency but cannot eliminate it, so the abort guard remains the correctness guarantee.
+The general debounce mechanics are covered in [debouncing validation triggers in React](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/); the point here is that debounce alone is not sufficient. It reduces overlap frequency but cannot eliminate it, so the abort guard remains the correctness guarantee.
 
 ---
 
@@ -290,8 +290,8 @@ Check the error name. An aborted fetch rejects with a `DOMException` whose `name
 
 ## Related
 
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/)
-- [Implementing Async Email Availability Checks](/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/)
-- [Choosing a Schema Validation Library](/validation-logic-schema-integration/choosing-a-schema-validation-library/)
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/)
+- [Implementing Async Email Availability Checks](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/)
+- [Choosing a Schema Validation Library](https://www.client-side-form.com/validation-logic-schema-integration/choosing-a-schema-validation-library/)
 
-← [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/)
+← [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/)

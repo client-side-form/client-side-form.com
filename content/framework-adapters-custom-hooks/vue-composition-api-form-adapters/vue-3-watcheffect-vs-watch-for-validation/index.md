@@ -3,7 +3,7 @@ layout: page.njk
 title: "Vue 3 watchEffect vs watch for Validation Triggers"
 description: "When to use watch vs watchEffect to fire form validation in Vue 3 — explicit deps and old/new values vs auto-tracking, flush timing (post/pre/sync), stopping watchers, and avoiding double-fire."
 slug: vue-3-watcheffect-vs-watch-for-validation
-type: long_tail
+type: guide
 breadcrumb: "watchEffect vs watch"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -78,7 +78,7 @@ eleventyNavigation:
 
 Choosing `watch` or `watchEffect` to fire form validation in Vue 3 decides whether your errors update once per real change or fire spuriously on mount and re-run on every unrelated state mutation.
 
-This page assumes you are building on the composition-API adapter described in [Vue composition API form adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/), and it drills into the one decision that trips up production forms: which watcher primitive drives validation, with what flush timing, and how to keep it from double-firing. If your validation is asynchronous, pair this with the cancellation patterns in [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/).
+This page assumes you are building on the composition-API adapter described in [Vue composition API form adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/), and it drills into the one decision that trips up production forms: which watcher primitive drives validation, with what flush timing, and how to keep it from double-firing. If your validation is asynchronous, pair this with the cancellation patterns in [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/).
 
 ---
 
@@ -193,7 +193,7 @@ export function useValidation(form: SignupForm & Record<string, unknown>) {
 `flush` controls *when* in the update cycle the callback runs:
 
 - **`pre`** (default) — before the component re-renders. Correct for computing error state, because Vue then renders the field and its error in one pass rather than painting twice.
-- **`post`** — after the DOM has been patched. Use it only when validation must read the updated DOM: measuring a rendered element, or moving focus to a newly revealed error. This is the mode to use when your logic coordinates with the [error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) that render the message element.
+- **`post`** — after the DOM has been patched. Use it only when validation must read the updated DOM: measuring a rendered element, or moving focus to a newly revealed error. This is the mode to use when your logic coordinates with the [error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) that render the message element.
 - **`sync`** — fires synchronously on every mutation, before batching. It defeats Vue's coalescing and can run many times per interaction; reserve it for cases that genuinely cannot wait a microtask.
 
 ---
@@ -297,8 +297,8 @@ Watchers created synchronously inside `setup` or `<script setup>` are bound to t
 
 ## Related
 
-- [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/)
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/)
-- [Syncing Vue Form State with Pinia](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/)
+- [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/)
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/)
+- [Syncing Vue Form State with Pinia](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/)
 
-← [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/)
+← [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/)

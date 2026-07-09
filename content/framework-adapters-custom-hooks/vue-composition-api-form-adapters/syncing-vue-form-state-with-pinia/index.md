@@ -3,7 +3,7 @@ layout: page.njk
 title: "Syncing Vue Form State with Pinia"
 description: "How to sync local Vue form state to a Pinia store without infinite watch loops, stale dirty flags, or validation context loss — production-ready pattern with debounce and re-entrancy guard."
 slug: "syncing-vue-form-state-with-pinia"
-type: "long_tail"
+type: guide
 breadcrumb: "Syncing Vue Form State with Pinia"
 datePublished: "2025-04-12"
 dateModified: "2026-06-23"
@@ -82,7 +82,7 @@ This page gives you a single, self-contained composable that solves both: a sand
 
 ## Context and prerequisites
 
-This pattern sits one level below [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/), which covers the broader composable architecture for Vue forms. Before wiring a Pinia sync, you need to understand [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — the difference between user-driven mutations and programmatic ones is exactly what the dirty gate in this pattern enforces.
+This pattern sits one level below [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/), which covers the broader composable architecture for Vue forms. Before wiring a Pinia sync, you need to understand [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — the difference between user-driven mutations and programmatic ones is exactly what the dirty gate in this pattern enforces.
 
 The sync diagram below shows the three-layer boundary this composable creates: the input layer owns raw keystrokes, the local reactive object is the validation surface, and the store only ever sees validated or debounced snapshots.
 
@@ -283,14 +283,14 @@ Gate every `$patch` call with a deep equality check and an `isSyncing` re-entran
 <details>
 <summary><strong>Should validation run locally or inside the Pinia store?</strong></summary>
 
-Run validation locally on every keystroke for immediate UX feedback. For [error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) to work correctly, validation errors must be tied to local field keys — not to store keys that may differ after normalization. Commit only validated payloads to the store. Store-level validation is a final guardrail before API submission, not a real-time input filter.
+Run validation locally on every keystroke for immediate UX feedback. For [error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) to work correctly, validation errors must be tied to local field keys — not to store keys that may differ after normalization. Commit only validated payloads to the store. Store-level validation is a final guardrail before API submission, not a real-time input filter.
 
 </details>
 
 <details>
 <summary><strong>How do I handle async validation without blocking state sync?</strong></summary>
 
-Keep the sync watcher and the async validation pipeline completely separate. Use a second `watch` or `watchEffect` for async checks such as email availability. Queue their results independently via a separate `ref` holding field-level error state so a slow server round-trip cannot race against a synchronous state flush. See [implementing async email availability checks](/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/) for the full pattern with `AbortController` cancellation.
+Keep the sync watcher and the async validation pipeline completely separate. Use a second `watch` or `watchEffect` for async checks such as email availability. Queue their results independently via a separate `ref` holding field-level error state so a slow server round-trip cannot race against a synchronous state flush. See [implementing async email availability checks](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/) for the full pattern with `AbortController` cancellation.
 
 </details>
 
@@ -305,9 +305,9 @@ Without `syncToStore.cancel()` in `onBeforeUnmount`, the queued flush fires on t
 
 **Related**
 
-- [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) — composable architecture patterns for Vue 3 forms
-- [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — tracking which fields a user has actually changed
-- [Implementing Pristine State in Vue 3](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/implementing-pristine-state-in-vue-3/) — the pristine baseline this sync pattern depends on
-- [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) — mapping server and store errors back to local field keys
+- [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) — composable architecture patterns for Vue 3 forms
+- [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — tracking which fields a user has actually changed
+- [Implementing Pristine State in Vue 3](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/implementing-pristine-state-in-vue-3/) — the pristine baseline this sync pattern depends on
+- [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) — mapping server and store errors back to local field keys
 
-← [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/)
+← [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/)

@@ -3,7 +3,7 @@ layout: page.njk
 title: "Rendering 100+ Field Forms Without Jank"
 description: "Keep a 100–500 field form at 60fps using uncontrolled inputs with subscription reads, list windowing, and deferred initialization of non-visible fieldsets."
 slug: rendering-100-plus-field-forms-without-jank
-type: long_tail
+type: guide
 breadcrumb: "Rendering 100+ Field Forms"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -75,7 +75,7 @@ Keep a form of 100 to 500 fields at 60fps by making inputs uncontrolled, reading
 
 ## Context
 
-This is the concrete rendering technique behind [performance and scale for large forms](/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/), which explains the render budget and the subscription store this page builds on. The parent covers *why* a controlled form re-renders every field on one keystroke; here we build the windowed, uncontrolled renderer that keeps mount cost and reconciliation inside a frame budget. The value-ownership decision underneath it all is covered in [controlled vs uncontrolled forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — for very large forms, uncontrolled inputs win because they take per-keystroke reconciliation off the table entirely.
+This is the concrete rendering technique behind [performance and scale for large forms](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/), which explains the render budget and the subscription store this page builds on. The parent covers *why* a controlled form re-renders every field on one keystroke; here we build the windowed, uncontrolled renderer that keeps mount cost and reconciliation inside a frame budget. The value-ownership decision underneath it all is covered in [controlled vs uncontrolled forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — for very large forms, uncontrolled inputs win because they take per-keystroke reconciliation off the table entirely.
 
 ## Core Pattern
 
@@ -159,7 +159,7 @@ function WindowedForm({ fields, store, rowHeight = 56, viewportH = 640 }: {
 
 4. **Restore values on remount.** When a row scrolls back into view it remounts and `defaultValue={store.get(def.id)}` re-seeds it from the store. The user's earlier input is intact because the store, not the DOM node, held it.
 
-5. **Submit from the snapshot.** On submit, serialize `store.snapshot()` rather than building `FormData` from the form element. The snapshot contains every field; the DOM contains only the mounted window. This mirrors how [error state mapping](/form-state-fundamentals-architecture/error-state-mapping-patterns/) reads from the store to place errors on fields that may not be mounted.
+5. **Submit from the snapshot.** On submit, serialize `store.snapshot()` rather than building `FormData` from the form element. The snapshot contains every field; the DOM contains only the mounted window. This mirrors how [error state mapping](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) reads from the store to place errors on fields that may not be mounted.
 
 ## Failure Modes and Edge Cases
 
@@ -176,7 +176,7 @@ const data = store.snapshot();
 
 **Variable row heights break the math.** The `rowHeight` constant assumes uniform rows; a field with a validation message is taller, so `padTop` drifts and rows jump. Measure rendered row heights and store a running offset table, or enforce a fixed row height with the message in a reserved, always-present slot.
 
-**Autofocus and jump-to-error miss unmounted fields.** Focusing the first invalid field fails if that field is not in the current window. Scroll the virtualizer to the field's index first, wait one frame for it to mount, then focus — the same ordering [focus management after validation](/accessibility-and-error-ux/focus-management-after-validation/) requires.
+**Autofocus and jump-to-error miss unmounted fields.** Focusing the first invalid field fails if that field is not in the current window. Scroll the virtualizer to the field's index first, wait one frame for it to mount, then focus — the same ordering [focus management after validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/) requires.
 
 **Deferred fieldset init races validation.** If you lazily register a collapsed section only when it scrolls into view, a submit that happens before the user reaches that section must still initialize and validate it. Force-initialize all deferred sections in the submit handler before reading the snapshot.
 
@@ -219,7 +219,7 @@ Render two to five rows beyond each edge of the viewport. Too little overscan sh
 
 ## Related
 
-- [Memoization Boundaries for Form Fields](/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/memoization-boundaries-for-form-fields/) — keeping re-renders scoped once rows are mounted
-- [Controlled vs Uncontrolled Forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — the value-ownership tradeoff behind uncontrolled inputs
+- [Memoization Boundaries for Form Fields](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/memoization-boundaries-for-form-fields/) — keeping re-renders scoped once rows are mounted
+- [Controlled vs Uncontrolled Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — the value-ownership tradeoff behind uncontrolled inputs
 
-← [Performance and Scale for Large Forms](/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/)
+← [Performance and Scale for Large Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/)

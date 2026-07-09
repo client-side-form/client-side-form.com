@@ -3,7 +3,7 @@ layout: page.njk
 title: "Roving tabindex for Radio and Checkbox Groups"
 description: "Build a keyboard-accessible custom radiogroup or checkbox group with roving tabindex: arrow keys move focus and selection, one tab stop, WeakMap element-to-state."
 slug: roving-tabindex-for-option-groups
-type: long_tail
+type: guide
 breadcrumb: "Roving tabindex"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -75,7 +75,7 @@ A custom radiogroup or checkbox group built from `<div>`s must behave exactly li
 
 The bug this page fixes: a custom option group where every option is a tab stop, so a keyboard user must press Tab five times to pass a five-option group, and a screen reader announces each as a separate control instead of "1 of 5". The fix is not more ARIA — it is moving the single `tabindex="0"` as focus roves, and wiring arrow keys to drive both focus and (for radios) selection.
 
-This is the canonical [keyboard navigation pattern](/accessibility-and-error-ux/keyboard-navigation-patterns/) for composite widgets, and it is what lets [focus-first-invalid](/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/) land on the correct member of a group rather than a dead container.
+This is the canonical [keyboard navigation pattern](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/) for composite widgets, and it is what lets [focus-first-invalid](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/) land on the correct member of a group rather than a dead container.
 
 ---
 
@@ -353,8 +353,8 @@ A `WeakMap` keyed by the element lets option state be garbage-collected automati
 
 ## Related
 
-- [Keyboard Navigation Patterns](/accessibility-and-error-ux/keyboard-navigation-patterns/)
-- [Moving Focus to the First Invalid Field](/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/)
-- [Focus Management in Multi-Step Form Wizards](/accessibility-and-error-ux/focus-management-after-validation/focus-management-in-multi-step-wizards/)
+- [Keyboard Navigation Patterns](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/)
+- [Moving Focus to the First Invalid Field](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/)
+- [Focus Management in Multi-Step Form Wizards](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/focus-management-in-multi-step-wizards/)
 
-← [Keyboard Navigation Patterns](/accessibility-and-error-ux/keyboard-navigation-patterns/)
+← [Keyboard Navigation Patterns](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/)

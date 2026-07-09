@@ -3,7 +3,7 @@ layout: page.njk
 title: "Focus Management After Validation"
 description: "Programmatic focus after a failed submit — move focus to the first invalid field or the error summary, avoid focus theft, and restore focus after async validation."
 slug: focus-management-after-validation
-type: cluster
+type: topic
 breadcrumb: "Focus Management"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 When a submit fails validation, the sighted mouse user sees a red field and the keyboard or screen-reader user sees nothing — unless you move focus. Programmatic focus after validation is the single accessibility control that turns an inaccessible form into an operable one, and it is also the control engineers get wrong most often: focus moves on the wrong event, lands on an unfocusable container, fights a smooth-scroll animation, or gets hijacked by an async result that resolves three seconds after the user has already moved on.
 
-This page specifies exactly when focus should move, where it should land, and how to keep a slow [asynchronous validation](/validation-logic-schema-integration/asynchronous-validation-strategies/) round from stealing focus after the user has navigated elsewhere. It sits under the [accessibility and error UX](/accessibility-and-error-ux/) pillar and pairs with [ARIA live regions for form errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/), which handles the announcement side of the same failure event.
+This page specifies exactly when focus should move, where it should land, and how to keep a slow [asynchronous validation](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) round from stealing focus after the user has navigated elsewhere. It sits under the [accessibility and error UX](https://www.client-side-form.com/accessibility-and-error-ux/) area and pairs with [ARIA live regions for form errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/), which handles the announcement side of the same failure event.
 
 ---
 
@@ -292,15 +292,15 @@ The threshold logic above encodes the accessibility guidance: a summary wins whe
 </div>
 ```
 
-The `tabindex="-1"` is load-bearing: a `<div>` is not focusable by default, so `element.focus()` would silently no-op and the screen reader would announce nothing. `tabindex="-1"` makes the container programmatically focusable *without* inserting it into the natural tab order, so keyboard users never tab into an inert wrapper. Each list item links to the field's `id`, so activating it moves focus to the actual control — the summary is a navigation aid, not a dead end. Rendering `role="alert"` on a container that was previously `hidden` announces the summary the moment it appears, complementing the [ARIA live regions](/accessibility-and-error-ux/aria-live-regions-for-form-errors/) that announce inline messages.
+The `tabindex="-1"` is load-bearing: a `<div>` is not focusable by default, so `element.focus()` would silently no-op and the screen reader would announce nothing. `tabindex="-1"` makes the container programmatically focusable *without* inserting it into the natural tab order, so keyboard users never tab into an inert wrapper. Each list item links to the field's `id`, so activating it moves focus to the actual control — the summary is a navigation aid, not a dead end. Rendering `role="alert"` on a container that was previously `hidden` announces the summary the moment it appears, complementing the [ARIA live regions](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/) that announce inline messages.
 
 ---
 
 ## Integration Guidance
 
-Focus management is the terminal step of the submit path; it depends on validation having already produced an ordered error list. The [accessibility and error UX](/accessibility-and-error-ux/) pillar frames how announcement, focus, and keyboard operability fit together, and the [keyboard navigation patterns](/accessibility-and-error-ux/keyboard-navigation-patterns/) page covers the tab-order rules that determine what "first invalid field" even means in DOM order.
+Focus management is the terminal step of the submit path; it depends on validation having already produced an ordered error list. The [accessibility and error UX](https://www.client-side-form.com/accessibility-and-error-ux/) area frames how announcement, focus, and keyboard operability fit together, and the [keyboard navigation patterns](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/) page covers the tab-order rules that determine what "first invalid field" even means in DOM order.
 
-The `validate(signal)` callback is where you plug in your validation pipeline. For synchronous rules the signal is irrelevant; for [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — server-side uniqueness checks, remote business rules — the same `AbortSignal` should be forwarded into `fetch`, so aborting the focus cycle also cancels the network request that fed it.
+The `validate(signal)` callback is where you plug in your validation pipeline. For synchronous rules the signal is irrelevant; for [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — server-side uniqueness checks, remote business rules — the same `AbortSignal` should be forwarded into `fetch`, so aborting the focus cycle also cancels the network request that fed it.
 
 Two ordering rules keep the integration honest:
 
@@ -327,7 +327,7 @@ If your CSS sets `html { scroll-behavior: smooth }` and you call `focus()` witho
 
 In a wizard or an accordion, the first invalid field may live in a collapsed section. `element.focus()` on a `display: none` control does nothing, and focus stays where it was — the user sees no response at all.
 
-**Resolution:** Expand the containing section before focusing. Resolve the field, walk up to its `<details>`/panel ancestor, open it, then focus on the next frame. Multi-step forms need bespoke handling covered in [focus management in multi-step wizards](/accessibility-and-error-ux/focus-management-after-validation/focus-management-in-multi-step-wizards/).
+**Resolution:** Expand the containing section before focusing. Resolve the field, walk up to its `<details>`/panel ancestor, open it, then focus on the next frame. Multi-step forms need bespoke handling covered in [focus management in multi-step wizards](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/focus-management-in-multi-step-wizards/).
 
 ### Focus lands but the screen reader announces nothing
 
@@ -444,9 +444,9 @@ A `<div>`, `<section>`, or heading is not focusable by default, so `element.focu
 
 ## Related
 
-- [Moving Focus to the First Invalid Field](/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/)
-- [Focus Management in Multi-Step Wizards](/accessibility-and-error-ux/focus-management-after-validation/focus-management-in-multi-step-wizards/)
-- [ARIA Live Regions for Form Errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/)
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/)
+- [Moving Focus to the First Invalid Field](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/moving-focus-to-first-invalid-field/)
+- [Focus Management in Multi-Step Wizards](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/focus-management-in-multi-step-wizards/)
+- [ARIA Live Regions for Form Errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/)
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/)
 
-← [Accessibility & Error UX](/accessibility-and-error-ux/)
+← [Accessibility & Error UX](https://www.client-side-form.com/accessibility-and-error-ux/)

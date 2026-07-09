@@ -3,7 +3,7 @@ layout: page.njk
 title: "Wiring aria-describedby for Multiple Errors"
 description: "Associate one input with a hint, an error, and a live character count using a space-separated aria-describedby token list — add and remove ids without clobbering."
 slug: wiring-aria-describedby-for-multiple-errors
-type: long_tail
+type: guide
 breadcrumb: "aria-describedby for Multiple Errors"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -75,13 +75,13 @@ A single input frequently needs three descriptions at once — a persistent form
 
 The bug this page fixes: your error message reaches the screen reader, but the format hint silently disappears, because the code called `input.setAttribute('aria-describedby', errorId)` and clobbered the two ids that were already there. `aria-describedby` accepts a *space-separated list* of ids, and every subsystem that wants to describe the field must add and remove only its own token without disturbing the others.
 
-This pattern sits underneath the [ARIA live regions for form errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/) work: the live region announces the *change*, while `aria-describedby` provides the descriptions a screen reader reads when the user navigates *back onto* the field. You need both, and they reference the same error node.
+This pattern sits underneath the [ARIA live regions for form errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/) work: the live region announces the *change*, while `aria-describedby` provides the descriptions a screen reader reads when the user navigates *back onto* the field. You need both, and they reference the same error node.
 
 ---
 
 ## The token-list model
 
-`aria-describedby` is an [IDREF list](/accessibility-and-error-ux/aria-live-regions-for-form-errors/). Its value is any number of element ids separated by ASCII spaces. When focus lands on the input, assistive technology looks up each id in order, gathers the text content of each referenced element, and reads them as one description string. Three consequences follow directly:
+`aria-describedby` is an [IDREF list](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/). Its value is any number of element ids separated by ASCII spaces. When focus lands on the input, assistive technology looks up each id in order, gathers the text content of each referenced element, and reads them as one description string. Three consequences follow directly:
 
 - **Order in the token list controls announcement order** — not DOM order, not source order. `describedby="hint err count"` reads hint → error → count regardless of where those nodes sit on the page.
 - **A dangling id is not an error** but it is a defect: the browser skips ids that resolve to nothing, so a stale error id whose element you removed produces a silent gap or, worse, reads a hidden empty node on some AT.
@@ -240,7 +240,7 @@ If a conditional error node is removed from the DOM but its id lingers in `aria-
 
 ### Character-count updates spamming the description
 
-The counter node updating on every keystroke is fine for `aria-describedby` (it is read on focus, not on change) but becomes a firehose if that same node is also an `aria-live="polite"` region. Keep the counter's live announcements throttled — see [aria-invalid timing and screen reader announcements](/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/) for the debounce coordination that prevents mid-typing chatter.
+The counter node updating on every keystroke is fine for `aria-describedby` (it is read on focus, not on change) but becomes a firehose if that same node is also an `aria-live="polite"` region. Keep the counter's live announcements throttled — see [aria-invalid timing and screen reader announcements](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/) for the debounce coordination that prevents mid-typing chatter.
 
 ### Hidden hint text still gets announced
 
@@ -289,8 +289,8 @@ You assigned the attribute with a single string instead of merging into the exis
 
 ## Related
 
-- [aria-invalid Timing and Screen Reader Announcements](/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/)
-- [ARIA Live Regions for Form Errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/)
-- [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/)
+- [aria-invalid Timing and Screen Reader Announcements](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/)
+- [ARIA Live Regions for Form Errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/)
+- [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/)
 
-← [ARIA Live Regions for Form Errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/)
+← [ARIA Live Regions for Form Errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/)

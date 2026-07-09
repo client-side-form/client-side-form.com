@@ -3,7 +3,7 @@ layout: page.njk
 title: "ARIA Live Regions for Form Errors"
 description: "How aria-live polite and assertive regions announce form validation errors — role alert vs status, the double-announcement bug, debouncing, and NVDA/JAWS/VoiceOver quirks."
 slug: aria-live-regions-for-form-errors
-type: cluster
+type: topic
 breadcrumb: "ARIA Live Regions"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 A live region is the only mechanism that lets a form tell a screen-reader user "something changed over here" without moving their focus. It is also the single most misused ARIA feature in form code. The failure modes are specific: the first error is silently dropped because the region was inserted in the same tick as its text; every keystroke fires an interruption because the region is `assertive`; the same message is spoken twice because it lives both in the region and in an `aria-describedby` target. This page specifies exactly how a live region should behave for validation errors, provides a production-grade announcer with debouncing and a queue, and documents where NVDA, JAWS, and VoiceOver diverge for identical markup.
 
-This subsystem sits inside the broader [accessibility and error UX](/accessibility-and-error-ux/) architecture: the live region is one of four surfaces driven from a single normalized error map, alongside `aria-invalid`, `aria-describedby`, and the focus target.
+This subsystem sits inside the broader [accessibility and error UX](https://www.client-side-form.com/accessibility-and-error-ux/) architecture: the live region is one of four surfaces driven from a single normalized error map, alongside `aria-invalid`, `aria-describedby`, and the focus target.
 
 ---
 
@@ -287,7 +287,7 @@ The two-step `textContent = ''` then set-on-microtask is the workaround for the 
 
 ## Integration Guidance
 
-The announcer is a pure consumer of the normalized error map described in [error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/). Inline field errors and the submit summary come from the same source, but they travel through different politeness levels and carry different text.
+The announcer is a pure consumer of the normalized error map described in [error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/). Inline field errors and the submit summary come from the same source, but they travel through different politeness levels and carry different text.
 
 ```typescript
 import { LiveAnnouncer } from './live-announcer';
@@ -312,7 +312,7 @@ function onSubmitFailure(errorCount: number): void {
 
 Two rules keep this correct. First, the submit-summary text ("3 errors — the form was not submitted") is deliberately *different* from any individual field's `aria-describedby` text ("Enter a valid email address"). If they were identical, focus landing on the first invalid field after submit would re-read the summary and produce a double announcement. Second, the announcer is the *only* thing that writes the live regions — no other code sets their `textContent` — so bursts always coalesce through one debounce.
 
-For the focus half of the submit response, see [focus management after validation](/accessibility-and-error-ux/focus-management-after-validation/): the announcer speaks the summary while the focus manager moves the cursor to the first invalid control, and the two run in the same synchronous submit handler.
+For the focus half of the submit response, see [focus management after validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/): the announcer speaks the summary while the focus manager moves the cursor to the first invalid control, and the two run in the same synchronous submit handler.
 
 ---
 
@@ -455,8 +455,8 @@ Yes. Screen readers register a live region when it is present in the accessibili
 
 ## Related
 
-- [Wiring aria-describedby for Multiple Errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/wiring-aria-describedby-for-multiple-errors/) — associating one input with several error and hint elements
-- [aria-invalid Timing and Announcements](/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/) — when to set aria-invalid so it does not double-announce
-- [Focus Management After Validation](/accessibility-and-error-ux/focus-management-after-validation/) — the focus half of the submit-failure response
+- [Wiring aria-describedby for Multiple Errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/wiring-aria-describedby-for-multiple-errors/) — associating one input with several error and hint elements
+- [aria-invalid Timing and Announcements](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/) — when to set aria-invalid so it does not double-announce
+- [Focus Management After Validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/) — the focus half of the submit-failure response
 
-← [Accessibility & Error UX](/accessibility-and-error-ux/)
+← [Accessibility & Error UX](https://www.client-side-form.com/accessibility-and-error-ux/)

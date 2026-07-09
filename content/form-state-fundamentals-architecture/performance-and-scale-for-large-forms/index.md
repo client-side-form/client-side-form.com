@@ -3,7 +3,7 @@ layout: page.njk
 title: "Performance and Scale for Large Forms"
 description: "Profiling and rendering forms with 100+ fields without input lag — render budgets, subscription isolation, memoization boundaries, virtualization, and off-main-thread validation."
 slug: performance-and-scale-for-large-forms
-type: cluster
+type: topic
 breadcrumb: "Performance & Scale"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 A form with a dozen fields forgives almost any architecture. A form with three hundred — an insurance application, a tax return, a bulk product editor — punishes every shortcut. The failure is always the same shape: the user types, and the character appears a beat late. That beat is a dropped frame, and on large forms it compounds until every keystroke feels like wading. The cause is almost never the input handler itself; it is the blast radius of the state update the handler triggers, the reconciliation work that update forces, and occasionally a synchronous validator hogging the main thread while the browser waits to paint.
 
-This page is about keeping input latency inside a frame budget as field count grows. It covers how to measure the input-to-paint path, why the [controlled forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) pattern creates render pressure at scale, how field-level subscription stores contain that pressure, where to draw memoization boundaries, when to virtualize long fieldsets, and how to move expensive validation off the main thread. It sits under [Form State Fundamentals & Architecture](/form-state-fundamentals-architecture/) and assumes you already have a working state machine — the problem here is not correctness but throughput.
+This page is about keeping input latency inside a frame budget as field count grows. It covers how to measure the input-to-paint path, why the [controlled forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) pattern creates render pressure at scale, how field-level subscription stores contain that pressure, where to draw memoization boundaries, when to virtualize long fieldsets, and how to move expensive validation off the main thread. It sits under [Form State Fundamentals & Architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/) and assumes you already have a working state machine — the problem here is not correctness but throughput.
 
 ---
 
@@ -166,7 +166,7 @@ You can confirm this is your bottleneck rather than guessing. React's Profiler f
 
 ## Subscription Isolation with a Field-Level Store
 
-The structural fix is to stop subscribing components to the whole state object and instead let each field subscribe to a selector over its own slice. A field is notified only when the value it selects actually changes. The store below is framework-agnostic; a React or Vue adapter wraps `subscribe` in `useSyncExternalStore` or a reactive effect — see [React form hook architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) for the hook layer that consumes it.
+The structural fix is to stop subscribing components to the whole state object and instead let each field subscribe to a selector over its own slice. A field is notified only when the value it selects actually changes. The store below is framework-agnostic; a React or Vue adapter wraps `subscribe` in `useSyncExternalStore` or a reactive effect — see [React form hook architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) for the hook layer that consumes it.
 
 ```typescript
 // A field-level subscription store: writes touch one slice, notifications
@@ -233,7 +233,7 @@ function createFieldStore<T extends Record<string, unknown>>(initial: T): FieldS
 }
 ```
 
-The critical property is in `setField`: it replaces exactly one key and preserves the reference of every other slice. A field component that subscribes with `state => state.phone` gets a selected value that is `Object.is`-identical after an `email` write, so `notify()` skips it. The blast radius of a keystroke collapses from the whole form to one field. This is the same principle behind [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/), where a per-field `Set` avoids whole-object equality — here the per-field selector avoids whole-tree re-rendering.
+The critical property is in `setField`: it replaces exactly one key and preserves the reference of every other slice. A field component that subscribes with `state => state.phone` gets a selected value that is `Object.is`-identical after an `email` write, so `notify()` skips it. The blast radius of a keystroke collapses from the whole form to one field. This is the same principle behind [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/), where a per-field `Set` avoids whole-object equality — here the per-field selector avoids whole-tree re-rendering.
 
 ---
 
@@ -241,7 +241,7 @@ The critical property is in `setField`: it replaces exactly one key and preserve
 
 Subscription isolation stops the store from *notifying* unrelated fields, but the framework can still re-render a child because its parent re-rendered. A memo boundary is what makes a child ignore a parent render when the child's own inputs are unchanged. The rule is precise: memoize the field component, and make sure every prop crossing that boundary is referentially stable, or the boundary leaks and the memo is a no-op.
 
-The two most common leaks are inline event handlers and object props recreated on each parent render. A handler defined as `onChange={v => store.setField('email', v)}` is a new function every render, so a memoized child sees a changed prop and re-renders anyway. Bind the handler once — via the store's stable `setField` plus a stable field key — so the boundary holds. The full treatment of where to place these boundaries and how to keep handlers stable is in [memoization boundaries for form fields](/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/memoization-boundaries-for-form-fields/); the short version is that the boundary belongs at the field component, keyed on the field's own slice, with handlers hoisted out of render.
+The two most common leaks are inline event handlers and object props recreated on each parent render. A handler defined as `onChange={v => store.setField('email', v)}` is a new function every render, so a memoized child sees a changed prop and re-renders anyway. Bind the handler once — via the store's stable `setField` plus a stable field key — so the boundary holds. The full treatment of where to place these boundaries and how to keep handlers stable is in [memoization boundaries for form fields](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/memoization-boundaries-for-form-fields/); the short version is that the boundary belongs at the field component, keyed on the field's own slice, with handlers hoisted out of render.
 
 Vue's equivalent is a `computed` per field over the store plus a component that only reads that computed — the reactivity graph gives you the same skip for free, provided you do not spread the whole form state into a child's props.
 
@@ -251,15 +251,15 @@ Vue's equivalent is a `computed` per field over the store plus a component that 
 
 Isolation and memoization fix keystroke latency but not mount cost. Three hundred mounted `<input>` elements are three hundred DOM nodes, layout boxes, and attached listeners; the initial mount and any full re-render (theme change, locale switch) pay for all of them. Virtualization renders only the fields inside the viewport plus a small overscan buffer, keeping off-screen values in the store where they stay valid and submittable.
 
-The pattern is a windowed list keyed on a stable field id, with each row reading its own slice from the field store. Because values live in the store rather than in component state, scrolling a field out of view and back does not lose data — the remounted row reads the current value on mount. The concrete windowing implementation, including how to defer initialization of non-visible fieldsets so the first paint is cheap, is covered in [rendering 100+ field forms without jank](/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/rendering-100-plus-field-forms-without-jank/).
+The pattern is a windowed list keyed on a stable field id, with each row reading its own slice from the field store. Because values live in the store rather than in component state, scrolling a field out of view and back does not lose data — the remounted row reads the current value on mount. The concrete windowing implementation, including how to defer initialization of non-visible fieldsets so the first paint is cheap, is covered in [rendering 100+ field forms without jank](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/rendering-100-plus-field-forms-without-jank/).
 
-Two caveats matter for correctness. First, native form submission (`FormData` from the form element) only sees mounted inputs, so a virtualized form must submit from the store snapshot, not from the DOM. Second, in-page find (Ctrl+F) and anchor-jump-to-error cannot reach an unmounted field; wire your error-summary links to scroll the virtualizer to the target field before focusing it, so [error state mapping](/form-state-fundamentals-architecture/error-state-mapping-patterns/) still lands focus on the right input.
+Two caveats matter for correctness. First, native form submission (`FormData` from the form element) only sees mounted inputs, so a virtualized form must submit from the store snapshot, not from the DOM. Second, in-page find (Ctrl+F) and anchor-jump-to-error cannot reach an unmounted field; wire your error-summary links to scroll the virtualizer to the target field before focusing it, so [error state mapping](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) still lands focus on the right input.
 
 ---
 
 ## Off-Main-Thread Validation
 
-When profiling shows the long task is validation rather than rendering — a large [Zod schema](/validation-logic-schema-integration/integrating-zod-for-schema-validation/), a cross-field dependency graph, or regex over long strings — the fix is to evict that work from the main thread entirely. A Web Worker runs the schema and posts normalized errors back; the input handler stays under budget because it no longer waits for validation to finish.
+When profiling shows the long task is validation rather than rendering — a large [Zod schema](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/), a cross-field dependency graph, or regex over long strings — the fix is to evict that work from the main thread entirely. A Web Worker runs the schema and posts normalized errors back; the input handler stays under budget because it no longer waits for validation to finish.
 
 ```typescript
 // Main-thread side: dispatch values to a worker, receive normalized errors.
@@ -295,7 +295,7 @@ function createWorkerValidator(worker: Worker) {
 }
 ```
 
-Two rules keep this from introducing new bugs. First, tag every request with a monotonic id and drop replies that are not the latest — a Worker is asynchronous, so a slow earlier validation can otherwise clobber a newer result, exactly the stale-result race that [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) also guards against. Second, a Worker only helps CPU-bound validation; if the long task is reconciliation, the Worker sits idle while the main thread still stalls. Profile before reaching for it.
+Two rules keep this from introducing new bugs. First, tag every request with a monotonic id and drop replies that are not the latest — a Worker is asynchronous, so a slow earlier validation can otherwise clobber a newer result, exactly the stale-result race that [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) also guards against. Second, a Worker only helps CPU-bound validation; if the long task is reconciliation, the Worker sits idle while the main thread still stalls. Profile before reaching for it.
 
 ---
 
@@ -358,7 +358,7 @@ const latency = Number(await page.locator('[name="email"]').getAttribute('data-i
 expect(latency).toBeLessThan(16);
 ```
 
-For accessibility regression, confirm virtualization does not strip the error summary's link targets: an [error summary](/accessibility-and-error-ux/) link must still scroll-and-focus a field that is currently unmounted, and screen-reader field counts must reflect the logical form, not the windowed subset.
+For accessibility regression, confirm virtualization does not strip the error summary's link targets: an [error summary](https://www.client-side-form.com/accessibility-and-error-ux/) link must still scroll-and-focus a field that is currently unmounted, and screen-reader field counts must reflect the logical form, not the windowed subset.
 
 ---
 
@@ -408,9 +408,9 @@ It helps when validation is CPU-bound — large schemas, cross-field graphs, or 
 
 ## Related
 
-- [Rendering 100+ Field Forms Without Jank](/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/rendering-100-plus-field-forms-without-jank/) — windowing, uncontrolled inputs with subscription reads, deferred fieldset init
-- [Memoization Boundaries for Form Fields](/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/memoization-boundaries-for-form-fields/) — where to place memo/selector boundaries and how to keep handlers referentially stable
-- [Controlled vs Uncontrolled Forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — the value-ownership choice that drives render pressure
-- [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) — the hook layer that consumes a subscription store
+- [Rendering 100+ Field Forms Without Jank](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/rendering-100-plus-field-forms-without-jank/) — windowing, uncontrolled inputs with subscription reads, deferred fieldset init
+- [Memoization Boundaries for Form Fields](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/memoization-boundaries-for-form-fields/) — where to place memo/selector boundaries and how to keep handlers referentially stable
+- [Controlled vs Uncontrolled Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — the value-ownership choice that drives render pressure
+- [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) — the hook layer that consumes a subscription store
 
-← [Form State Fundamentals & Architecture](/form-state-fundamentals-architecture/)
+← [Form State Fundamentals & Architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/)

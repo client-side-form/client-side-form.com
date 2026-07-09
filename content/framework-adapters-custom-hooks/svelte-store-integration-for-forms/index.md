@@ -3,7 +3,7 @@ layout: page.njk
 title: "Svelte Store Integration for Forms"
 description: "Production patterns for wiring Svelte writable and derived stores into a form validation pipeline — covering state machines, AbortController-safe async checks, and subscription teardown."
 slug: "svelte-store-integration-for-forms"
-type: "cluster"
+type: topic
 breadcrumb: "Svelte Store Integration for Forms"
 datePublished: "2024-03-15"
 dateModified: "2026-06-23"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 The specific production failure this page addresses: async field validators that resolve out of order, leaving `VALID` stamped on a field whose value has already changed — a race condition that Svelte's reactive primitives do not prevent on their own. This pattern applies whenever a Svelte form touches a remote API (email uniqueness checks, username lookups, postcode lookups) and must display accurate, real-time feedback without committing stale results.
 
-This is a sub-topic within [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/). The broader pipeline context — how validation status flows up from field to form to submit gate — is covered in the [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) reference.
+This is a sub-topic within [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/). The broader pipeline context — how validation status flows up from field to form to submit gate — is covered in the [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) reference.
 
 ---
 
@@ -377,13 +377,13 @@ export const resetForm = () => formStore.set(initialState);
 
 ## Integration guidance
 
-This store pattern slots directly into the [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) pipeline: the `VALIDATING` state maps to the pipeline's in-flight phase, and the `AbortController` cancellation logic is the same mechanism described for cancelling fetch-based uniqueness checks in [implementing async email availability checks](/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/).
+This store pattern slots directly into the [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) pipeline: the `VALIDATING` state maps to the pipeline's in-flight phase, and the `AbortController` cancellation logic is the same mechanism described for cancelling fetch-based uniqueness checks in [implementing async email availability checks](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/).
 
-The `isFormSubmittable` derived store acts as the submit gate described in the [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/). Wire it to `disabled` on the submit button — never compute submission eligibility inline in the component, because derived stores are already memoised.
+The `isFormSubmittable` derived store acts as the submit gate described in the [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/). Wire it to `disabled` on the submit button — never compute submission eligibility inline in the component, because derived stores are already memoised.
 
-If the form rehydrates after SSR, review [handling Svelte form hydration mismatches](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/) before wiring store updates to `on:input` — the first hydration event from the browser can replay input values the server already rendered, triggering spurious `VALIDATING` states.
+If the form rehydrates after SSR, review [handling Svelte form hydration mismatches](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/) before wiring store updates to `on:input` — the first hydration event from the browser can replay input values the server already rendered, triggering spurious `VALIDATING` states.
 
-For [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/), compare `field.value` against the original server-supplied value in a separate derived store rather than inside `updateField`. Mixing dirty-tracking into the validation dispatcher creates temporal coupling that makes testing harder.
+For [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/), compare `field.value` against the original server-supplied value in a separate derived store rather than inside `updateField`. Mixing dirty-tracking into the validation dispatcher creates temporal coupling that makes testing harder.
 
 ---
 
@@ -491,9 +491,9 @@ Module-scope stores suit multi-step wizards and cross-route state where you need
 
 ## Related
 
-- [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) — hook-driven reconciliation as an alternative adapter pattern
-- [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) — `watchEffect`-based reactive pipelines for Vue 3
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — framework-agnostic patterns for race-condition-safe remote checks
-- [Handling Svelte Form Hydration Mismatches](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/) — SSR rehydration edge cases for this store pattern
+- [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) — hook-driven reconciliation as an alternative adapter pattern
+- [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) — `watchEffect`-based reactive pipelines for Vue 3
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — framework-agnostic patterns for race-condition-safe remote checks
+- [Handling Svelte Form Hydration Mismatches](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/) — SSR rehydration edge cases for this store pattern
 
-← [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/)
+← [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/)

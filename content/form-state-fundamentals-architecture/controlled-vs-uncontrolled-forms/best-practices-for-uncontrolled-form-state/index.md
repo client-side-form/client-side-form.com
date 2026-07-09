@@ -3,7 +3,7 @@ layout: page.njk
 title: "Best Practices for Uncontrolled Form State"
 description: "Production best practices for managing uncontrolled form inputs with refs: preventing pristine state drift, handling hydration mismatches, and wiring validation without per-keystroke re-renders."
 slug: "best-practices-for-uncontrolled-form-state"
-type: "long_tail"
+type: guide
 breadcrumb: "Best Practices for Uncontrolled Form State"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -80,9 +80,9 @@ eleventyNavigation:
 
 ## Context and Prerequisites
 
-Before applying the patterns here, make sure you understand the trade-off you are accepting. [Controlled vs uncontrolled forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) covers when each approach makes sense and the lifecycle implications of delegating value ownership to the DOM. This page assumes you have already made that choice and are now debugging or hardening an existing uncontrolled implementation.
+Before applying the patterns here, make sure you understand the trade-off you are accepting. [Controlled vs uncontrolled forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) covers when each approach makes sense and the lifecycle implications of delegating value ownership to the DOM. This page assumes you have already made that choice and are now debugging or hardening an existing uncontrolled implementation.
 
-The hook below also relies on [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) concepts — specifically the distinction between a user-driven mutation and a programmatic one — so skim that page first if the term "pristine snapshot" is new to you.
+The hook below also relies on [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) concepts — specifically the distinction between a user-driven mutation and a programmatic one — so skim that page first if the term "pristine snapshot" is new to you.
 
 ---
 
@@ -244,7 +244,7 @@ export function useUncontrolledSync(formRef: React.RefObject<HTMLFormElement>) {
 }
 ```
 
-`validateField` and `flushValidation` are application-specific — wire them to your [validation schema integration](/validation-logic-schema-integration/) layer (Zod, Yup, or a custom pipeline).
+`validateField` and `flushValidation` are application-specific — wire them to your [validation schema integration](https://www.client-side-form.com/validation-logic-schema-integration/) layer (Zod, Yup, or a custom pipeline).
 
 ---
 
@@ -270,7 +270,7 @@ The pattern of abort-then-create is important. Do not rely on `clearTimeout` alo
 - If `validateField` makes an async call (a server-side uniqueness check, for example), `clearTimeout` only prevents the fetch from being *started* — it does not cancel a fetch already in-flight.
 - `AbortController` passes a `signal` into `fetch` and any `async` validation pipeline, so in-flight requests are cancelled at the network level.
 
-For more on this pattern in async contexts, see [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/).
+For more on this pattern in async contexts, see [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/).
 
 ### Step 4 — Sync Async Default Values
 
@@ -445,9 +445,9 @@ Expose `getValidationState(form)` as a test helper and stamp `data-validation-st
 
 ## Related
 
-- [Controlled vs Uncontrolled Forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — when to choose each approach and the lifecycle trade-offs
-- [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — the broader pattern for tracking user-driven vs programmatic mutations
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — AbortController patterns for server-side uniqueness checks
-- [Form Validation Lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) — how validation states (idle, validating, valid, invalid) integrate across the full form lifecycle
+- [Controlled vs Uncontrolled Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — when to choose each approach and the lifecycle trade-offs
+- [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — the broader pattern for tracking user-driven vs programmatic mutations
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — AbortController patterns for server-side uniqueness checks
+- [Form Validation Lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) — how validation states (idle, validating, valid, invalid) integrate across the full form lifecycle
 
-← [Controlled vs Uncontrolled Forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/)
+← [Controlled vs Uncontrolled Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/)

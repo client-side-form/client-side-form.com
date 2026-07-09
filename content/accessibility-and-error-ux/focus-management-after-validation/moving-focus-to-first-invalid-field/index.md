@@ -3,7 +3,7 @@ layout: page.njk
 title: "Moving Focus to the First Invalid Field"
 description: "On submit, find the first invalid field in DOM order, focus it with preventScroll, then scroll it into view manually — handling collapsed sections and hidden inputs."
 slug: moving-focus-to-first-invalid-field
-type: long_tail
+type: guide
 breadcrumb: "Focus First Invalid Field"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -75,7 +75,7 @@ When a submit fails validation, keyboard and screen-reader users need focus move
 
 The bug this page fixes: submit fails, an error summary appears, but focus stays on the (now disabled or re-enabled) submit button at the bottom of the page. A sighted mouse user can scroll up to hunt for the red field; a keyboard user is stranded. Worse, when you *do* focus the field, the viewport lurches twice because the browser's implicit focus-scroll and your explicit scroll disagree about alignment.
 
-This is the foundational technique for [focus management after validation](/accessibility-and-error-ux/focus-management-after-validation/); it composes with the [aria-invalid timing](/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/) work that flags those fields in the first place.
+This is the foundational technique for [focus management after validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/); it composes with the [aria-invalid timing](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/) work that flags those fields in the first place.
 
 ---
 
@@ -185,7 +185,7 @@ function fieldName(el: HTMLElement): string {
 }
 ```
 
-Wiring it to a submit handler, together with the flagging pass from the [aria-invalid controller](/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/):
+Wiring it to a submit handler, together with the flagging pass from the [aria-invalid controller](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/):
 
 ```typescript
 form.addEventListener("submit", async (e) => {
@@ -235,7 +235,7 @@ first.scrollIntoView({ block: "start" });
 
 ### RadioNodeList resolves to a list, not an element
 
-For radio and checkbox groups, `namedItem` returns a `RadioNodeList`. Calling `.focus()` on the list throws. Take `list[0]`, or better, the currently checked member if there is one. Grouped inputs also benefit from [roving tabindex](/accessibility-and-error-ux/keyboard-navigation-patterns/roving-tabindex-for-option-groups/) so the right member receives focus.
+For radio and checkbox groups, `namedItem` returns a `RadioNodeList`. Calling `.focus()` on the list throws. Take `list[0]`, or better, the currently checked member if there is one. Grouped inputs also benefit from [roving tabindex](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/roving-tabindex-for-option-groups/) so the right member receives focus.
 
 ### Smooth scroll never settles under reduced-motion
 
@@ -288,8 +288,8 @@ Always DOM order. A validation library returns errors in object-key or schema or
 
 ## Related
 
-- [Focus Management in Multi-Step Form Wizards](/accessibility-and-error-ux/focus-management-after-validation/focus-management-in-multi-step-wizards/)
-- [Focus Management After Validation](/accessibility-and-error-ux/focus-management-after-validation/)
-- [aria-invalid Timing and Screen Reader Announcements](/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/)
+- [Focus Management in Multi-Step Form Wizards](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/focus-management-in-multi-step-wizards/)
+- [Focus Management After Validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/)
+- [aria-invalid Timing and Screen Reader Announcements](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/aria-invalid-timing-and-announcements/)
 
-← [Focus Management After Validation](/accessibility-and-error-ux/focus-management-after-validation/)
+← [Focus Management After Validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/)

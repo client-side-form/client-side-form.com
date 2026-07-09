@@ -3,7 +3,7 @@ layout: page.njk
 title: "Password Confirmation Validation Pattern"
 description: "Validate confirmPassword against password: correct cross-field dependency, revalidation when password changes, and accessible error announcement."
 slug: password-confirmation-validation-pattern
-type: long_tail
+type: guide
 breadcrumb: "Password Confirmation"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -82,7 +82,7 @@ Validate that `confirm` equals `password`, keep the result correct when either f
 
 ## Context and Prerequisites
 
-This is a specific case of the ordering and trigger problem covered in [cross-field dependency logic](/validation-logic-schema-integration/cross-field-dependency-logic/): a rule whose result depends on two fields must re-run when *either* input changes, and its error must land on a chosen field path rather than the form root. The equality itself is expressed with a schema refinement, so the setup in [integrating Zod for schema validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) is the foundation this builds on. The whole pattern hinges on one asymmetry: the rule lives on `confirm`, but `password` is a co-trigger for it.
+This is a specific case of the ordering and trigger problem covered in [cross-field dependency logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/): a rule whose result depends on two fields must re-run when *either* input changes, and its error must land on a chosen field path rather than the form root. The equality itself is expressed with a schema refinement, so the setup in [integrating Zod for schema validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) is the foundation this builds on. The whole pattern hinges on one asymmetry: the rule lives on `confirm`, but `password` is a co-trigger for it.
 
 ---
 
@@ -143,7 +143,7 @@ function validateFields(values: Values, changed: keyof Values): Record<string, s
 
 ### Accessible announcement
 
-The mismatch must reach assistive technology. Set `aria-invalid` on the confirm input and point `aria-describedby` at a live error node, following the conventions in [accessibility and error UX](/accessibility-and-error-ux/).
+The mismatch must reach assistive technology. Set `aria-invalid` on the confirm input and point `aria-describedby` at a live error node, following the conventions in [accessibility and error UX](https://www.client-side-form.com/accessibility-and-error-ux/).
 
 ```typescript
 // Reflect the confirm error into the DOM accessibly.
@@ -195,7 +195,7 @@ const passwordProps = register("password", {
 });
 ```
 
-The `getFieldState("confirm").isTouched` guard is what implements the "compute always, reveal on touch" rule at the framework layer: the resolver still evaluates the schema on every change, but the visible revalidation of `confirm` is deferred until the user has committed to it. A custom hook built on the [React form hook architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) applies the same idea by consulting the `revalidateTriggers` map inside its dispatch reducer.
+The `getFieldState("confirm").isTouched` guard is what implements the "compute always, reveal on touch" rule at the framework layer: the resolver still evaluates the schema on every change, but the visible revalidation of `confirm` is deferred until the user has committed to it. A custom hook built on the [React form hook architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) applies the same idea by consulting the `revalidateTriggers` map inside its dispatch reducer.
 
 ---
 
@@ -287,8 +287,8 @@ Gate the message on the `confirm` field being touched or blurred. Compute the eq
 
 ## Related
 
-- [Cross-Field Dependency Logic](/validation-logic-schema-integration/cross-field-dependency-logic/)
-- [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/)
-- [How to Validate Dependent Fields with Zod](/validation-logic-schema-integration/integrating-zod-for-schema-validation/how-to-validate-dependent-fields-with-zod/)
+- [Cross-Field Dependency Logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/)
+- [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/)
+- [How to Validate Dependent Fields with Zod](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/how-to-validate-dependent-fields-with-zod/)
 
-← [Cross-Field Dependency Logic](/validation-logic-schema-integration/cross-field-dependency-logic/)
+← [Cross-Field Dependency Logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/)

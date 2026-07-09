@@ -1,9 +1,9 @@
 ---
 layout: base.njk
-pageType: pillar
+pageType: section
 ---
 <div class="content-wrapper">
-  {# Breadcrumbs for pillar hubs #}
+  {# Breadcrumbs for section hubs #}
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="/">Home</a>
     <span class="sep" aria-hidden="true">›</span>
@@ -23,7 +23,7 @@ pageType: pillar
     {% if children.length > 0 %}
     <nav class="related-content" aria-label="Topics in this section">
       <h2>Topics in this Section</h2>
-      <div class="pillar-children">
+      <div class="area-children">
         {% for item in children %}
         <a href="{{ item.url }}" class="child-card">
           <h3>{{ item.title }}</h3>

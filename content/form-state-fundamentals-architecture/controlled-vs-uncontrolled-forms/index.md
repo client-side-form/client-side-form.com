@@ -3,7 +3,7 @@ layout: page.njk
 title: "Controlled vs Uncontrolled Forms"
 description: "Architecture and validation strategies for controlled and uncontrolled form patterns — state ownership, memory allocation, render performance, and a hybrid adapter that handles both."
 slug: "controlled-vs-uncontrolled-forms"
-type: "cluster"
+type: topic
 breadcrumb: "Controlled vs Uncontrolled Forms"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -144,7 +144,7 @@ The ownership decision (controlled vs. uncontrolled) is fixed at mount time per 
 
 **Uncontrolled components** store their value in the DOM. The framework does not own the value; you read it on demand via a ref or `FormData`. This eliminates per-keystroke re-renders, but complicates cross-field dependency resolution because you must imperatively pull values rather than reading from a reactive store.
 
-Tracking which fields have changed requires explicit [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) logic in both cases. For controlled components, compare current state against the initial snapshot. For uncontrolled components, compare the DOM's current `value` against a snapshot stored at mount time.
+Tracking which fields have changed requires explicit [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) logic in both cases. For controlled components, compare current state against the initial snapshot. For uncontrolled components, compare the DOM's current `value` against a snapshot stored at mount time.
 
 ### Event Delegation & Render Batching
 
@@ -154,9 +154,9 @@ Vue's `v-model` directive wraps a controlled pattern but allows `.lazy` to debou
 
 ## Validation Pipeline Integration
 
-The [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) applies to both paradigms, but the wiring diverges at the point of value extraction:
+The [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) applies to both paradigms, but the wiring diverges at the point of value extraction:
 
-- **Controlled forms:** validators receive values directly from state. Real-time schema evaluation and inline error injection work without extra plumbing. Schema libraries like Zod can evaluate on every state change, and the error shape flows directly to UI components via [error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/).
+- **Controlled forms:** validators receive values directly from state. Real-time schema evaluation and inline error injection work without extra plumbing. Schema libraries like Zod can evaluate on every state change, and the error shape flows directly to UI components via [error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/).
 - **Uncontrolled forms:** validators must pull values from refs or the Constraint Validation API (`input.checkValidity()`, `input.setCustomValidity()`). Validation results must be written back to a parallel error state — not to the field value itself — and then re-rendered as error messages.
 
 The most important architectural constraint is that **validation rules must be decoupled from both paradigms**: pure functions that accept a value and return `string | null` or `Promise<string | null>` compose identically for controlled and uncontrolled fields, and they remain testable without a DOM.
@@ -295,18 +295,18 @@ function applyFieldError(
 }
 ```
 
-This pattern applies whether the field is controlled (call after state update) or uncontrolled (call after `extractUncontrolledValues`). For more on mapping errors to UI components, see [mapping validation errors to UI components](/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/).
+This pattern applies whether the field is controlled (call after state update) or uncontrolled (call after `extractUncontrolledValues`). For more on mapping errors to UI components, see [mapping validation errors to UI components](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/).
 
 ## Integration Guidance
 
-The adapter slots into the [form state fundamentals architecture](/form-state-fundamentals-architecture/) as the normalisation layer between the DOM and your validation schema:
+The adapter slots into the [form state fundamentals architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/) as the normalisation layer between the DOM and your validation schema:
 
 1. At mount, pass your field config to `FormValidationAdapter` — this is the only place where controlled vs. uncontrolled ownership is declared.
 2. On each `input` or `blur` event, call `validateField` with the current value. For controlled fields, read from state. For uncontrolled fields, pass `event.target.value` directly (do not wait for a ref read).
 3. On submit, call `extractUncontrolledValues` to harvest the full DOM snapshot, merge it with controlled state, then run `validateField` across all fields in parallel.
 4. On reset, call `resetState` before restoring initial values, ensuring no aborted validators resurface stale errors.
 
-For React specifically, the adapter class instance should live in a `useRef` (not `useState`) so it is stable across renders. See [building a custom `useFormField` hook](/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) for a complete React integration.
+For React specifically, the adapter class instance should live in a `useRef` (not `useState`) so it is stable across renders. See [building a custom `useFormField` hook](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) for a complete React integration.
 
 ## Edge Cases & Failure Modes
 
@@ -398,9 +398,9 @@ Store one `AbortController` per field in the adapter (a `Map<keyof T, AbortContr
 
 ## Related
 
-- [Best Practices for Uncontrolled Form State](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/best-practices-for-uncontrolled-form-state/) — imperative DOM read patterns, ref snapshots, and reset safety
-- [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — comparing current values against initial snapshots for both paradigms
-- [Form Validation Lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) — the full event sequence from mount through submit and teardown
-- [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) — routing validation errors to the correct UI components
+- [Best Practices for Uncontrolled Form State](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/best-practices-for-uncontrolled-form-state/) — imperative DOM read patterns, ref snapshots, and reset safety
+- [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — comparing current values against initial snapshots for both paradigms
+- [Form Validation Lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) — the full event sequence from mount through submit and teardown
+- [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) — routing validation errors to the correct UI components
 
-← [Form State Fundamentals & Architecture](/form-state-fundamentals-architecture/)
+← [Form State Fundamentals & Architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/)

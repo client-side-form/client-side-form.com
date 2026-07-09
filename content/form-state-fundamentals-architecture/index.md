@@ -1,9 +1,9 @@
 ---
-layout: pillar.njk
+layout: section.njk
 title: "Form State Fundamentals & Architecture"
 description: "Architectural blueprint for managing client-side form state — lifecycle, dirty/pristine tracking, error mapping, and validation pipeline patterns. Framework-agnostic reference for production-grade forms."
 slug: "form-state-fundamentals-architecture"
-type: "pillar"
+type: section
 breadcrumb: "Form State Fundamentals"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -197,7 +197,7 @@ interface FormController<T extends Record<string, unknown>> {
 
 ## Controlled vs Uncontrolled: Choosing Value Ownership
 
-The first architectural decision on any form is where field values live. [Controlled vs uncontrolled forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) determines whether the framework's reactive state layer or the DOM's own input elements hold the canonical value.
+The first architectural decision on any form is where field values live. [Controlled vs uncontrolled forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) determines whether the framework's reactive state layer or the DOM's own input elements hold the canonical value.
 
 Controlled forms wire every keystroke through the state machine — fine-grained validation triggers on `onChange` are straightforward, but large forms can create render pressure if the state update propagates to unrelated subtrees. The fix is field-level memoization at component boundaries, not abandoning the controlled pattern.
 
@@ -222,7 +222,7 @@ type AsyncFieldValidator<V> = (
 
 ## Dirty and Pristine Tracking
 
-Reliable change detection distinguishes user-driven edits from programmatic mutations. [Dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) covers the canonical patterns: comparing current values against the `initialValues` snapshot taken at mount, and isolating the flag-setting path so that API hydration and programmatic default injection never incorrectly mark a field dirty.
+Reliable change detection distinguishes user-driven edits from programmatic mutations. [Dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) covers the canonical patterns: comparing current values against the `initialValues` snapshot taken at mount, and isolating the flag-setting path so that API hydration and programmatic default injection never incorrectly mark a field dirty.
 
 ```typescript
 // Compute per-field dirty flags without full-object equality — runs in O(n) for n fields.
@@ -253,7 +253,7 @@ Debounce works well for burst keystroke inputs; throttle is better for continuou
 
 A well-structured pipeline prevents the two most common production failures: main-thread blocking from heavy synchronous schema traversal, and stale async results overwriting correct state.
 
-The [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) maps the exact state machine transitions — from `idle` through `validating` to `valid`, `invalid`, or a retryable error. Structure the pipeline as three sequential stages:
+The [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) maps the exact state machine transitions — from `idle` through `validating` to `valid`, `invalid`, or a retryable error. Structure the pipeline as three sequential stages:
 
 1. **Format checks** — regex, type coercion, required-field presence. Pure, synchronous, O(n).
 2. **Schema validation** — Zod, Yup, Valibot, or a custom rule set. Still synchronous for most shapes; keep rule complexity bounded.
@@ -307,7 +307,7 @@ Write individual validators as pure functions — a value and optional context i
 
 ## Error Propagation and Accessibility
 
-Raw validation errors must be normalized before reaching the view layer. Strip library-specific metadata; expose only user-facing strings and optional severity levels (`'error' | 'warning' | 'info'`). [Error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) covers the adapter layer that translates Zod, Yup, and custom error shapes into a predictable `FieldErrorMap`.
+Raw validation errors must be normalized before reaching the view layer. Strip library-specific metadata; expose only user-facing strings and optional severity levels (`'error' | 'warning' | 'info'`). [Error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) covers the adapter layer that translates Zod, Yup, and custom error shapes into a predictable `FieldErrorMap`.
 
 Every field error must be programmatically associated with its input via `aria-describedby`. Submission-level alerts must live in a separate `role="alert"` or `aria-live="assertive"` region — not inside the field group — so screen readers announce them without interrupting in-progress field reading.
 
@@ -432,9 +432,9 @@ Field-level validation (on `blur` or debounced `change`) catches formatting and 
 
 ## Related
 
-- [Controlled vs Uncontrolled Forms](/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — state ownership, memory allocation, and hybrid adapters
-- [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — canonical patterns for distinguishing user edits from programmatic resets
-- [Form Validation Lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) — state machine transitions from idle through validation to resolution
-- [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) — adapter layer for Zod, Yup, and custom error shapes
+- [Controlled vs Uncontrolled Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/) — state ownership, memory allocation, and hybrid adapters
+- [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — canonical patterns for distinguishing user edits from programmatic resets
+- [Form Validation Lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) — state machine transitions from idle through validation to resolution
+- [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) — adapter layer for Zod, Yup, and custom error shapes
 
-← [Home](/)
+← [Home](https://www.client-side-form.com/)

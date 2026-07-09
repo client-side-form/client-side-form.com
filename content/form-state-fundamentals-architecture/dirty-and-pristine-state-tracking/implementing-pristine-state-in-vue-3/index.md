@@ -3,7 +3,7 @@ layout: page.njk
 title: "Implementing Pristine State in Vue 3"
 description: "A production-focused guide to tracking untouched form fields in Vue 3 using the Composition API: immutable baselines, computed comparisons, async hydration, and per-field granularity."
 slug: implementing-pristine-state-in-vue-3
-type: long_tail
+type: guide
 breadcrumb: "Implementing Pristine State in Vue 3"
 datePublished: "2024-11-10"
 dateModified: "2026-06-23"
@@ -80,7 +80,7 @@ eleventyNavigation:
 
 ## Context and Prerequisites
 
-This page builds on [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — read that first if you need the conceptual model. The composable below is Vue 3-specific; for a React equivalent see [how to track dirty fields in React forms](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/).
+This page builds on [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) — read that first if you need the conceptual model. The composable below is Vue 3-specific; for a React equivalent see [how to track dirty fields in React forms](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/).
 
 The core challenge is that Vue wraps every `reactive()` object in a `Proxy`. A comparison like `baseline === current` will always return `false` even when both contain identical data, because you're comparing two different proxy objects, not their underlying values. The solution is to keep the baseline as a plain-value clone and compare with deep equality.
 
@@ -279,7 +279,7 @@ async function handleSubmit() {
 
 **Stale baseline after optimistic updates.** If you apply an optimistic UI update to `current` before the server confirms, and then the server rejects the request, calling `reset()` restores the pre-submission state — which is correct. Do not call `updateBaseline` until the server response confirms success; otherwise a failed save permanently shifts the baseline.
 
-**`watchEffect` triggering during SSR.** On Nuxt 3, `watchEffect` runs on the server. A `watchEffect` that reads `current` and performs pristine logic will execute in SSR context where the DOM does not exist. Use `computed` (which is SSR-safe and lazy) rather than `watchEffect` for pristine derivation. If you need side effects on pristine state change, use `watch` with `{ flush: 'post' }` and guard with `if (import.meta.client)`. See [handling Svelte form hydration mismatches](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/) for a parallel problem in another framework.
+**`watchEffect` triggering during SSR.** On Nuxt 3, `watchEffect` runs on the server. A `watchEffect` that reads `current` and performs pristine logic will execute in SSR context where the DOM does not exist. Use `computed` (which is SSR-safe and lazy) rather than `watchEffect` for pristine derivation. If you need side effects on pristine state change, use `watch` with `{ flush: 'post' }` and guard with `if (import.meta.client)`. See [handling Svelte form hydration mismatches](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/) for a parallel problem in another framework.
 
 **Proxy comparison in third-party equality libraries.** Some older deep-equal implementations inspect the object's `constructor` property. Vue's `Proxy` objects report their target's constructor, so this usually works — but if you switch to a library that uses `Object.is` internally for object identity, all comparisons will return `false`. Always test your equality function against `reactive({})` vs `{}` before shipping.
 
@@ -330,9 +330,9 @@ Almost never for the `isPristine` flag itself. `computed` caches the result and 
 
 ## Related
 
-- [How to Track Dirty Fields in React Forms](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/) — same baseline-snapshot pattern in a React reducer
-- [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) — how to wire this composable into a broader form adapter layer
-- [Syncing Vue Form State with Pinia](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/) — moving baseline and current into a Pinia store for cross-component pristine tracking
-- [Form Validation Lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) — when pristine state integrates with validation triggers (on-blur vs on-change vs on-submit)
+- [How to Track Dirty Fields in React Forms](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/how-to-track-dirty-fields-in-react-forms/) — same baseline-snapshot pattern in a React reducer
+- [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) — how to wire this composable into a broader form adapter layer
+- [Syncing Vue Form State with Pinia](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/) — moving baseline and current into a Pinia store for cross-component pristine tracking
+- [Form Validation Lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) — when pristine state integrates with validation triggers (on-blur vs on-change vs on-submit)
 
-← [Dirty and Pristine State Tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/)
+← [Dirty and Pristine State Tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/)

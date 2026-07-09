@@ -2,7 +2,7 @@
 title: "Synchronous Validation Patterns"
 description: "Production-ready synchronous validation patterns for client-side forms: state machine specs, typed TypeScript implementations, edge cases, and troubleshooting for blur, change, and submit triggers."
 slug: "synchronous-validation-patterns"
-type: "cluster"
+type: topic
 breadcrumb: "Synchronous Validation Patterns"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 Synchronous validation is the backbone of responsive form UX: it evaluates constraints on the main thread with zero latency, giving users instant feedback on format, length, and structural rules before a single network byte is sent. The failure mode this pattern prevents is *deferred error display* — where users complete an entire form, submit it, wait for a round-trip, and only then discover they mistyped a phone number in field two. That experience collapse can be avoided entirely by running deterministic checks inline.
 
-This page covers the state machine, a production-ready TypeScript implementation, the browser-specific edge cases that break naive approaches, and the ARIA wiring you need to make validation accessible. Where rules depend on server state (username availability, email deliverability), hand off to [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — those patterns handle AbortController cancellation and race conditions that synchronous code cannot. For the schema-level constraint layer that sits above both, see [integrating Zod for schema validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/).
+This page covers the state machine, a production-ready TypeScript implementation, the browser-specific edge cases that break naive approaches, and the ARIA wiring you need to make validation accessible. Where rules depend on server state (username availability, email deliverability), hand off to [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — those patterns handle AbortController cancellation and race conditions that synchronous code cannot. For the schema-level constraint layer that sits above both, see [integrating Zod for schema validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/).
 
 ## State Machine Specification
 
@@ -295,14 +295,14 @@ export const numericRange =
 
 ## Integration Guidance
 
-This synchronous layer slots into the broader [validation logic & schema integration](/validation-logic-schema-integration/) pipeline as the first evaluation pass. The pipeline order is:
+This synchronous layer slots into the broader [validation logic & schema integration](https://www.client-side-form.com/validation-logic-schema-integration/) pipeline as the first evaluation pass. The pipeline order is:
 
 1. **Synchronous rules** (this page) — format, length, range; zero latency.
-2. **Schema-level coercion** — if you use [Zod schema validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/), run `schema.safeParse()` against the normalized value after synchronous rules pass. Zod's error map translates directly to your `FieldState.error` shape.
-3. **Asynchronous uniqueness checks** — only fire after synchronous and schema passes; cancel previous in-flight requests via AbortController. See [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/).
-4. **Cross-field dependency re-evaluation** — when field A's value affects field B's validity, consult [cross-field dependency logic](/validation-logic-schema-integration/cross-field-dependency-logic/) for the dependency graph pattern that prevents cascading re-renders.
+2. **Schema-level coercion** — if you use [Zod schema validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/), run `schema.safeParse()` against the normalized value after synchronous rules pass. Zod's error map translates directly to your `FieldState.error` shape.
+3. **Asynchronous uniqueness checks** — only fire after synchronous and schema passes; cancel previous in-flight requests via AbortController. See [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/).
+4. **Cross-field dependency re-evaluation** — when field A's value affects field B's validity, consult [cross-field dependency logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/) for the dependency graph pattern that prevents cascading re-renders.
 
-For React specifically, [debouncing validation triggers](/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) shows how to wrap the synchronous reducer call in a debounce boundary that keeps keystroke feedback immediate on `onBlur` while deferring the heavier per-keystroke re-render pass.
+For React specifically, [debouncing validation triggers](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) shows how to wrap the synchronous reducer call in a debounce boundary that keeps keystroke feedback immediate on `onBlur` while deferring the heavier per-keystroke re-render pass.
 
 ## Edge Cases and Failure Modes
 
@@ -473,9 +473,9 @@ Yes, and it happens silently in production. A regex like `/^(\d+\.?)+$/` against
 
 ## Related
 
-- [Debouncing Validation Triggers in React](/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) — balance instant blur feedback with batched keystroke evaluation
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — server-dependent checks with AbortController and race-condition prevention
-- [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — schema-level type coercion and error mapping that feeds into this pipeline
-- [Cross-Field Dependency Logic](/validation-logic-schema-integration/cross-field-dependency-logic/) — dependency graphs for fields whose validity depends on sibling values
+- [Debouncing Validation Triggers in React](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) — balance instant blur feedback with batched keystroke evaluation
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — server-dependent checks with AbortController and race-condition prevention
+- [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — schema-level type coercion and error mapping that feeds into this pipeline
+- [Cross-Field Dependency Logic](https://www.client-side-form.com/validation-logic-schema-integration/cross-field-dependency-logic/) — dependency graphs for fields whose validity depends on sibling values
 
-← [Validation Logic & Schema Integration](/validation-logic-schema-integration/)
+← [Validation Logic & Schema Integration](https://www.client-side-form.com/validation-logic-schema-integration/)

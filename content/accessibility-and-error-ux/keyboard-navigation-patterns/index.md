@@ -3,7 +3,7 @@ layout: page.njk
 title: "Keyboard Navigation Patterns for Forms"
 description: "Keyboard operability for forms — logical tab order, roving tabindex for grouped controls, Enter and Escape semantics, focus trapping, and custom combobox keyboard models."
 slug: keyboard-navigation-patterns
-type: cluster
+type: topic
 breadcrumb: "Keyboard Navigation"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 A form that works perfectly with a mouse can be completely unusable from a keyboard: the tab order zig-zags because the DOM does not match the layout, a radio group forces the user to Tab through every option, a custom combobox swallows the arrow keys, and a modal lets Tab escape to the page behind it. Keyboard operability is not an add-on — WCAG 2.1.1 makes it a baseline, and for screen-reader users the keyboard *is* the interface.
 
-This page specifies the keyboard model for the controls forms are actually built from: native inputs, grouped radio/checkbox sets, custom comboboxes and date pickers, and the modals and wizards that wrap them. It sits under the [accessibility and error UX](/accessibility-and-error-ux/) pillar and pairs with [focus management after validation](/accessibility-and-error-ux/focus-management-after-validation/), which handles where focus goes when a submit fails.
+This page specifies the keyboard model for the controls forms are actually built from: native inputs, grouped radio/checkbox sets, custom comboboxes and date pickers, and the modals and wizards that wrap them. It sits under the [accessibility and error UX](https://www.client-side-form.com/accessibility-and-error-ux/) area and pairs with [focus management after validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/), which handles where focus goes when a submit fails.
 
 ---
 
@@ -306,7 +306,7 @@ export function trapFocus(container: HTMLElement): () => void {
 }
 ```
 
-Restore focus to the trigger element when the trap tears down, or the user is dropped at the top of the document. In multi-step forms the trap boundary and the focus-restoration target both move per step, which the [focus management after validation](/accessibility-and-error-ux/focus-management-after-validation/) page covers alongside wizard focus.
+Restore focus to the trigger element when the trap tears down, or the user is dropped at the top of the document. In multi-step forms the trap boundary and the focus-restoration target both move per step, which the [focus management after validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/) page covers alongside wizard focus.
 
 ---
 
@@ -321,13 +321,13 @@ A custom combobox (an editable text input with an attached listbox popup) has a 
 - **`Home` / `End`** — move to the first / last option.
 - **Printable characters** — type into the input and filter the options; use `aria-activedescendant` to point at the highlighted option rather than moving DOM focus, so the input keeps the caret.
 
-The listbox is a roving structure, but the combobox model uses `aria-activedescendant` (virtual focus) instead of physically moving `focus()`, because the text caret must stay in the input. The controller updates `aria-activedescendant` on the input to the id of the highlighted `[role="option"]`, and toggles `aria-selected` on that option — DOM focus never leaves the text field. Date pickers follow the analogous grid model (arrow keys across days, `PageUp`/`PageDown` across months). A worked implementation lives in [roving tabindex for option groups](/accessibility-and-error-ux/keyboard-navigation-patterns/roving-tabindex-for-option-groups/).
+The listbox is a roving structure, but the combobox model uses `aria-activedescendant` (virtual focus) instead of physically moving `focus()`, because the text caret must stay in the input. The controller updates `aria-activedescendant` on the input to the id of the highlighted `[role="option"]`, and toggles `aria-selected` on that option — DOM focus never leaves the text field. Date pickers follow the analogous grid model (arrow keys across days, `PageUp`/`PageDown` across months). A worked implementation lives in [roving tabindex for option groups](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/roving-tabindex-for-option-groups/).
 
 ---
 
 ## Integration Guidance
 
-Keyboard operability underpins every other accessibility concern in the [accessibility and error UX](/accessibility-and-error-ux/) pillar: focus after validation only works if tab order is coherent, and live-region announcements only reach users who can navigate to the fields being announced. The roving-tabindex controller and focus-trap here are the primitives that [focus management after validation](/accessibility-and-error-ux/focus-management-after-validation/) builds its "first invalid field" logic on top of — "first" means first in tab order, which these patterns define.
+Keyboard operability underpins every other accessibility concern in the [accessibility and error UX](https://www.client-side-form.com/accessibility-and-error-ux/) area: focus after validation only works if tab order is coherent, and live-region announcements only reach users who can navigate to the fields being announced. The roving-tabindex controller and focus-trap here are the primitives that [focus management after validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/) builds its "first invalid field" logic on top of — "first" means first in tab order, which these patterns define.
 
 Two integration rules keep the keyboard layer robust:
 
@@ -466,8 +466,8 @@ Enter in a single-line text field submits the form (native behaviour); inside a 
 
 ## Related
 
-- [Roving Tabindex for Option Groups](/accessibility-and-error-ux/keyboard-navigation-patterns/roving-tabindex-for-option-groups/)
-- [Focus Management After Validation](/accessibility-and-error-ux/focus-management-after-validation/)
-- [ARIA Live Regions for Form Errors](/accessibility-and-error-ux/aria-live-regions-for-form-errors/)
+- [Roving Tabindex for Option Groups](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/roving-tabindex-for-option-groups/)
+- [Focus Management After Validation](https://www.client-side-form.com/accessibility-and-error-ux/focus-management-after-validation/)
+- [ARIA Live Regions for Form Errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/)
 
-← [Accessibility & Error UX](/accessibility-and-error-ux/)
+← [Accessibility & Error UX](https://www.client-side-form.com/accessibility-and-error-ux/)

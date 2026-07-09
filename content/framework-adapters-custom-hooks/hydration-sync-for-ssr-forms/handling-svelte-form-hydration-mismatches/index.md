@@ -3,7 +3,7 @@ layout: page.njk
 title: "Handling Svelte Form Hydration Mismatches"
 description: "Fix SvelteKit hydration mismatches in forms by gating client-side validation behind a reactive hydration flag, wiring accessible ARIA state, and cleaning up on navigation."
 slug: "handling-svelte-form-hydration-mismatches"
-type: "long_tail"
+type: guide
 breadcrumb: "Handling Svelte Form Hydration Mismatches"
 datePublished: "2025-09-01"
 dateModified: "2026-07-09"
@@ -80,7 +80,7 @@ eleventyNavigation:
 
 ## Context and prerequisites
 
-This page drills into one specific failure mode inside the broader topic of [hydration sync for SSR forms](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/). Before reading on, you should be familiar with how SvelteKit's `$page.form` object carries server action results back to the client. You should also understand [Svelte store integration for forms](/framework-adapters-custom-hooks/svelte-store-integration-for-forms/) because the fix wraps that same store pattern with a lifecycle gate.
+This page drills into one specific failure mode inside the broader topic of [hydration sync for SSR forms](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/). Before reading on, you should be familiar with how SvelteKit's `$page.form` object carries server action results back to the client. You should also understand [Svelte store integration for forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/) because the fix wraps that same store pattern with a lifecycle gate.
 
 The diagram below shows the two timelines — server render and client hydration — and the narrow window where premature validation causes the mismatch:
 
@@ -300,7 +300,7 @@ The single implementation below addresses the entire mismatch class. Every non-o
 
 6. **Gate `validateField` with `if (!$isHydrated) return`.** This is the inline guard — a second line of defence in case the derived store's value has not yet propagated when an input event fires very early.
 
-7. **Use `AbortController` to cancel in-flight async validation.** Each call to `validateField` aborts the previous controller and creates a fresh one. The `signal` is checked after any async operation to discard stale results — this is the pattern described in [implementing async email availability checks](/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/).
+7. **Use `AbortController` to cancel in-flight async validation.** Each call to `validateField` aborts the previous controller and creates a fresh one. The `signal` is checked after any async operation to discard stale results — this is the pattern described in [implementing async email availability checks](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/).
 
 ## Failure modes and edge cases
 
@@ -385,9 +385,9 @@ Yes. Replace `writable` with `$state` and `derived` with `$derived`. Keep the sa
 
 **Related**
 
-- [Hydration Sync for SSR Forms](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/) — the parent topic covering the full hydration sync approach across frameworks
-- [Svelte Store Integration for Forms](/framework-adapters-custom-hooks/svelte-store-integration-for-forms/) — how to structure writable and derived stores for form state management
-- [Implementing Async Email Availability Checks](/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/) — the `AbortController` cancellation pattern used in the validation gate above
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — broader async validation patterns including debounce and retry
+- [Hydration Sync for SSR Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/) — the parent topic covering the full hydration sync approach across frameworks
+- [Svelte Store Integration for Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/) — how to structure writable and derived stores for form state management
+- [Implementing Async Email Availability Checks](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/) — the `AbortController` cancellation pattern used in the validation gate above
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — broader async validation patterns including debounce and retry
 
-← [Hydration Sync for SSR Forms](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/)
+← [Hydration Sync for SSR Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/)

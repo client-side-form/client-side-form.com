@@ -1,9 +1,9 @@
 ---
-layout: pillar.njk
+layout: section.njk
 title: "Framework Adapters & Custom Hooks for Form State"
 description: "Architecture guide for building framework adapters and custom hooks that manage form state across React, Vue, and Svelte — covering state lifecycles, validation pipelines, SSR hydration, and memory teardown."
 slug: framework-adapters-custom-hooks
-type: pillar
+type: section
 breadcrumb: "Framework Adapters & Custom Hooks"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -82,7 +82,7 @@ This guide covers the adapter and hook patterns that prevent those failures. It 
 
 React's `useState` and `useReducer`, Vue 3's `ref`/`reactive` proxies, and Svelte's writable stores are fundamentally different reactivity primitives. A validation pipeline written directly against one of them is not portable and cannot be unit-tested independently of the rendering engine.
 
-The solution is a typed `FormStateAdapter` interface that every framework implementation satisfies. The adapter owns the translation between native reactivity and a stable public contract. Business logic — [form validation lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) orchestration, [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/), and [error state mapping](/form-state-fundamentals-architecture/error-state-mapping-patterns/) — operates against the interface, not the framework.
+The solution is a typed `FormStateAdapter` interface that every framework implementation satisfies. The adapter owns the translation between native reactivity and a stable public contract. Business logic — [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) orchestration, [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/), and [error state mapping](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) — operates against the interface, not the framework.
 
 ```typescript
 export interface FormStateAdapter<T extends Record<string, unknown>> {
@@ -188,7 +188,7 @@ The adapter's `phase` field always reflects exactly one of these states. Compone
 
 ## React Hook Architecture
 
-A React implementation of `FormStateAdapter` lives in a `useForm` hook that wraps `useReducer` for synchronous state transitions and `useCallback`/`useRef` for stable function references. Full patterns for composing field-level hooks, selector memoisation, and performance boundaries are covered in the [React form hook architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) guide, including the [custom `useFormField` hook](/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) for field-level subscription.
+A React implementation of `FormStateAdapter` lives in a `useForm` hook that wraps `useReducer` for synchronous state transitions and `useCallback`/`useRef` for stable function references. Full patterns for composing field-level hooks, selector memoisation, and performance boundaries are covered in the [React form hook architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) guide, including the [custom `useFormField` hook](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-custom-useformfield-hook/) for field-level subscription.
 
 The key decision is keeping the reducer pure — no side effects inside `dispatch` — and pushing async validation into `useEffect` with an `AbortController` per field:
 
@@ -269,7 +269,7 @@ Stale dispatch calls after unmount are one of the most common sources of React c
 
 Vue 3's `ref` and `reactive` are synchronous and deeply tracked, which makes them a natural fit for form state — but that same deep tracking becomes a liability when validation logic mutates nested objects, triggering cascading watcher re-runs.
 
-The adapter pattern for Vue isolates mutation to a single `reactive` store while exposing computed read-only selectors to template consumers. [Vue Composition API form adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) covers the full pattern, and [syncing Vue form state with Pinia](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/) addresses how to lift ephemeral form state into a shared store without triggering cross-component re-renders.
+The adapter pattern for Vue isolates mutation to a single `reactive` store while exposing computed read-only selectors to template consumers. [Vue Composition API form adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) covers the full pattern, and [syncing Vue form state with Pinia](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/) addresses how to lift ephemeral form state into a shared store without triggering cross-component re-renders.
 
 ```typescript
 import { reactive, readonly, computed, onUnmounted } from 'vue';
@@ -311,7 +311,7 @@ The `readonly()` wrapper is important: it turns runtime mutations into TypeScrip
 
 ## Svelte Store Integration
 
-Svelte's compile-time reactivity requires a different approach. Rather than wrapping component lifecycle hooks, form state lives in a plain writable store that can be imported anywhere — including server-side rendering contexts. [Svelte store integration for forms](/framework-adapters-custom-hooks/svelte-store-integration-for-forms/) covers the full store shape, including how Svelte 5 runes change the subscription model.
+Svelte's compile-time reactivity requires a different approach. Rather than wrapping component lifecycle hooks, form state lives in a plain writable store that can be imported anywhere — including server-side rendering contexts. [Svelte store integration for forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/) covers the full store shape, including how Svelte 5 runes change the subscription model.
 
 ```typescript
 import { writable, derived, get } from 'svelte/store';
@@ -360,7 +360,7 @@ The `try/catch` around `onDestroy` handles the common pattern of creating a stor
 
 ## SSR Hydration Sync
 
-Server-rendered forms require the client-side adapter to initialise from the same values the server used to render the markup. Without this synchronisation, React, Vue, and Svelte all replace the server-rendered DOM on mount — resetting scroll position, losing focus, and triggering spurious `dirty` flags. [Hydration sync for SSR forms](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/) covers the full pattern, including [handling Svelte form hydration mismatches](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/).
+Server-rendered forms require the client-side adapter to initialise from the same values the server used to render the markup. Without this synchronisation, React, Vue, and Svelte all replace the server-rendered DOM on mount — resetting scroll position, losing focus, and triggering spurious `dirty` flags. [Hydration sync for SSR forms](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/) covers the full pattern, including [handling Svelte form hydration mismatches](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/).
 
 The reliable approach is to embed initial values as a JSON payload in the server-rendered HTML and read them before the adapter initialises:
 
@@ -428,7 +428,7 @@ Three rules that must never be violated:
 2. Set `aria-invalid` on the input element, not on a wrapper `<div>` — assistive technology reads it from the interactive element.
 3. Do not remove `aria-describedby` while the error container is still visible. Remove it and hide the container atomically (as the snippet above does).
 
-[Error state mapping patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) and [mapping validation errors to UI components](/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/) cover how to normalise validation library outputs (Zod, Yup, Valibot) into the flat `Record<keyof T, string>` map the adapter expects.
+[Error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) and [mapping validation errors to UI components](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/) cover how to normalise validation library outputs (Zod, Yup, Valibot) into the flat `Record<keyof T, string>` map the adapter expects.
 
 ## Validation Pipeline with Race Condition Guards
 
@@ -497,7 +497,7 @@ export function createValidationPipeline<T extends Record<string, unknown>>(
 
 The dual guard — `seq !== currentSeq || signal.aborted` — prevents two independent failure modes: the sequence check stops stale non-cancellable validators from overwriting newer results; the `signal.aborted` check stops resolved `fetch` responses from being applied after the controller was replaced.
 
-This pattern connects directly to the [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) guide, which covers debounce tuning, retry policies, and server-side rate limit handling.
+This pattern connects directly to the [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) guide, which covers debounce tuning, retry policies, and server-side rate limit handling.
 
 ## Lifecycle Teardown Checklist
 
@@ -545,7 +545,7 @@ The registry pattern scales to adapters that manage multiple fields with indepen
 
 **Global form adapter state in a module singleton.** Sharing one adapter instance across multiple form instances via a module-level variable means reset operations and error states bleed between them. Each form instance must own its adapter instance.
 
-**Ignoring [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) for programmatic updates.** When code calls `setValue` to populate fields (e.g. autofill, address lookup), the `dirty` flag should not be set. Distinguish programmatic mutations from user-driven ones by adding a `source: 'user' | 'programmatic'` argument to `setValue`.
+**Ignoring [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) for programmatic updates.** When code calls `setValue` to populate fields (e.g. autofill, address lookup), the `dirty` flag should not be set. Distinguish programmatic mutations from user-driven ones by adding a `source: 'user' | 'programmatic'` argument to `setValue`.
 
 **Setting ARIA attributes only on blur.** Screen readers navigate by field without triggering blur events. Set `aria-invalid` and `aria-describedby` on every validation state change, not only when the user leaves the field.
 
@@ -571,9 +571,9 @@ Define the `FormStateAdapter` interface in a framework-agnostic package. Each fr
 
 ## Related
 
-- [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/)
-- [Vue Composition API Form Adapters](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/)
-- [Svelte Store Integration for Forms](/framework-adapters-custom-hooks/svelte-store-integration-for-forms/)
-- [Hydration Sync for SSR Forms](/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/)
+- [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/)
+- [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/)
+- [Svelte Store Integration for Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/)
+- [Hydration Sync for SSR Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/)
 
-← [Home](/)
+← [Home](https://www.client-side-form.com/)

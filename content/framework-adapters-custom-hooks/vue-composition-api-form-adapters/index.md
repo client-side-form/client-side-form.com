@@ -3,7 +3,7 @@ layout: page.njk
 title: "Vue Composition API Form Adapters"
 description: "Build production-ready Vue 3 form adapters using the Composition API: reactive proxy patterns, debounced validation pipelines, AbortController cancellation, and typed error maps."
 slug: vue-composition-api-form-adapters
-type: cluster
+type: topic
 breadcrumb: "Vue Composition API Form Adapters"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -77,7 +77,7 @@ eleventyNavigation:
 
 **The problem:** Vue's fine-grained reactivity makes it easy to accidentally trigger validation on every keystroke, run stale async checks after the user has already moved on, or leak a `setTimeout` handle when a routed component unmounts. If you have debugged a form where error messages flash in the wrong order, submissions race a pending validation, or a `watch` keeps firing after the component is gone — this page is for you.
 
-This page covers the architecture of a production-ready form adapter composable: how to model the state machine, wire a cancellable validation pipeline, handle submission without data races, and clean up every async handle on teardown. For how this adapter integrates into a larger cross-framework strategy, see [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/).
+This page covers the architecture of a production-ready form adapter composable: how to model the state machine, wire a cancellable validation pipeline, handle submission without data races, and clean up every async handle on teardown. For how this adapter integrates into a larger cross-framework strategy, see [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/).
 
 ---
 
@@ -151,7 +151,7 @@ The state table below maps each state to its Vue primitive and to the transition
 
 ## Core Implementation
 
-The composable below is production-ready: it handles debouncing, [asynchronous validation strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) with `AbortController` cancellation, duplicate-submission prevention, and full teardown on `onUnmounted`. Read the inline comments carefully — `AbortController` misuse is the most common source of stale validation results in Vue forms.
+The composable below is production-ready: it handles debouncing, [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) with `AbortController` cancellation, duplicate-submission prevention, and full teardown on `onUnmounted`. Read the inline comments carefully — `AbortController` misuse is the most common source of stale validation results in Vue forms.
 
 ```typescript
 import { ref, reactive, watch, computed, onUnmounted } from 'vue';
@@ -325,13 +325,13 @@ const { values, errors, isSubmitting, isValid, handleSubmit } = useFormAdapter({
 
 This adapter sits between your component layer and your validation schema engine. It does not care whether you use Zod, Yup, or Valibot — swap them by changing the `validate` function signature alone.
 
-For state that must survive route transitions (multi-step wizards, back-navigation after partial completion), the adapter's `values` proxy can be extracted into a Pinia store. [Syncing Vue Form State with Pinia](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/) covers how to lift the `reactive` object into a store action without losing Vue's dependency tracking.
+For state that must survive route transitions (multi-step wizards, back-navigation after partial completion), the adapter's `values` proxy can be extracted into a Pinia store. [Syncing Vue Form State with Pinia](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/) covers how to lift the `reactive` object into a store action without losing Vue's dependency tracking.
 
-Unlike [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) — where state is held in a `useReducer` and updates flow through dispatch — Vue's mutable reactive proxy lets you mutate `values.email` directly in the watcher callback without creating a new object. The trade-off is that accidental mutations inside child components are harder to trace; keep the `values` proxy private to the composable and expose only typed setters if your form is large.
+Unlike [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) — where state is held in a `useReducer` and updates flow through dispatch — Vue's mutable reactive proxy lets you mutate `values.email` directly in the watcher callback without creating a new object. The trade-off is that accidental mutations inside child components are harder to trace; keep the `values` proxy private to the composable and expose only typed setters if your form is large.
 
-Compared to [Svelte Store Integration for Forms](/framework-adapters-custom-hooks/svelte-store-integration-for-forms/), Vue's approach requires explicit `watch` configuration — Svelte's reactivity is compile-time and tracks assignments automatically. This means Vue adapters carry more boilerplate but give you more surgical control over what triggers validation.
+Compared to [Svelte Store Integration for Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/), Vue's approach requires explicit `watch` configuration — Svelte's reactivity is compile-time and tracks assignments automatically. This means Vue adapters carry more boilerplate but give you more surgical control over what triggers validation.
 
-For forms that also need to signal [dirty and pristine state tracking](/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) to the parent (e.g., showing a "You have unsaved changes" banner on navigation), expose `isDirty` from the composable and let the router guard subscribe to it via a shared store or provide/inject.
+For forms that also need to signal [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/) to the parent (e.g., showing a "You have unsaved changes" banner on navigation), expose `isDirty` from the composable and let the router guard subscribe to it via a shared store or provide/inject.
 
 ---
 
@@ -469,9 +469,9 @@ Catch the HTTP error in `handleSubmit`, parse the response body into the same `V
 
 ## Related
 
-- [Syncing Vue Form State with Pinia](/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/) — persist adapter state across route transitions using a Pinia store
-- [React Form Hook Architecture](/framework-adapters-custom-hooks/react-form-hook-architecture/) — reducer-based form state with unidirectional dispatch
-- [Svelte Store Integration for Forms](/framework-adapters-custom-hooks/svelte-store-integration-for-forms/) — compile-time reactive stores for zero-overhead subscriptions
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — debounce patterns and AbortController in depth
+- [Syncing Vue Form State with Pinia](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/syncing-vue-form-state-with-pinia/) — persist adapter state across route transitions using a Pinia store
+- [React Form Hook Architecture](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/) — reducer-based form state with unidirectional dispatch
+- [Svelte Store Integration for Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/) — compile-time reactive stores for zero-overhead subscriptions
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — debounce patterns and AbortController in depth
 
-← [Framework Adapters & Custom Hooks](/framework-adapters-custom-hooks/)
+← [Framework Adapters & Custom Hooks](https://www.client-side-form.com/framework-adapters-custom-hooks/)

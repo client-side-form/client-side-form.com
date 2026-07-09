@@ -3,7 +3,7 @@ layout: page.njk
 title: "Implementing Async Email Availability Checks"
 description: "Production patterns for debounced async email validation with AbortController race-condition prevention, LRU caching, exponential-backoff retries, and ARIA live-region wiring."
 slug: implementing-async-email-availability-checks
-type: long_tail
+type: guide
 breadcrumb: "Implementing Async Email Availability Checks"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -82,7 +82,7 @@ Fixing this requires four tightly coordinated pieces: a debounced fetch, an `Abo
 
 ## Context and prerequisites
 
-This page is a focused how-to that sits under [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/), which covers the full debounce-and-cancel lifecycle model that the hook below implements. If you are deciding whether to colocate this logic inside a Zod `.superRefine()` call or keep it separate, read [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) first — async Zod refinements carry different abort semantics than the manual pattern shown here.
+This page is a focused how-to that sits under [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/), which covers the full debounce-and-cancel lifecycle model that the hook below implements. If you are deciding whether to colocate this logic inside a Zod `.superRefine()` call or keep it separate, read [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) first — async Zod refinements carry different abort semantics than the manual pattern shown here.
 
 ---
 
@@ -427,9 +427,9 @@ In a development build, temporarily add `(window as any).__emailCache = cache` a
 
 ## Related
 
-- [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/) — debounce architecture, cancel tokens, and retry coordination patterns
-- [Integrating Zod for Schema Validation](/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — async `.superRefine()` and how Zod's abort semantics differ from manual AbortController usage
-- [Form Validation Lifecycle](/form-state-fundamentals-architecture/form-validation-lifecycle/) — how async validators plug into the full onChange → onBlur → onSubmit pipeline
-- [Error State Mapping Patterns](/form-state-fundamentals-architecture/error-state-mapping-patterns/) — propagating `TAKEN` and `ERROR` states through to accessible UI components
+- [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/) — debounce architecture, cancel tokens, and retry coordination patterns
+- [Integrating Zod for Schema Validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — async `.superRefine()` and how Zod's abort semantics differ from manual AbortController usage
+- [Form Validation Lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) — how async validators plug into the full onChange → onBlur → onSubmit pipeline
+- [Error State Mapping Patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/) — propagating `TAKEN` and `ERROR` states through to accessible UI components
 
-← [Asynchronous Validation Strategies](/validation-logic-schema-integration/asynchronous-validation-strategies/)
+← [Asynchronous Validation Strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/)
