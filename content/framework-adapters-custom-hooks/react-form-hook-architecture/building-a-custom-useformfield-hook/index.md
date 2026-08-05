@@ -3,7 +3,7 @@ layout: page.njk
 title: "Building a Custom useFormField Hook"
 description: "Step-by-step guide to encapsulating validation pipelines and error mapping in a reusable React useFormField hook, with AbortController race-condition guards and SSR hydration safety."
 slug: building-a-custom-useformfield-hook
-type: guide
+type: howto
 breadcrumb:
   - label: "Framework Adapters & Custom Hooks"
     url: "/framework-adapters-custom-hooks/"
@@ -289,44 +289,84 @@ The diagram below maps the four field lifecycle states to their transition trigg
 <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="useFormField state machine: IDLE transitions to VALIDATING on change, then to VALID or INVALID on result, and back to IDLE on focus." style="width:100%;max-width:640px;display:block;margin:1.5rem auto;">
   <title>useFormField state machine</title>
   <desc>Four states: IDLE, VALIDATING, VALID, and INVALID. IDLE transitions to VALIDATING when the user changes the field value. VALIDATING transitions to VALID when the async check passes or to INVALID when it fails. Any VALID or INVALID state returns to VALIDATING on a new change event. Focus clears error and resets INVALID to IDLE.</desc>
+  <rect x="0" y="0" width="640" height="260" fill="#f9f5fb"/>
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6 Z" fill="currentColor"/>
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- IDLE -->
-  <rect x="20" y="100" width="110" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-  <text x="75" y="130" text-anchor="middle" font-size="13" fill="currentColor" font-family="sans-serif">IDLE</text>
+  <rect x="20" y="100" width="110" height="52" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="75" y="130" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="sans-serif">IDLE</text>
   <!-- VALIDATING -->
-  <rect x="240" y="100" width="130" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-  <text x="305" y="130" text-anchor="middle" font-size="13" fill="currentColor" font-family="sans-serif">VALIDATING</text>
+  <rect x="240" y="100" width="130" height="52" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="305" y="130" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="sans-serif">VALIDATING</text>
   <!-- VALID -->
-  <rect x="480" y="30" width="110" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-  <text x="535" y="60" text-anchor="middle" font-size="13" fill="currentColor" font-family="sans-serif">VALID</text>
+  <rect x="480" y="30" width="110" height="52" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="535" y="60" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="sans-serif">VALID</text>
   <!-- INVALID -->
-  <rect x="480" y="178" width="110" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-  <text x="535" y="208" text-anchor="middle" font-size="13" fill="currentColor" font-family="sans-serif">INVALID</text>
+  <rect x="480" y="178" width="110" height="52" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="535" y="208" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="sans-serif">INVALID</text>
   <!-- IDLE → VALIDATING -->
-  <line x1="130" y1="126" x2="238" y2="126" stroke="currentColor" stroke-width="1.4" marker-end="url(#arr)"/>
-  <text x="184" y="118" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif">onChange</text>
+  <line x1="130" y1="126" x2="238" y2="126" stroke="#7b4f8a" stroke-width="1.4" marker-end="url(#arr)"/>
+  <text x="184" y="118" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">onChange</text>
   <!-- VALIDATING → VALID -->
-  <line x1="370" y1="114" x2="478" y2="72" stroke="currentColor" stroke-width="1.4" marker-end="url(#arr)"/>
-  <text x="436" y="84" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif">passes</text>
+  <line x1="370" y1="114" x2="478" y2="72" stroke="#7b4f8a" stroke-width="1.4" marker-end="url(#arr)"/>
+  <text x="436" y="84" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">passes</text>
   <!-- VALIDATING → INVALID -->
-  <line x1="370" y1="140" x2="478" y2="185" stroke="currentColor" stroke-width="1.4" marker-end="url(#arr)"/>
-  <text x="436" y="178" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif">fails</text>
+  <line x1="370" y1="140" x2="478" y2="185" stroke="#7b4f8a" stroke-width="1.4" marker-end="url(#arr)"/>
+  <text x="436" y="178" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">fails</text>
   <!-- VALID → VALIDATING (new change) -->
-  <path d="M535,82 C535,95 420,95 370,126" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-  <text x="460" y="108" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif">onChange</text>
+  <path d="M535,82 C535,95 420,95 370,126" fill="none" stroke="#6b5f75" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <text x="460" y="108" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">onChange</text>
   <!-- INVALID → VALIDATING (new change) -->
-  <path d="M535,178 C535,165 420,165 370,140" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-  <text x="460" y="160" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif">onChange</text>
+  <path d="M535,178 C535,165 420,165 370,140" fill="none" stroke="#6b5f75" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <text x="460" y="160" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">onChange</text>
   <!-- INVALID → IDLE (focus clears) -->
-  <path d="M480,204 C390,240 90,240 75,152" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-  <text x="260" y="248" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif">onFocus (clears error)</text>
+  <path d="M480,204 C390,240 90,240 75,152" fill="none" stroke="#6b5f75" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <text x="260" y="248" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">onFocus (clears error)</text>
 </svg>
 
 ---
+
+Before adding anything to the reducer, it is worth being able to point at which action each interaction dispatches. Most bugs in a field hook are an interaction wired to the wrong one:
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactions mapped to reducer actions and the state each one changes: typing dispatches change and updates value only, leaving the field dispatches blur and sets touched, a validation result dispatches settle and sets error, a programmatic reset dispatches reset and restores everything, and a server rejection dispatches setError without touching the value." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Which action each interaction dispatches</title>
+  <desc>Typing dispatches a change action, which updates the value and clears any error that was shown, but does not set touched. Leaving the field dispatches blur, which sets touched and triggers validation but never changes the value. A validation result dispatches settle, which writes the error and clears the validating flag. A programmatic reset dispatches reset, which restores the value, clears the error and clears touched together, so no intermediate state is observable. A server rejection dispatches setError, which writes an error without touching the value, because the value the reader typed is still the value they meant.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Interaction</text>
+  <text x="196" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Action</text>
+  <text x="320" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Touches</text>
+  <text x="500" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Deliberately leaves alone</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">reader types</text>
+  <text x="196" y="66" font-size="10" fill="#6b5f75" font-family="inherit">change</text>
+  <text x="320" y="66" font-size="10" fill="#6b5f75" font-family="inherit">value, clears error</text>
+  <text x="500" y="66" font-size="10" fill="#6b5f75" font-family="inherit">touched</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">reader leaves the field</text>
+  <text x="196" y="100" font-size="10" fill="#6b5f75" font-family="inherit">blur</text>
+  <text x="320" y="100" font-size="10" fill="#6b5f75" font-family="inherit">touched, validating</text>
+  <text x="500" y="100" font-size="10" fill="#6b5f75" font-family="inherit">value</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">validator resolves</text>
+  <text x="196" y="134" font-size="10" fill="#6b5f75" font-family="inherit">settle</text>
+  <text x="320" y="134" font-size="10" fill="#6b5f75" font-family="inherit">error, validating</text>
+  <text x="500" y="134" font-size="10" fill="#6b5f75" font-family="inherit">value, touched</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">programmatic reset</text>
+  <text x="196" y="168" font-size="10" fill="#6b5f75" font-family="inherit">reset</text>
+  <text x="320" y="168" font-size="10" fill="#6b5f75" font-family="inherit">everything, at once</text>
+  <text x="500" y="168" font-size="10" fill="#6b5f75" font-family="inherit">nothing</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">server rejects the submit</text>
+  <text x="196" y="202" font-size="10" fill="#6b5f75" font-family="inherit">setError</text>
+  <text x="320" y="202" font-size="10" fill="#6b5f75" font-family="inherit">error only</text>
+  <text x="500" y="202" font-size="10" fill="#7b4f8a" font-family="inherit">value — never discard their typing</text>
+</svg>
 
 ## Failure modes and edge cases
 
@@ -385,6 +425,29 @@ The `useEffect(() => cleanup, [])` pattern intentionally omits `cleanup` from th
 **Fix:** extract `cleanup` from the hook return value and memoize it with `useCallback` so the reference is stable.
 
 ---
+
+The last row is worth dwelling on, because "clear the error on change" and "keep the server error until the value changes" pull in opposite directions:
+
+<svg viewBox="0 8 664 208" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two error origins and how long each survives. A local validation error is cleared on the next keystroke because the reader is already fixing it. A server error is kept until the value actually differs from the value that was rejected, so it does not vanish on a stray keypress." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Local errors clear on change; server errors clear on difference</title>
+  <desc>A local validation error is produced by a rule the client can re-run, so the moment the reader types it is out of date and clearing it immediately is correct. A server error was produced by information the client does not have — a uniqueness check, a business rule — so it cannot be re-evaluated locally. Clearing it on the first keystroke means a stray keypress makes it disappear while the underlying problem remains. Keeping it until the value differs from the exact value that was rejected preserves it through cursor movement and re-typing of the same characters, and clears it the moment the reader genuinely changes their answer.</desc>
+  <rect x="0" y="8" width="664" height="208" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">local error — the client can re-run the rule</text>
+  <rect x="14" y="36" width="300" height="66" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="28" y="58" font-size="10" fill="#6b5f75" font-family="inherit">produced by: a rule in the schema</text>
+  <text x="28" y="76" font-size="10" fill="#6b5f75" font-family="inherit">cleared by: the next keystroke</text>
+  <text x="28" y="94" font-size="10" fill="#2d6342" font-family="inherit">safe — it is re-derived immediately</text>
+  <text x="350" y="26" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">server error — the client cannot</text>
+  <rect x="350" y="36" width="300" height="66" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="364" y="58" font-size="10" fill="#6b5f75" font-family="inherit">produced by: data only the server has</text>
+  <text x="364" y="76" font-size="10" fill="#6b5f75" font-family="inherit">cleared by: the value actually differing</text>
+  <text x="364" y="94" font-size="10" fill="#7b4f8a" font-family="inherit">keep the rejected value to compare against</text>
+  <rect x="14" y="120" width="636" height="52" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="28" y="142" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">The rule that covers both</text>
+  <text x="28" y="160" font-size="9.5" fill="#6b5f75" font-family="inherit">Store the origin with the error. On change, clear it if origin is local, or if origin is server and value !== rejectedValue.</text>
+  <text x="14" y="196" font-size="10" fill="#6b5f75" font-family="inherit">Without the origin field there is no way to express this, which is why an error of type string is not enough for a real form.</text>
+  <text x="14" y="212" font-size="10" fill="#6b5f75" font-family="inherit">Re-announce a server error that survives a change, or a reader who is editing will not know it is still there.</text>
+</svg>
 
 ## Verification checklist
 

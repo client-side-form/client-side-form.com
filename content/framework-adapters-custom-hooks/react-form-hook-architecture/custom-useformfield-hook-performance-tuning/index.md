@@ -3,7 +3,7 @@ layout: page.njk
 title: "Custom useFormField Hook Performance Tuning"
 description: "Eliminate wasted re-renders in a custom useFormField hook with useSyncExternalStore selectors, stable callbacks, and useRef for transient values."
 slug: custom-useformfield-hook-performance-tuning
-type: guide
+type: howto
 breadcrumb: "useFormField Performance Tuning"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -209,6 +209,34 @@ export function useDebouncedField(store: FormStore, name: string, ms = 200) {
 
 This is the read-side complement to [debouncing validation triggers in React](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/): the ref keeps intermediate keystrokes out of render, and only the settled value reaches the store and any validation it triggers.
 
+Before tuning anything, it is worth knowing which of the three broadcast topologies you actually have, because the fix differs for each:
+
+<svg viewBox="0 8 690 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three ways form state reaches a field and the renders each causes per keystroke on a sixty-field form: one context value re-renders all sixty, prop drilling from a parent re-renders the parent and all sixty, and per-field store subscriptions re-render one." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Three topologies, three very different keystroke costs</title>
+  <desc>One context value holding all the values: every consumer re-renders on every edit, because the context value object is new, giving sixty renders per keystroke on a sixty-field form. Prop drilling from a parent that holds the state: the parent re-renders and so does every child it passes values to, giving sixty-one renders and additionally defeating memo unless every callback is stable. Per-field store subscriptions: the store notifies all sixty subscribers, fifty-nine return their cached slice and are skipped, and one re-renders. The middle row is the one people migrate to when context is slow, and it is not an improvement.</desc>
+  <rect x="0" y="8" width="690" height="214" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="136" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Topology</text>
+  <text x="230" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Renders per keystroke</text>
+  <text x="420" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Why</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">one context value</text>
+  <text x="230" y="66" font-size="10" fill="#a63d6f" font-family="inherit">60</text>
+  <text x="420" y="66" font-size="10" fill="#6b5f75" font-family="inherit">the value object is new every time</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">prop drilling from a parent</text>
+  <text x="230" y="100" font-size="10" fill="#a63d6f" font-family="inherit">61</text>
+  <text x="420" y="100" font-size="10" fill="#6b5f75" font-family="inherit">the parent renders, then every child</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">per-field subscriptions</text>
+  <text x="230" y="134" font-size="10" fill="#2d6342" font-family="inherit">1</text>
+  <text x="420" y="134" font-size="10" fill="#6b5f75" font-family="inherit">59 cached slices compare equal, and skip</text>
+  <text x="14" y="176" font-size="10" fill="#6b5f75" font-family="inherit">The middle row is where teams often land after "context is slow" — it is slightly worse, and it also defeats memo.</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">Identify yours in the profiler by what renders: the provider, the parent, or one field.</text>
+  <text x="14" y="212" font-size="10" fill="#6b5f75" font-family="inherit">Only the third row scales — the other two are linear in field count no matter how much memoization is added around them.</text>
+</svg>
+
 ## Failure Modes and Edge Cases
 
 ### 1. Selector returns a fresh object every call
@@ -245,6 +273,34 @@ If you put the *store instance* in Context that is fine — the instance is stab
 
 A ref does not trigger a render, so reading `latest.current` during render can show a value one keystroke behind. Read refs in event handlers and effects, never as the source of rendered output.
 
+One more mental model makes the whole thing click. A store notification is not a render — it is a question asked of every subscriber, and almost all of them answer "nothing changed":
+
+<svg viewBox="0 8 660 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One store notification fans out to sixty getSnapshot calls, of which fifty-nine return the cached reference and are skipped, and one returns a new reference and renders. The costs are labelled: sixty cheap comparisons versus one render." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>One notification, sixty questions, one render</title>
+  <desc>Editing the email field calls setValue, which notifies every subscriber. React then calls getSnapshot once per subscribed field — sixty calls in a sixty-field form. Fifty-nine of them return the same cached object reference they returned last time, so Object.is succeeds and React skips those components entirely. One of them, the email field, returns a new reference, and only that component renders. The lesson is that the fan-out is sixty pointer comparisons, not sixty renders, which is why the pattern scales.</desc>
+  <rect x="0" y="8" width="660" height="214" fill="#f9f5fb"/>
+  <rect x="14" y="76" width="150" height="60" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="89" y="100" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">setValue("email")</text>
+  <text x="89" y="118" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">notifies every listener</text>
+  <path d="M164,106 H196 V48 H228" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M164,106 H196 V164 H228" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="228" y="24" width="212" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="242" y="44" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">59 × getSnapshot</text>
+  <text x="242" y="62" font-size="9.5" fill="#6b5f75" font-family="inherit">same cached reference returned</text>
+  <path d="M440,50 H472" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="472" y="24" width="174" height="52" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="486" y="44" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">skipped</text>
+  <text x="486" y="62" font-size="9.5" fill="#6b5f75" font-family="inherit">Object.is succeeded</text>
+  <rect x="228" y="140" width="212" height="52" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="242" y="160" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">1 × getSnapshot</text>
+  <text x="242" y="178" font-size="9.5" fill="#6b5f75" font-family="inherit">new reference — the slice changed</text>
+  <path d="M440,166 H472" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="472" y="140" width="174" height="52" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="486" y="160" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">1 render</text>
+  <text x="486" y="178" font-size="9.5" fill="#1e1a24" font-family="inherit">the email field only</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Cost per keystroke: 60 pointer comparisons plus one render — which is why losing the snapshot cache turns it into 60 renders.</text>
+</svg>
+
 ## Verification Checklist
 
 - [ ] Typing in one field re-renders only that field (confirm in React DevTools Profiler)
@@ -254,6 +310,39 @@ A ref does not trigger a render, so reading `latest.current` during render can s
 - [ ] Memoized field inputs do not re-render when a sibling field changes
 - [ ] Transient buffers (IME, debounce) live in refs, not state
 - [ ] aria-invalid and error text update from the store slice, not a broadcast context, so announcements stay per-field
+
+## Reading the profile after each change
+
+Tuning is only finished when the numbers say so, and the two numbers worth watching move independently.
+
+<svg viewBox="0 8 664 218" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A two-by-two of the two symptoms that remain after tuning: many components rendering versus one component rendering, crossed with a short commit versus a long one. Each quadrant names the remaining cause and its fix." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Which number is still wrong tells you what is left to fix</title>
+  <desc>Many components render and each commit is short: the subscription is still broadcasting, so narrow it to per-field slices. Many components render and the commit is long: both problems are present, and the subscription must be fixed first because it multiplies the second. One component renders but the commit is long: the subscription is correct and the field component itself is expensive — look at what it renders, not at how often. One component renders and the commit is short: this is the target, and any remaining slowness is in the validator or in layout rather than in React.</desc>
+  <rect x="0" y="8" width="664" height="218" fill="#f9f5fb"/>
+  <text x="200" y="30" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">short commit</text>
+  <text x="480" y="30" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">long commit</text>
+  <text x="14" y="70" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">many</text>
+  <text x="14" y="86" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">render</text>
+  <text x="14" y="158" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">one</text>
+  <text x="14" y="174" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">renders</text>
+  <rect x="76" y="40" width="272" height="70" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="90" y="62" font-size="10" font-weight="700" fill="#a63d6f" font-family="inherit">still broadcasting</text>
+  <text x="90" y="82" font-size="9.5" fill="#6b5f75" font-family="inherit">narrow the subscription to per-field</text>
+  <text x="90" y="98" font-size="9.5" fill="#6b5f75" font-family="inherit">slices before touching anything else</text>
+  <rect x="360" y="40" width="290" height="70" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="374" y="62" font-size="10" font-weight="700" fill="#a63d6f" font-family="inherit">both problems at once</text>
+  <text x="374" y="82" font-size="9.5" fill="#6b5f75" font-family="inherit">fix the subscription first — it multiplies</text>
+  <text x="374" y="98" font-size="9.5" fill="#6b5f75" font-family="inherit">whatever the commit cost turns out to be</text>
+  <rect x="76" y="128" width="272" height="70" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="90" y="150" font-size="10" font-weight="700" fill="#2d6342" font-family="inherit">the target</text>
+  <text x="90" y="170" font-size="9.5" fill="#6b5f75" font-family="inherit">anything still slow is in the validator</text>
+  <text x="90" y="186" font-size="9.5" fill="#6b5f75" font-family="inherit">or in layout, not in React</text>
+  <rect x="360" y="128" width="290" height="70" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
+  <text x="374" y="150" font-size="10" font-weight="700" fill="#b07a55" font-family="inherit">an expensive field component</text>
+  <text x="374" y="170" font-size="9.5" fill="#6b5f75" font-family="inherit">the subscription is right — look at what</text>
+  <text x="374" y="186" font-size="9.5" fill="#6b5f75" font-family="inherit">the field renders, not how often</text>
+  <text x="14" y="218" font-size="10" fill="#6b5f75" font-family="inherit">Record both numbers before and after every change; a fix that improves one and worsens the other is common and easy to miss.</text>
+</svg>
 
 ## FAQ
 

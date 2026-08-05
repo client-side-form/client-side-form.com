@@ -10,7 +10,7 @@ permalink: /
     <h1>Client-Side Form State &amp;<br>Validation Architecture</h1>
     <p class="hero-tagline">Production-ready patterns for deterministic state lifecycles, schema-driven validation, and cross-framework adapters.</p>
     <p class="hero-desc">
-      Battle-tested architectural blueprints for frontend engineers, UX developers, and design-system maintainers building robust client-side forms. We focus on real-world constraints — async latency, SSR hydration, memory limits, and race conditions — not theoretical abstractions.
+      Battle-tested architectural blueprints for frontend engineers, UX developers, and design-system maintainers building robust client-side forms. Eighty-four in-depth pages across four areas — twenty-four topics, from wizard state machines and draft autosave to server-error reconciliation, form-associated custom elements, and accessible error summaries. We focus on real-world constraints — async latency, SSR hydration, memory limits, and race conditions — not theoretical abstractions.
     </p>
     <div class="cta-group">
       <a href="/form-state-fundamentals-architecture/" class="cta-btn cta-btn-primary">
@@ -40,7 +40,7 @@ permalink: /
 
 <div class="home-section" style="padding-top:0">
   <h2 class="section-heading">Explore the Four Knowledge Areas</h2>
-  <p class="section-sub">Deep-dive technical guides organised into four interconnected knowledge areas.</p>
+  <p class="section-sub">Twenty-four topics and sixty in-depth guides, organised into four interconnected knowledge areas.</p>
 
   <div class="area-grid">
     <div class="area-card">
@@ -52,6 +52,10 @@ permalink: /
         <li><a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/">Dirty &amp; Pristine State Tracking</a></li>
         <li><a href="/form-state-fundamentals-architecture/error-state-mapping-patterns/">Error State Mapping Patterns</a></li>
         <li><a href="/form-state-fundamentals-architecture/form-validation-lifecycle/">Form Validation Lifecycle</a></li>
+        <li><a href="/form-state-fundamentals-architecture/multi-step-form-state-machines/">Multi-Step Form State Machines</a></li>
+        <li><a href="/form-state-fundamentals-architecture/draft-persistence-and-autosave/">Draft Persistence &amp; Autosave</a></li>
+        <li><a href="/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/">Submission &amp; Optimistic Updates</a></li>
+        <li><a href="/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/">Performance &amp; Scale</a></li>
       </ul>
       <a href="/form-state-fundamentals-architecture/" class="area-card-link">Explore Form State &rarr;</a>
     </div>
@@ -65,6 +69,8 @@ permalink: /
         <li><a href="/framework-adapters-custom-hooks/vue-composition-api-form-adapters/">Vue Composition API Adapters</a></li>
         <li><a href="/framework-adapters-custom-hooks/svelte-store-integration-for-forms/">Svelte Store Integration</a></li>
         <li><a href="/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/">SSR Hydration Sync</a></li>
+        <li><a href="/framework-adapters-custom-hooks/web-components-and-form-association/">Web Components &amp; Form Association</a></li>
+        <li><a href="/framework-adapters-custom-hooks/angular-reactive-forms-adapters/">Angular Reactive Forms</a></li>
       </ul>
       <a href="/framework-adapters-custom-hooks/" class="area-card-link">Explore Adapters &rarr;</a>
     </div>
@@ -78,6 +84,8 @@ permalink: /
         <li><a href="/validation-logic-schema-integration/asynchronous-validation-strategies/">Asynchronous Validation Strategies</a></li>
         <li><a href="/validation-logic-schema-integration/cross-field-dependency-logic/">Cross-Field Dependency Logic</a></li>
         <li><a href="/validation-logic-schema-integration/synchronous-validation-patterns/">Synchronous Validation Patterns</a></li>
+        <li><a href="/validation-logic-schema-integration/server-error-reconciliation/">Server Error Reconciliation</a></li>
+        <li><a href="/validation-logic-schema-integration/choosing-a-schema-validation-library/">Choosing a Schema Library</a></li>
       </ul>
       <a href="/validation-logic-schema-integration/" class="area-card-link">Explore Validation &rarr;</a>
     </div>
@@ -90,6 +98,7 @@ permalink: /
         <li><a href="/accessibility-and-error-ux/aria-live-regions-for-form-errors/">ARIA Live Regions for Errors</a></li>
         <li><a href="/accessibility-and-error-ux/focus-management-after-validation/">Focus Management After Validation</a></li>
         <li><a href="/accessibility-and-error-ux/keyboard-navigation-patterns/">Keyboard Navigation Patterns</a></li>
+        <li><a href="/accessibility-and-error-ux/error-summary-and-messaging/">Error Summary &amp; Messaging</a></li>
       </ul>
       <a href="/accessibility-and-error-ux/" class="area-card-link">Explore Accessibility &rarr;</a>
     </div>
@@ -123,6 +132,37 @@ permalink: /
     <a href="/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/best-practices-for-uncontrolled-form-state/" class="related-card">
       <span class="card-title">Best Practices for Uncontrolled Form State</span>
       <span class="card-desc">When and how to use refs without sacrificing validation integrity.</span>
+    </a>
+  </div>
+</div>
+
+<div class="home-section" style="padding-top:0">
+  <h2 class="section-heading">Recently Added</h2>
+  <p class="section-sub">The newest topics — wizard state, autosaved drafts, server rejections, custom elements, and error copy.</p>
+  <div class="related-grid">
+    <a href="/form-state-fundamentals-architecture/multi-step-form-state-machines/" class="related-card">
+      <span class="card-title">Multi-Step Form State Machines</span>
+      <span class="card-desc">Derived step status, a path computed from the answers, and a stale phase that keeps later work when an earlier answer changes.</span>
+    </a>
+    <a href="/form-state-fundamentals-architecture/draft-persistence-and-autosave/" class="related-card">
+      <span class="card-title">Draft Persistence &amp; Autosave</span>
+      <span class="card-desc">Debounced writes, lifecycle flushes, an honest status line, and a conflict phase the reader resolves rather than one you merge silently.</span>
+    </a>
+    <a href="/validation-logic-schema-integration/server-error-reconciliation/" class="related-card">
+      <span class="card-title">Server Error Reconciliation</span>
+      <span class="card-desc">Route a rejected submit correctly: field-scoped 422s onto their inputs, conflicts to reconciliation, outages to a retryable banner.</span>
+    </a>
+    <a href="/framework-adapters-custom-hooks/web-components-and-form-association/" class="related-card">
+      <span class="card-title">Web Components &amp; Form Association</span>
+      <span class="card-desc">Make a custom element a real form control with <code>ElementInternals</code> — FormData, constraint validation, reset, disable and restore.</span>
+    </a>
+    <a href="/accessibility-and-error-ux/error-summary-and-messaging/" class="related-card">
+      <span class="card-title">Error Summary &amp; Messaging</span>
+      <span class="card-desc">Give a failed submit a scope and a route, and write messages that say what to type rather than which rule fired.</span>
+    </a>
+    <a href="/form-state-fundamentals-architecture/multi-step-form-state-machines/persisting-wizard-progress-across-reloads/" class="related-card">
+      <span class="card-title">Persisting Wizard Progress Across Reloads</span>
+      <span class="card-desc">Save the answers, recompute the path and the validity on load, and land the reader on the first genuinely incomplete step.</span>
     </a>
   </div>
 </div>
@@ -166,6 +206,26 @@ permalink: /
     <a href="/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/" class="related-card">
       <span class="card-title">Submission State &amp; Optimistic Updates</span>
       <span class="card-desc">Model the submit lifecycle, apply optimistic UI, and roll back cleanly when the server rejects.</span>
+    </a>
+    <a href="/validation-logic-schema-integration/server-error-reconciliation/mapping-422-responses-to-field-errors/" class="related-card">
+      <span class="card-title">Mapping 422 Responses to Field Errors</span>
+      <span class="card-desc">Translate JSON Pointer and snake_case paths into the names your form rendered — and route the rest to the summary.</span>
+    </a>
+    <a href="/accessibility-and-error-ux/error-summary-and-messaging/building-an-accessible-error-summary/" class="related-card">
+      <span class="card-title">Building an Accessible Error Summary</span>
+      <span class="card-desc">A focusable, link-driven summary that announces its count once and reveals collapsed targets before focusing them.</span>
+    </a>
+    <a href="/form-state-fundamentals-architecture/draft-persistence-and-autosave/autosaving-form-drafts-to-localstorage/" class="related-card">
+      <span class="card-title">Autosaving Form Drafts to localStorage</span>
+      <span class="card-desc">Debounced, deduplicated, allow-listed writes — with quota, blocked storage, second tabs and expiry all handled.</span>
+    </a>
+    <a href="/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/progressive-enhancement-for-server-rendered-forms/" class="related-card">
+      <span class="card-title">Progressive Enhancement for Server-Rendered Forms</span>
+      <span class="card-desc">Start from a form that posts and reloads, then intercept it, so a failed bundle degrades to slow rather than broken.</span>
+    </a>
+    <a href="/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/virtualizing-long-fieldsets-without-losing-state/" class="related-card">
+      <span class="card-title">Virtualizing Long Fieldsets Without Losing State</span>
+      <span class="card-desc">Render a set rather than a range, so virtualisation does not break focus, announcements or the payload.</span>
     </a>
   </div>
 </div>

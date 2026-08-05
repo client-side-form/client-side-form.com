@@ -3,7 +3,7 @@ layout: page.njk
 title: "Roving tabindex for Radio and Checkbox Groups"
 description: "Build a keyboard-accessible custom radiogroup or checkbox group with roving tabindex: arrow keys move focus and selection, one tab stop, WeakMap element-to-state."
 slug: roving-tabindex-for-option-groups
-type: guide
+type: howto
 breadcrumb: "Roving tabindex"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -87,31 +87,32 @@ Native radio groups have two properties a naive `<div role="radio">` reimplement
 - **Arrow keys move the `0`.** Pressing Down/Right sets the current option to `-1`, sets the next option to `0`, and focuses it. The `0` "roves" to wherever focus is.
 - **Selection semantics diverge by role.** In a `radiogroup`, moving focus also moves selection (only one can be checked). In a checkbox group, arrows move focus only and `Space` toggles the focused option (many can be checked).
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 240" role="img" aria-label="Roving tabindex diagram: five options where one holds tabindex zero and the arrow key moves it to the next option" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="24 5 682 192" role="img" aria-label="Roving tabindex diagram: five options where one holds tabindex zero and the arrow key moves it to the next option" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>Roving tabindex across a radio group</title>
   <desc>Five options in a radiogroup; option two currently holds tabindex zero and is focused, the others hold tabindex minus one, and pressing the Down arrow moves tabindex zero and focus to option three.</desc>
-  <rect width="720" height="240" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
-  <text x="360" y="34" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor" opacity="0.75">role="radiogroup"</text>
-  <rect x="40" y="60" width="120" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.5"/>
-  <text x="100" y="86" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor">Option 1</text>
-  <text x="100" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.6">tabindex="-1"</text>
-  <rect x="175" y="60" width="120" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-opacity="0.9"/>
-  <text x="235" y="86" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="currentColor">Option 2</text>
-  <text x="235" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.8">tabindex="0" ◄ focus</text>
-  <rect x="310" y="60" width="120" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.5"/>
-  <text x="370" y="86" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor">Option 3</text>
-  <text x="370" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.6">tabindex="-1"</text>
-  <rect x="445" y="60" width="120" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.5"/>
-  <text x="505" y="86" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor">Option 4</text>
-  <text x="505" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.6">tabindex="-1"</text>
-  <rect x="580" y="60" width="110" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.5"/>
-  <text x="635" y="86" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor">Option 5</text>
-  <text x="635" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.6">tabindex="-1"</text>
-  <path d="M235 120 C260 160 345 160 370 124" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.8" marker-end="url(#arr-roving)"/>
-  <text x="302" y="178" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.8">ArrowDown → moves tabindex="0" and focus</text>
+  <rect x="24" y="5" width="682" height="192" fill="#f9f5fb"/>
+  <rect width="720" height="240" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="360" y="34" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#6b5f75">role="radiogroup"</text>
+  <rect x="40" y="60" width="120" height="60" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="100" y="86" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">Option 1</text>
+  <text x="100" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">tabindex="-1"</text>
+  <rect x="175" y="60" width="120" height="60" rx="8" fill="none" stroke="#cbb8d9" stroke-width="2.5"/>
+  <text x="235" y="86" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="#1e1a24">Option 2</text>
+  <text x="235" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="#1e1a24">tabindex="0" ◄ focus</text>
+  <rect x="310" y="60" width="120" height="60" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="370" y="86" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">Option 3</text>
+  <text x="370" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">tabindex="-1"</text>
+  <rect x="445" y="60" width="120" height="60" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="505" y="86" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">Option 4</text>
+  <text x="505" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">tabindex="-1"</text>
+  <rect x="580" y="60" width="110" height="60" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="635" y="86" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">Option 5</text>
+  <text x="635" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">tabindex="-1"</text>
+  <path d="M235 120 C260 160 345 160 370 124" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-roving)"/>
+  <text x="302" y="178" text-anchor="middle" font-family="inherit" font-size="10" fill="#1e1a24">ArrowDown → moves tabindex="0" and focus</text>
   <defs>
     <marker id="arr-roving" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.8"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
 </svg>
@@ -279,6 +280,48 @@ class RovingGroup {
 
 ---
 
+The whole point is the tab-stop count, and it is worth seeing the two layouts side by side before reading another line of code:
+
+<svg viewBox="0 8 662 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two five-option groups. In the naive markup every option carries tabindex zero, so leaving the group costs five Tab presses. With roving tabindex only the active option carries tabindex zero and the rest carry minus one, so the whole group is a single tab stop and arrow keys move within it." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Five tab stops versus one</title>
+  <desc>Top row: five options each carrying tabindex zero, which makes each one a separate tab stop, so a keyboard reader must press Tab five times to get past a single question. Bottom row: the same five options with roving tabindex, where the active option carries tabindex zero and the other four carry minus one, so the group is one tab stop and the arrow keys move the zero between options.</desc>
+  <rect x="0" y="8" width="662" height="226" fill="#f9f5fb"/>
+  <text x="14" y="24" font-size="12" font-weight="700" fill="#a63d6f" font-family="inherit">Every option focusable — 5 tab stops for one question</text>
+  <rect x="14" y="34" width="120" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="74" y="55" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">Standard</text>
+  <text x="74" y="72" text-anchor="middle" font-size="9.5" fill="#a63d6f" font-family="inherit">tabindex="0"</text>
+  <rect x="142" y="34" width="120" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="202" y="55" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">Express</text>
+  <text x="202" y="72" text-anchor="middle" font-size="9.5" fill="#a63d6f" font-family="inherit">tabindex="0"</text>
+  <rect x="270" y="34" width="120" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="330" y="55" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">Next day</text>
+  <text x="330" y="72" text-anchor="middle" font-size="9.5" fill="#a63d6f" font-family="inherit">tabindex="0"</text>
+  <rect x="398" y="34" width="120" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="458" y="55" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">Collect</text>
+  <text x="458" y="72" text-anchor="middle" font-size="9.5" fill="#a63d6f" font-family="inherit">tabindex="0"</text>
+  <rect x="526" y="34" width="120" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="586" y="55" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">Locker</text>
+  <text x="586" y="72" text-anchor="middle" font-size="9.5" fill="#a63d6f" font-family="inherit">tabindex="0"</text>
+  <text x="14" y="106" font-size="10" fill="#6b5f75" font-family="inherit">A 12-question form of five-option groups costs 60 Tab presses to traverse.</text>
+  <text x="14" y="138" font-size="12" font-weight="700" fill="#2d6342" font-family="inherit">Roving tabindex — 1 tab stop, arrows move inside</text>
+  <rect x="14" y="148" width="120" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="74" y="169" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">Standard</text>
+  <text x="74" y="186" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">tabindex="-1"</text>
+  <rect x="142" y="148" width="120" height="52" rx="8" fill="#e2d6ec" stroke="#2d6342" stroke-width="2"/>
+  <text x="202" y="169" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">Express</text>
+  <text x="202" y="186" text-anchor="middle" font-size="9.5" fill="#2d6342" font-family="inherit">tabindex="0" — active</text>
+  <rect x="270" y="148" width="120" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="330" y="169" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">Next day</text>
+  <text x="330" y="186" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">tabindex="-1"</text>
+  <rect x="398" y="148" width="120" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="458" y="169" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">Collect</text>
+  <text x="458" y="186" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">tabindex="-1"</text>
+  <rect x="526" y="148" width="120" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="586" y="169" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">Locker</text>
+  <text x="586" y="186" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">tabindex="-1"</text>
+  <text x="14" y="220" font-size="10" fill="#6b5f75" font-family="inherit">The zero moves with the arrow keys, so Tab always lands on whichever option the reader last chose.</text>
+</svg>
+
 ## Failure modes and edge cases
 
 ### Every option is a tab stop
@@ -310,6 +353,38 @@ Moving selection onto a disabled option is invalid, yet arrow traversal must ski
 `Space` on a focused `<div>` scrolls the viewport unless prevented. The `e.preventDefault()` in the `" "` case stops the scroll so Space only toggles or confirms the option.
 
 ---
+
+One implementation detail deserves its own picture, because getting it wrong turns a keyboard nicety into a memory leak that survives every navigation:
+
+<svg viewBox="0 8 660 218" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of holding per-group state in a Map versus a WeakMap. With a Map the removed group element is still referenced by the module-level map, so the element and its option list cannot be collected. With a WeakMap the reference is weak, so removing the group makes the whole entry collectable." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Map keeps a removed group alive; WeakMap does not</title>
+  <desc>Left column, module-scoped Map: the group element has been removed from the document but the map still holds a strong key reference to it, so the element, its five option nodes and the state object stay in memory for the lifetime of the page. Right column, module-scoped WeakMap: the key reference is weak, so once the document drops the group the entry becomes unreachable and the collector reclaims the element, its options and the state together.</desc>
+  <rect x="0" y="8" width="660" height="218" fill="#f9f5fb"/>
+  <text x="14" y="24" font-size="11.5" font-weight="700" fill="#a63d6f" font-family="inherit">const state = new Map()</text>
+  <rect x="14" y="34" width="300" height="44" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="164" y="52" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">document — group removed on route change</text>
+  <text x="164" y="69" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">no DOM reference remains</text>
+  <path d="M164,78 V102" stroke="#a63d6f" stroke-width="1.4"/>
+  <rect x="14" y="102" width="300" height="44" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="164" y="120" text-anchor="middle" font-size="10" fill="#a63d6f" font-family="inherit">Map still holds the element as a key</text>
+  <text x="164" y="137" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">strong reference — nothing can be freed</text>
+  <path d="M164,146 V170" stroke="#a63d6f" stroke-width="1.4"/>
+  <rect x="14" y="170" width="300" height="44" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="164" y="188" text-anchor="middle" font-size="10" fill="#a63d6f" font-family="inherit">group + 5 options + state retained</text>
+  <text x="164" y="205" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">grows with every navigation</text>
+  <text x="346" y="24" font-size="11.5" font-weight="700" fill="#2d6342" font-family="inherit">const state = new WeakMap()</text>
+  <rect x="346" y="34" width="300" height="44" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="496" y="52" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">document — group removed on route change</text>
+  <text x="496" y="69" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">no DOM reference remains</text>
+  <path d="M496,78 V102" stroke="#2d6342" stroke-width="1.4"/>
+  <rect x="346" y="102" width="300" height="44" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="496" y="120" text-anchor="middle" font-size="10" fill="#2d6342" font-family="inherit">WeakMap key is not a strong reference</text>
+  <text x="496" y="137" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">entry becomes unreachable with the element</text>
+  <path d="M496,146 V170" stroke="#2d6342" stroke-width="1.4"/>
+  <rect x="346" y="170" width="300" height="44" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="496" y="188" text-anchor="middle" font-size="10" fill="#2d6342" font-family="inherit">group, options and state all collected</text>
+  <text x="496" y="205" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">no explicit cleanup call needed</text>
+</svg>
 
 ## Verification checklist
 

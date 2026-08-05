@@ -99,47 +99,48 @@ The lifecycle defines five discrete states per field. Each transition has an exp
 <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;font-family:inherit">
   <title>Form Validation Lifecycle State Machine</title>
   <desc>A directed graph showing five states — IDLE, VALIDATING, VALID, INVALID, RETRYABLE — and the transitions between them triggered by blur/change, sync pass, async resolve, async reject, and server error events.</desc>
+  <rect x="0" y="0" width="720" height="320" fill="#f9f5fb"/>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- IDLE -->
-  <rect x="20" y="130" width="110" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="75" y="157" text-anchor="middle" font-size="13" fill="currentColor" font-weight="600">IDLE</text>
+  <rect x="20" y="130" width="110" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="75" y="157" text-anchor="middle" font-size="13" fill="#1e1a24" font-weight="600">IDLE</text>
   <!-- VALIDATING -->
-  <rect x="210" y="130" width="140" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-  <text x="280" y="157" text-anchor="middle" font-size="13" fill="currentColor" font-weight="600">VALIDATING</text>
+  <rect x="210" y="130" width="140" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="280" y="157" text-anchor="middle" font-size="13" fill="#1e1a24" font-weight="600">VALIDATING</text>
   <!-- VALID -->
-  <rect x="450" y="50" width="110" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-  <text x="505" y="77" text-anchor="middle" font-size="13" fill="currentColor" font-weight="600">VALID</text>
+  <rect x="450" y="50" width="110" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="505" y="77" text-anchor="middle" font-size="13" fill="#1e1a24" font-weight="600">VALID</text>
   <!-- INVALID -->
-  <rect x="450" y="210" width="110" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-  <text x="505" y="237" text-anchor="middle" font-size="13" fill="currentColor" font-weight="600">INVALID</text>
+  <rect x="450" y="210" width="110" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="505" y="237" text-anchor="middle" font-size="13" fill="#1e1a24" font-weight="600">INVALID</text>
   <!-- RETRYABLE -->
-  <rect x="580" y="130" width="120" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.7"/>
-  <text x="640" y="157" text-anchor="middle" font-size="12" fill="currentColor" font-weight="600">RETRYABLE</text>
+  <rect x="580" y="130" width="120" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="640" y="157" text-anchor="middle" font-size="12" fill="#1e1a24" font-weight="600">RETRYABLE</text>
   <!-- IDLE → VALIDATING -->
-  <line x1="130" y1="152" x2="208" y2="152" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
-  <text x="169" y="144" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.8">blur / change</text>
+  <line x1="130" y1="152" x2="208" y2="152" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="169" y="144" text-anchor="middle" font-size="10" fill="#1e1a24">blur / change</text>
   <!-- VALIDATING → VALID -->
-  <line x1="350" y1="140" x2="448" y2="86" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
-  <text x="410" y="103" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.8">resolves true</text>
+  <line x1="350" y1="140" x2="448" y2="86" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="410" y="103" text-anchor="middle" font-size="10" fill="#1e1a24">resolves true</text>
   <!-- VALIDATING → INVALID -->
-  <line x1="350" y1="164" x2="448" y2="222" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
-  <text x="410" y="208" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.8">rule fails</text>
+  <line x1="350" y1="164" x2="448" y2="222" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="410" y="208" text-anchor="middle" font-size="10" fill="#1e1a24">rule fails</text>
   <!-- VALIDATING → RETRYABLE -->
-  <line x1="350" y1="152" x2="578" y2="152" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="4,3" opacity="0.6"/>
-  <text x="464" y="145" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">network error</text>
+  <line x1="350" y1="152" x2="578" y2="152" stroke="#6b5f75" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="4,3"/>
+  <text x="464" y="145" text-anchor="middle" font-size="10" fill="#6b5f75">network error</text>
   <!-- VALID → VALIDATING (re-entry on change) -->
-  <path d="M505,50 Q505,10 280,10 Q150,10 280,128" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#arrow)" opacity="0.4" stroke-dasharray="3,3"/>
-  <text x="370" y="20" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6">value changed</text>
+  <path d="M505,50 Q505,10 280,10 Q150,10 280,128" fill="none" stroke="#6b5f75" stroke-width="1.2" marker-end="url(#arrow)" stroke-dasharray="3,3"/>
+  <text x="370" y="20" text-anchor="middle" font-size="10" fill="#6b5f75">value changed</text>
   <!-- INVALID → VALIDATING (re-entry) -->
-  <path d="M450,232 Q190,280 210,176" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#arrow)" opacity="0.4" stroke-dasharray="3,3"/>
-  <text x="300" y="280" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6">value changed</text>
+  <path d="M450,232 Q190,280 210,176" fill="none" stroke="#6b5f75" stroke-width="1.2" marker-end="url(#arrow)" stroke-dasharray="3,3"/>
+  <text x="300" y="280" text-anchor="middle" font-size="10" fill="#6b5f75">value changed</text>
   <!-- RETRYABLE → VALIDATING -->
-  <path d="M640,130 Q640,80 350,130" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#arrow)" opacity="0.4" stroke-dasharray="3,3"/>
-  <text x="520" y="90" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6">retry()</text>
+  <path d="M640,130 Q640,80 350,130" fill="none" stroke="#6b5f75" stroke-width="1.2" marker-end="url(#arrow)" stroke-dasharray="3,3"/>
+  <text x="520" y="90" text-anchor="middle" font-size="10" fill="#6b5f75">retry()</text>
 </svg>
 </figure>
 
@@ -267,6 +268,44 @@ export class ValidationLifecycle<T extends Record<string, unknown>> {
 
 The `RETRYABLE` state and the `source` field on `FieldError` are the two additions most implementations lack. Without `source`, a `client`-side rule run after submission silently replaces the server's "email already registered" error with "invalid email format" — a different and less actionable message.
 
+### What each mode actually costs the reader
+
+Validation modes are usually presented as a preference. They are not: each one places the first error at a different point in the field's life, and that placement is what readers experience as "helpful" or "nagging":
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of validation trigger modes: on change, on blur, on submit, and on touched then change. Each row gives when the first error can appear, the risk it carries, and the field types it suits." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>When each validation mode shows its first error</title>
+  <desc>On change: the first error can appear on the first keystroke, which means an email field is marked invalid while the reader is still typing the local part; it suits confirm-password and character-limited fields where feedback while typing genuinely helps. On blur: the first error appears when the reader leaves the field, which is late enough to be fair and early enough to fix in place; it suits almost every text field and is the sensible default. On submit: the first error appears only at the end, which is honest but front-loads all the bad news at once; it suits short forms and any field whose validity depends on other fields. On touched then change: nothing is shown until the field has been left once, after which it re-validates on every keystroke; it suits fields the reader is likely to correct repeatedly.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Mode</text>
+  <text x="160" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">First error can appear</text>
+  <text x="348" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Risk it carries</text>
+  <text x="516" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Fits</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">on change</text>
+  <text x="160" y="66" font-size="10" fill="#6b5f75" font-family="inherit">first keystroke</text>
+  <text x="348" y="66" font-size="10" fill="#a63d6f" font-family="inherit">scolds mid-word</text>
+  <text x="516" y="66" font-size="10" fill="#6b5f75" font-family="inherit">confirm fields, counters</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">on blur</text>
+  <text x="160" y="100" font-size="10" fill="#6b5f75" font-family="inherit">leaving the field</text>
+  <text x="348" y="100" font-size="10" fill="#2d6342" font-family="inherit">none worth naming</text>
+  <text x="516" y="100" font-size="10" fill="#6b5f75" font-family="inherit">almost every text field</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">on submit</text>
+  <text x="160" y="134" font-size="10" fill="#6b5f75" font-family="inherit">the submit attempt</text>
+  <text x="348" y="134" font-size="10" fill="#b07a55" font-family="inherit">all bad news at once</text>
+  <text x="516" y="134" font-size="10" fill="#6b5f75" font-family="inherit">short forms, cross-field rules</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">touched, then change</text>
+  <text x="160" y="168" font-size="10" fill="#6b5f75" font-family="inherit">after the first blur</text>
+  <text x="348" y="168" font-size="10" fill="#2d6342" font-family="inherit">none worth naming</text>
+  <text x="516" y="168" font-size="10" fill="#6b5f75" font-family="inherit">fields readers correct twice</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Most production forms end up with the last row: silent until the reader has had one go, then live while they fix it.</text>
+  <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">That behaviour is not a mode in most libraries — it is two modes and a per-field touched flag, which is why it needs a state machine.</text>
+</svg>
+
 ## Integration Guidance
 
 This lifecycle class is the validation pipeline component within [Form State Fundamentals & Architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/). It wires into the parent pipeline at two seams:
@@ -300,6 +339,35 @@ For cross-field validation — password confirmation, date ranges, dependent dro
 | `canSubmit()` returns `true` while a field is still `VALIDATING` | Log `this.state` entries before `canSubmit()` evaluates | Confirm that the `VALIDATING` state is set *synchronously* at the top of `validate()`, before any `await` |
 | Form resets but stale async check commits after reset | Add a log inside the `finally` block to check if `controllers.get(field) === controller` | Call `reset()` before programmatic form reset; the `finally` guard prevents orphaned results |
 | `RETRYABLE` state blocks submission permanently | Check whether a retry trigger is wired to the retry button in the UI | Expose a `retry(field)` method that resets field state to `IDLE` and re-fires the last known value through `validate()` |
+
+The mode is not fixed for the life of the form, either. A submit attempt changes the contract for every field at once:
+
+<svg viewBox="0 8 668 208" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A field's validation contract before and after the first submit attempt. Before submit, an untouched field validates on blur only and shows nothing while typing. After a failed submit, every field is treated as touched and re-validates on each keystroke so the reader sees the error clear as they fix it." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The first submit attempt rewrites the rules for every field</title>
+  <desc>Before the first submit, an untouched field shows nothing while the reader types and validates only when they leave it. The first submit attempt marks every field touched at once and renders every failure. From then on each field re-validates on every keystroke, so an error disappears the moment the value becomes valid rather than waiting for another blur. The reason for the switch is that after a failed submit the reader is repairing, not composing, and immediate confirmation is what repair needs.</desc>
+  <rect x="0" y="8" width="668" height="208" fill="#f9f5fb"/>
+  <rect x="14" y="30" width="190" height="86" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="109" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">before first submit</text>
+  <text x="28" y="74" font-size="9.5" fill="#6b5f75" font-family="inherit">typing: nothing shown</text>
+  <text x="28" y="92" font-size="9.5" fill="#6b5f75" font-family="inherit">blur: validate this field</text>
+  <text x="28" y="110" font-size="9.5" fill="#6b5f75" font-family="inherit">reader is composing</text>
+  <path d="M204,73 H240" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="240" y="30" width="190" height="86" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="335" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">submit attempt</text>
+  <text x="254" y="74" font-size="9.5" fill="#1e1a24" font-family="inherit">every field marked touched</text>
+  <text x="254" y="92" font-size="9.5" fill="#1e1a24" font-family="inherit">every failure rendered</text>
+  <text x="254" y="110" font-size="9.5" fill="#1e1a24" font-family="inherit">focus moves to the summary</text>
+  <path d="M430,73 H466" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="466" y="30" width="188" height="86" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="560" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="#2d6342" font-family="inherit">after first submit</text>
+  <text x="480" y="74" font-size="9.5" fill="#6b5f75" font-family="inherit">typing: re-validate live</text>
+  <text x="480" y="92" font-size="9.5" fill="#6b5f75" font-family="inherit">errors clear as they fix</text>
+  <text x="480" y="110" font-size="9.5" fill="#6b5f75" font-family="inherit">reader is repairing</text>
+  <text x="14" y="150" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Why the switch is worth the extra state</text>
+  <text x="14" y="168" font-size="10" fill="#6b5f75" font-family="inherit">Composing and repairing are different tasks. While composing, live errors interrupt; while repairing, they are the</text>
+  <text x="14" y="184" font-size="10" fill="#6b5f75" font-family="inherit">confirmation the reader is waiting for — the field going quiet is how they know they can move on.</text>
+  <text x="14" y="204" font-size="10" fill="#6b5f75" font-family="inherit">Store the attempt count on the form, not per field, so one submit flips all of them together.</text>
+</svg>
 
 ## Testing & QA Hooks
 

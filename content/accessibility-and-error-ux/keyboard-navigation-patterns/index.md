@@ -99,48 +99,49 @@ The controllers below address the two hardest seams — roving tabindex for grou
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" role="img" aria-label="Keyboard focus order across a form with a roving tabindex radio group" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>Tab Order and Roving Tabindex Within a Group</title>
   <desc>Tab moves between the name field, a radio group treated as one tab stop, and the submit button. Inside the group, arrow keys move the single tabindex zero between options while the others stay tabindex minus one.</desc>
-  <rect width="760" height="340" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+  <rect x="0" y="0" width="760" height="340" fill="#f9f5fb"/>
+  <rect width="760" height="340" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
   <!-- Tab stops row -->
-  <text x="30" y="45" font-family="inherit" font-size="11" fill="currentColor" opacity="0.6">Tab order →</text>
+  <text x="30" y="45" font-family="inherit" font-size="11" fill="#6b5f75">Tab order →</text>
   <!-- Field 1: Name -->
-  <rect x="40" y="70" width="150" height="50" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="115" y="92" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">Name</text>
-  <text x="115" y="108" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">tabindex 0</text>
+  <rect x="40" y="70" width="150" height="50" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="115" y="92" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">Name</text>
+  <text x="115" y="108" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">tabindex 0</text>
   <!-- Group container = ONE tab stop -->
-  <rect x="255" y="55" width="290" height="130" rx="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.35" stroke-dasharray="6 4"/>
-  <text x="400" y="48" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.7">radiogroup — one tab stop</text>
+  <rect x="255" y="55" width="290" height="130" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="400" y="48" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">radiogroup — one tab stop</text>
   <!-- option A (active, tabindex 0) -->
-  <rect x="275" y="75" width="110" height="42" rx="9" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.85"/>
-  <text x="330" y="93" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="currentColor">Option A</text>
-  <text x="330" y="108" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.7">tabindex 0</text>
+  <rect x="275" y="75" width="110" height="42" rx="9" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="330" y="93" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="#1e1a24">Option A</text>
+  <text x="330" y="108" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">tabindex 0</text>
   <!-- option B -->
-  <rect x="415" y="75" width="110" height="42" rx="9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.45"/>
-  <text x="470" y="93" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.8">Option B</text>
-  <text x="470" y="108" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.55">tabindex -1</text>
+  <rect x="415" y="75" width="110" height="42" rx="9" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="470" y="93" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">Option B</text>
+  <text x="470" y="108" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">tabindex -1</text>
   <!-- option C -->
-  <rect x="345" y="128" width="110" height="42" rx="9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.45"/>
-  <text x="400" y="146" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.8">Option C</text>
-  <text x="400" y="161" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.55">tabindex -1</text>
+  <rect x="345" y="128" width="110" height="42" rx="9" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="400" y="146" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">Option C</text>
+  <text x="400" y="161" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">tabindex -1</text>
   <!-- Field 3: Submit -->
-  <rect x="610" y="70" width="120" height="50" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="670" y="92" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">Submit</text>
-  <text x="670" y="108" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">tabindex 0</text>
+  <rect x="610" y="70" width="120" height="50" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="670" y="92" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">Submit</text>
+  <text x="670" y="108" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">tabindex 0</text>
   <!-- Tab arrows -->
-  <path d="M190 95 L255 100" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-kbd)"/>
-  <text x="222" y="88" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">Tab</text>
-  <path d="M545 100 L610 95" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-kbd)"/>
-  <text x="577" y="88" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">Tab</text>
+  <path d="M190 95 L255 100" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-kbd)"/>
+  <text x="222" y="88" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">Tab</text>
+  <path d="M545 100 L610 95" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-kbd)"/>
+  <text x="577" y="88" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">Tab</text>
   <!-- Arrow-key movement inside the group -->
-  <path d="M385 96 L415 96" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6" stroke-dasharray="4 3" marker-end="url(#arr-kbd)"/>
-  <path d="M455 113 C440 122 420 124 400 128" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6" stroke-dasharray="4 3" marker-end="url(#arr-kbd)"/>
+  <path d="M385 96 L415 96" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr-kbd)"/>
+  <path d="M455 113 C440 122 420 124 400 128" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr-kbd)"/>
   <!-- Legend -->
-  <text x="400" y="215" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.75">Arrow keys move the single tabindex="0" between options and wrap at the ends</text>
-  <text x="400" y="240" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.75">Tab enters the group once, lands on the active option, and Tab again leaves it</text>
-  <line x1="60" y1="270" x2="700" y2="270" stroke="currentColor" stroke-opacity="0.12" stroke-width="1"/>
-  <text x="400" y="298" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="currentColor" opacity="0.8">DOM order = visual order = tab order — never a positive tabindex</text>
+  <text x="400" y="215" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">Arrow keys move the single tabindex="0" between options and wrap at the ends</text>
+  <text x="400" y="240" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">Tab enters the group once, lands on the active option, and Tab again leaves it</text>
+  <line x1="60" y1="270" x2="700" y2="270" stroke="#7b4f8a" stroke-width="1"/>
+  <text x="400" y="298" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="#1e1a24">DOM order = visual order = tab order — never a positive tabindex</text>
   <defs>
     <marker id="arr-kbd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
 </svg>
@@ -336,6 +337,57 @@ Two integration rules keep the keyboard layer robust:
 
 ---
 
+Four widget families dominate real forms, and each one answers the same seven keys differently. Keeping the contract in one place is the cheapest way to stop a custom control inventing its own dialect:
+
+<svg viewBox="0 8 700 204" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Key contract for four widget families. Tab enters and leaves a native radio group, a roving-tabindex group and a combobox but is trapped in a modal. Arrow keys move and select in a radio group, move without selecting in a roving group, move the active option in a combobox and do nothing in a dialog. Home and End jump to the ends. Space selects or toggles. Enter submits or commits. Escape closes the popup or the dialog." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>What each key must do, per widget family</title>
+  <desc>A key contract table. Tab: one stop for a native radio group, one stop for a roving group, one stop for a combobox, and trapped inside a modal dialog. Arrow keys: move and select in a native radio group, move focus without selecting in a roving group, move the active option in a combobox, and are left to the page in a dialog. Home and End: first and last option, first and last option, first and last option, and no effect in a dialog. Space: selects the focused radio, toggles the focused checkbox, opens the combobox popup, and does nothing special in a dialog. Enter: submits the form, submits the form, commits the highlighted option, and activates the default action. Escape: no effect, no effect, closes the popup and restores the typed value, and closes the dialog returning focus to the opener.</desc>
+  <rect x="0" y="8" width="700" height="204" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="186" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">Key</text>
+  <text x="118" y="36" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">Native radio group</text>
+  <text x="268" y="36" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">Roving group</text>
+  <text x="400" y="36" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">Combobox</text>
+  <text x="558" y="36" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">Modal dialog</text>
+  <text x="24" y="64" font-size="9.5" fill="#1e1a24" font-family="inherit">Tab</text>
+  <text x="118" y="64" font-size="9.5" fill="#6b5f75" font-family="inherit">one stop, leaves group</text>
+  <text x="268" y="64" font-size="9.5" fill="#6b5f75" font-family="inherit">one stop</text>
+  <text x="400" y="64" font-size="9.5" fill="#6b5f75" font-family="inherit">one stop, closes popup</text>
+  <text x="558" y="64" font-size="9.5" fill="#a63d6f" font-family="inherit">trapped, wraps</text>
+  <line x1="10" y1="72" x2="690" y2="72" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="90" font-size="9.5" fill="#1e1a24" font-family="inherit">Arrow keys</text>
+  <text x="118" y="90" font-size="9.5" fill="#6b5f75" font-family="inherit">move and select</text>
+  <text x="268" y="90" font-size="9.5" fill="#6b5f75" font-family="inherit">move only</text>
+  <text x="400" y="90" font-size="9.5" fill="#6b5f75" font-family="inherit">move active option</text>
+  <text x="558" y="90" font-size="9.5" fill="#6b5f75" font-family="inherit">left to the page</text>
+  <line x1="10" y1="98" x2="690" y2="98" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="116" font-size="9.5" fill="#1e1a24" font-family="inherit">Home / End</text>
+  <text x="118" y="116" font-size="9.5" fill="#6b5f75" font-family="inherit">first / last option</text>
+  <text x="268" y="116" font-size="9.5" fill="#6b5f75" font-family="inherit">first / last option</text>
+  <text x="400" y="116" font-size="9.5" fill="#6b5f75" font-family="inherit">first / last option</text>
+  <text x="558" y="116" font-size="9.5" fill="#6b5f75" font-family="inherit">no effect</text>
+  <line x1="10" y1="124" x2="690" y2="124" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="142" font-size="9.5" fill="#1e1a24" font-family="inherit">Space</text>
+  <text x="118" y="142" font-size="9.5" fill="#6b5f75" font-family="inherit">selects focused radio</text>
+  <text x="268" y="142" font-size="9.5" fill="#6b5f75" font-family="inherit">toggles checkbox</text>
+  <text x="400" y="142" font-size="9.5" fill="#6b5f75" font-family="inherit">opens the popup</text>
+  <text x="558" y="142" font-size="9.5" fill="#6b5f75" font-family="inherit">activates control</text>
+  <line x1="10" y1="150" x2="690" y2="150" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="9.5" fill="#1e1a24" font-family="inherit">Enter</text>
+  <text x="118" y="168" font-size="9.5" fill="#6b5f75" font-family="inherit">submits the form</text>
+  <text x="268" y="168" font-size="9.5" fill="#6b5f75" font-family="inherit">submits the form</text>
+  <text x="400" y="168" font-size="9.5" fill="#6b5f75" font-family="inherit">commits highlighted</text>
+  <text x="558" y="168" font-size="9.5" fill="#6b5f75" font-family="inherit">default action</text>
+  <line x1="10" y1="176" x2="690" y2="176" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="194" font-size="9.5" fill="#1e1a24" font-family="inherit">Escape</text>
+  <text x="118" y="194" font-size="9.5" fill="#6b5f75" font-family="inherit">no effect</text>
+  <text x="268" y="194" font-size="9.5" fill="#6b5f75" font-family="inherit">no effect</text>
+  <text x="400" y="194" font-size="9.5" fill="#6b5f75" font-family="inherit">closes, restores value</text>
+  <text x="558" y="194" font-size="9.5" fill="#2d6342" font-family="inherit">closes, restores focus</text>
+</svg>
+
 ## Edge Cases and Failure Modes
 
 ### Positive tabindex fragments the order
@@ -381,6 +433,36 @@ A combobox or grid that calls `preventDefault()` on Tab to "keep focus inside" t
 | Screen reader silent when arrowing a combobox | Inspect `aria-activedescendant` against live option ids | Re-point it after each filter; toggle `aria-selected` on the active option |
 
 ---
+
+A focus trap is the one place where you deliberately break Tab, so it is worth being precise about what the trap owns and what it must give back:
+
+<svg viewBox="0 8 660 236" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Anatomy of a focus trap. The opener records itself before the dialog mounts. Inside the dialog Tab from the last focusable element wraps to the first and Shift Tab from the first wraps to the last. Escape or a successful confirm closes the dialog and focus returns to the recorded opener." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>What a focus trap owns, and what it hands back</title>
+  <desc>Left: the opener button records itself as the element to restore. Centre: the dialog holds an ordered list of focusable elements — a close button, two fields and a confirm button. Tab from the last of them wraps around to the first, and Shift Tab from the first wraps to the last, so focus never escapes to the page behind. Right: on Escape or confirm, the dialog unmounts and focus is moved back to the recorded opener rather than being allowed to fall to the document body.</desc>
+  <rect x="0" y="8" width="660" height="236" fill="#f9f5fb"/>
+  <rect x="14" y="70" width="132" height="60" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="80" y="94" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">opener button</text>
+  <text x="80" y="112" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">recorded on open</text>
+  <path d="M146,100 H176" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="176" y="24" width="230" height="176" rx="10" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="291" y="44" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">dialog — Tab is trapped here</text>
+  <rect x="192" y="54" width="198" height="26" rx="5" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="204" y="72" font-size="9.5" fill="#1e1a24" font-family="inherit">1 · close (first focusable)</text>
+  <rect x="192" y="86" width="198" height="26" rx="5" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="204" y="104" font-size="9.5" fill="#1e1a24" font-family="inherit">2 · reason field</text>
+  <rect x="192" y="118" width="198" height="26" rx="5" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="204" y="136" font-size="9.5" fill="#1e1a24" font-family="inherit">3 · confirmation field</text>
+  <rect x="192" y="150" width="198" height="26" rx="5" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="204" y="168" font-size="9.5" fill="#1e1a24" font-family="inherit">4 · confirm (last focusable)</text>
+  <path d="M406,163 H424 V67 H406" fill="none" stroke="#7b4f8a" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <text x="432" y="102" font-size="9.5" fill="#6b5f75" font-family="inherit">Tab wraps 4 to 1</text>
+  <text x="432" y="118" font-size="9.5" fill="#6b5f75" font-family="inherit">Shift+Tab wraps 1 to 4</text>
+  <rect x="452" y="150" width="196" height="60" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="550" y="174" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">Escape or confirm</text>
+  <text x="550" y="192" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">focus returns to the opener</text>
+  <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">Recompute the focusable list on every Tab: a conditionally rendered field changes which element is "last" mid-dialog.</text>
+  <text x="14" y="238" font-size="10" fill="#6b5f75" font-family="inherit">If the opener has since unmounted, fall back to a container with tabindex="-1" — never leave focus on &lt;body&gt;.</text>
+</svg>
 
 ## Testing and QA Hooks
 

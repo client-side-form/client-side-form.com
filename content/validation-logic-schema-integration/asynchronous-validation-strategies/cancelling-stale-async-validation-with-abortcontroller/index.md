@@ -3,7 +3,7 @@ layout: page.njk
 title: "Cancelling Stale Async Validation with AbortController"
 description: "The canonical abort-before-refire pattern for async form validation: signal.aborted guards, AbortError handling, and a per-field controller map."
 slug: cancelling-stale-async-validation-with-abortcontroller
-type: guide
+type: howto
 breadcrumb: "Cancelling Stale Async Validation"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -214,6 +214,25 @@ The general debounce mechanics are covered in [debouncing validation triggers in
 
 ---
 
+Two overlapping checks are enough to show why the abort has to happen at the start of the new run rather than at the end of the old one:
+
+<svg viewBox="0 8 668 218" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two overlapping validation runs on one timeline. Without an abort, the slower first run resolves after the second and overwrites its result. With the controller aborted as the second run starts, the first never reaches its state write." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The overwrite, and the one line that prevents it</title>
+  <desc>Without an abort: run A begins at zero milliseconds for the value "ada" and the server takes nine hundred milliseconds. Run B begins at two hundred milliseconds for the value "adam" and takes two hundred. B resolves at four hundred and writes "available". A resolves at nine hundred and writes "taken" — a verdict about a value the field no longer holds. With the abort: creating run B's controller aborts run A's signal, A's fetch rejects with an AbortError which the handler swallows, and only B's write ever happens.</desc>
+  <rect x="0" y="8" width="668" height="218" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#a63d6f" font-family="inherit">no abort — the slow answer lands last</text>
+  <rect x="14" y="36" width="640" height="66" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="28" y="56" font-size="9.5" fill="#6b5f75" font-family="inherit">t=0    run A starts for "ada"     — server takes 900ms</text>
+  <text x="28" y="74" font-size="9.5" fill="#6b5f75" font-family="inherit">t=200  run B starts for "adam"    — server takes 200ms</text>
+  <text x="28" y="92" font-size="9.5" fill="#a63d6f" font-family="inherit">t=400  B writes "available"   ·   t=900  A writes "taken" over it</text>
+  <text x="14" y="128" font-size="11.5" font-weight="700" fill="#2d6342" font-family="inherit">abort on start — A can never write</text>
+  <rect x="14" y="138" width="640" height="66" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="28" y="158" font-size="9.5" fill="#6b5f75" font-family="inherit">t=0    run A starts, controller stored in a ref</text>
+  <text x="28" y="176" font-size="9.5" fill="#6b5f75" font-family="inherit">t=200  run B starts — first line aborts A&#39;s signal</text>
+  <text x="28" y="194" font-size="9.5" fill="#2d6342" font-family="inherit">t=400  B writes "available"   ·   A rejects with AbortError and is swallowed</text>
+  <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">Abort at the start of the new run, not in a cleanup: a cleanup runs after the render that already scheduled the write.</text>
+</svg>
+
 ## Failure Modes and Edge Cases
 
 **Missing signal.aborted guard.** Calling `abort()` is not enough on its own. A response that resolved microseconds before the abort still runs its `.then`, and a non-fetch async step that ignores the signal runs regardless. The commit-time guard is mandatory.
@@ -249,6 +268,35 @@ commit(enriched);
 
 ---
 
+`AbortError` is not a failure, and treating it as one produces error toasts every time somebody types quickly. Three outcomes need three different handlers:
+
+<svg viewBox="0 8 690 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three outcomes of an async validation call and the correct handling of each: a resolved response writes the verdict, an AbortError is swallowed silently, and a genuine network error surfaces a retryable state rather than a validation failure." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Resolved, aborted, failed — three different endings</title>
+  <desc>Resolved: write the verdict, clear the busy state and announce the result. Rejected with an AbortError: do nothing at all — no state write, no announcement, no logging, because a newer run is already responsible for this field and the abort was deliberate. Rejected with anything else: this is a network or server failure, not a validation failure, so the field must not be marked invalid; show a retryable state such as "could not check right now", keep the submit button usable, and let the server make the final decision.</desc>
+  <rect x="0" y="8" width="690" height="210" fill="#f9f5fb"/>
+  <rect x="14" y="30" width="212" height="112" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="28" y="52" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">resolved</text>
+  <text x="28" y="74" font-size="9.5" fill="#6b5f75" font-family="inherit">write the verdict</text>
+  <text x="28" y="92" font-size="9.5" fill="#6b5f75" font-family="inherit">clear the busy state</text>
+  <text x="28" y="110" font-size="9.5" fill="#6b5f75" font-family="inherit">announce the result</text>
+  <text x="28" y="130" font-size="9.5" fill="#6b5f75" font-family="inherit">the normal path</text>
+  <rect x="238" y="30" width="212" height="112" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="252" y="52" font-size="10.5" font-weight="700" fill="#7b4f8a" font-family="inherit">AbortError</text>
+  <text x="252" y="74" font-size="9.5" fill="#6b5f75" font-family="inherit">no state write</text>
+  <text x="252" y="92" font-size="9.5" fill="#6b5f75" font-family="inherit">no announcement</text>
+  <text x="252" y="110" font-size="9.5" fill="#6b5f75" font-family="inherit">no logging</text>
+  <text x="252" y="130" font-size="9.5" fill="#7b4f8a" font-family="inherit">you caused it on purpose</text>
+  <rect x="462" y="30" width="214" height="112" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
+  <text x="476" y="52" font-size="10.5" font-weight="700" fill="#b07a55" font-family="inherit">any other rejection</text>
+  <text x="476" y="74" font-size="9.5" fill="#6b5f75" font-family="inherit">not a validation failure</text>
+  <text x="476" y="92" font-size="9.5" fill="#6b5f75" font-family="inherit">show "could not check"</text>
+  <text x="476" y="110" font-size="9.5" fill="#6b5f75" font-family="inherit">keep submit usable</text>
+  <text x="476" y="130" font-size="9.5" fill="#6b5f75" font-family="inherit">the server decides</text>
+  <text x="14" y="176" font-size="10" fill="#6b5f75" font-family="inherit">Marking a field invalid because the network failed blocks a submit the server would have accepted — an outage becomes a wall.</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">Check err.name === "AbortError", not the message: the message differs across browsers and is localised in some.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">A timeout you impose yourself is also an abort — give it its own reason so the third column can tell them apart.</text>
+</svg>
+
 ## Verification Checklist
 
 - [ ] One AbortController per field, held in a map keyed by field name
@@ -262,6 +310,40 @@ commit(enriched);
 - [ ] Screen reader announces only the final result, not intermediate cancelled rounds
 
 ---
+
+## Where the controller has to live
+
+The controller's storage location decides whether cancellation actually works, and the three plausible choices are not equivalent.
+
+<svg viewBox="0 8 690 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three places to store the AbortController: a local variable inside the handler, component state, or a ref. Only the ref both survives re-renders and is readable synchronously at the moment a new run starts." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Local variable, state, or ref</title>
+  <desc>A local variable inside the handler is recreated on every call, so the new run has no reference to the previous controller and can never abort it. Component state survives renders, but writing it schedules a render and reading it during the same handler returns the previous value, so the abort targets the wrong controller. A ref survives renders and is readable and writable synchronously, which is exactly what the abort needs — read the previous controller, abort it, then store the new one, all in the same tick.</desc>
+  <rect x="0" y="8" width="690" height="210" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="136" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Stored in</text>
+  <text x="164" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Survives a render?</text>
+  <text x="332" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Readable synchronously?</text>
+  <text x="530" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Works?</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">a local variable</text>
+  <text x="164" y="66" font-size="10" fill="#a63d6f" font-family="inherit">no</text>
+  <text x="332" y="66" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
+  <text x="530" y="66" font-size="10" fill="#a63d6f" font-family="inherit">no — nothing to abort</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">component state</text>
+  <text x="164" y="100" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
+  <text x="332" y="100" font-size="10" fill="#a63d6f" font-family="inherit">no — one render behind</text>
+  <text x="530" y="100" font-size="10" fill="#a63d6f" font-family="inherit">no — aborts the wrong one</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">a ref</text>
+  <text x="164" y="134" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
+  <text x="332" y="134" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
+  <text x="530" y="134" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
+  <text x="14" y="176" font-size="10" fill="#6b5f75" font-family="inherit">The sequence a ref makes possible: read previous, abort it, create the new one, store it — all before the request is sent.</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">Outside a component the same reasoning gives you a module-scoped map keyed by field name, cleared on teardown.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Also abort from the unmount cleanup, or the last run outlives the form that started it.</text>
+</svg>
 
 ## Frequently Asked Questions
 

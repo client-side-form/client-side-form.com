@@ -88,51 +88,52 @@ The first failure mode in any custom form hook is a proliferation of boolean fla
 <svg viewBox="0 0 720 200" role="img" aria-label="Form hook state machine: IDLE transitions to VALIDATING on change or blur; VALIDATING transitions to VALID or INVALID; VALID transitions to SUBMITTING on submit; SUBMITTING transitions to SUCCESS or ERROR; INVALID returns to VALIDATING on change; ERROR and SUCCESS both transition back to IDLE on reset." xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:1.5rem auto;">
   <title>Form hook state machine</title>
   <desc>IDLE transitions to VALIDATING on change or blur. VALIDATING transitions to VALID or INVALID. VALID transitions to SUBMITTING on submit. SUBMITTING transitions to SUCCESS or ERROR. INVALID returns to VALIDATING on change. ERROR and SUCCESS both transition back to IDLE on reset.</desc>
+  <rect x="0" y="0" width="720" height="200" fill="#f9f5fb"/>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.6"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- State nodes -->
-  <rect x="10" y="80" width="80" height="36" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="50" y="103" text-anchor="middle" font-size="12" fill="currentColor" font-family="inherit">IDLE</text>
-  <rect x="140" y="80" width="100" height="36" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="190" y="103" text-anchor="middle" font-size="12" fill="currentColor" font-family="inherit">VALIDATING</text>
-  <rect x="295" y="40" width="76" height="36" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="333" y="63" text-anchor="middle" font-size="12" fill="currentColor" font-family="inherit">VALID</text>
-  <rect x="295" y="120" width="76" height="36" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="333" y="143" text-anchor="middle" font-size="12" fill="currentColor" font-family="inherit">INVALID</text>
-  <rect x="430" y="40" width="100" height="36" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="480" y="63" text-anchor="middle" font-size="12" fill="currentColor" font-family="inherit">SUBMITTING</text>
-  <rect x="590" y="15" width="76" height="36" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="628" y="38" text-anchor="middle" font-size="12" fill="currentColor" font-family="inherit">SUCCESS</text>
-  <rect x="590" y="68" width="76" height="36" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="628" y="91" text-anchor="middle" font-size="12" fill="currentColor" font-family="inherit">ERROR</text>
+  <rect x="10" y="80" width="80" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="50" y="103" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="inherit">IDLE</text>
+  <rect x="140" y="80" width="100" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="190" y="103" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="inherit">VALIDATING</text>
+  <rect x="295" y="40" width="76" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="333" y="63" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="inherit">VALID</text>
+  <rect x="295" y="120" width="76" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="333" y="143" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="inherit">INVALID</text>
+  <rect x="430" y="40" width="100" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="480" y="63" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="inherit">SUBMITTING</text>
+  <rect x="590" y="15" width="76" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="628" y="38" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="inherit">SUCCESS</text>
+  <rect x="590" y="68" width="76" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="628" y="91" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="inherit">ERROR</text>
   <!-- Arrows -->
   <!-- IDLE → VALIDATING -->
-  <line x1="90" y1="98" x2="138" y2="98" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="114" y="92" text-anchor="middle" font-size="9" fill="currentColor" opacity="0.6">change</text>
+  <line x1="90" y1="98" x2="138" y2="98" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="114" y="92" text-anchor="middle" font-size="9" fill="#6b5f75">change</text>
   <!-- VALIDATING → VALID -->
-  <line x1="240" y1="88" x2="293" y2="66" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="261" y="71" text-anchor="middle" font-size="9" fill="currentColor" opacity="0.6">pass</text>
+  <line x1="240" y1="88" x2="293" y2="66" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="261" y="71" text-anchor="middle" font-size="9" fill="#6b5f75">pass</text>
   <!-- VALIDATING → INVALID -->
-  <line x1="240" y1="108" x2="293" y2="130" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="261" y="126" text-anchor="middle" font-size="9" fill="currentColor" opacity="0.6">fail</text>
+  <line x1="240" y1="108" x2="293" y2="130" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="261" y="126" text-anchor="middle" font-size="9" fill="#6b5f75">fail</text>
   <!-- INVALID → VALIDATING (arc label below) -->
-  <path d="M333,156 Q333,175 190,175 Q140,175 190,118" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="4,3"/>
-  <text x="265" y="187" text-anchor="middle" font-size="9" fill="currentColor" opacity="0.6">change</text>
+  <path d="M333,156 Q333,175 190,175 Q140,175 190,118" fill="none" stroke="#6b5f75" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="4,3"/>
+  <text x="265" y="187" text-anchor="middle" font-size="9" fill="#6b5f75">change</text>
   <!-- VALID → SUBMITTING -->
-  <line x1="371" y1="58" x2="428" y2="58" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="400" y="52" text-anchor="middle" font-size="9" fill="currentColor" opacity="0.6">submit</text>
+  <line x1="371" y1="58" x2="428" y2="58" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="400" y="52" text-anchor="middle" font-size="9" fill="#6b5f75">submit</text>
   <!-- SUBMITTING → SUCCESS -->
-  <line x1="530" y1="52" x2="588" y2="36" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="558" y="38" text-anchor="middle" font-size="9" fill="currentColor" opacity="0.6">ok</text>
+  <line x1="530" y1="52" x2="588" y2="36" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="558" y="38" text-anchor="middle" font-size="9" fill="#6b5f75">ok</text>
   <!-- SUBMITTING → ERROR -->
-  <line x1="530" y1="65" x2="588" y2="78" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="558" y="82" text-anchor="middle" font-size="9" fill="currentColor" opacity="0.6">fail</text>
+  <line x1="530" y1="65" x2="588" y2="78" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="558" y="82" text-anchor="middle" font-size="9" fill="#6b5f75">fail</text>
   <!-- SUCCESS/ERROR → IDLE (reset) -->
-  <path d="M628,51 Q700,51 700,160 Q700,200 50,200 Q10,200 10,118" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="4,3"/>
-  <text x="680" y="185" text-anchor="middle" font-size="9" fill="currentColor" opacity="0.6">reset</text>
+  <path d="M628,51 Q700,51 700,160 Q700,200 50,200 Q10,200 10,118" fill="none" stroke="#6b5f75" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="4,3"/>
+  <text x="680" y="185" text-anchor="middle" font-size="9" fill="#6b5f75">reset</text>
 </svg>
 
 The corresponding TypeScript type collapses every illegal combination at the type level:
@@ -388,6 +389,39 @@ This hook architecture slots into the [Framework Adapters & Custom Hooks](https:
 
 2. **Outbound (cross-framework micro-frontend boundary):** If the React form is embedded in a Vue or Svelte shell (see [Vue Composition API Form Adapters](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) and [Svelte Store Integration for Forms](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/)), expose a plain object event bus — `CustomEvent` on a shared DOM node — rather than trying to pass React context across the framework boundary. The hook publishes normalized `{ field, value, errors }` payloads; the shell subscribes and updates its own reactive store.
 
+### Where each piece of state belongs
+
+React gives you four places to keep something, and the whole architecture follows from choosing correctly for each piece. The test is simple: does the UI have to repaint when this changes, and does more than one component read it?
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four storage locations in a React form and what belongs in each: an external store for field values and errors, a ref for transient buffers and controllers, useState for genuinely local UI state, and context for the stable store reference only." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Four places to put state, and the rule for each</title>
+  <desc>An external store outside React holds field values, per-field errors and touched flags, because many components read them and each should re-render only for its own slice. A ref holds transient buffers, debounce timer handles and AbortControllers, because they change faster than the UI needs to repaint and reading them must never schedule work. useState holds genuinely local UI state such as whether a section is expanded, because only that component cares. Context holds the store instance and nothing else, because the instance never changes and putting values there re-broadcasts to every consumer.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Where</text>
+  <text x="150" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">What lives there</text>
+  <text x="392" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Because</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">external store</text>
+  <text x="150" y="66" font-size="10" fill="#6b5f75" font-family="inherit">values, errors, touched flags</text>
+  <text x="392" y="66" font-size="10" fill="#6b5f75" font-family="inherit">many readers, one slice each</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">a ref</text>
+  <text x="150" y="100" font-size="10" fill="#6b5f75" font-family="inherit">buffers, timers, controllers</text>
+  <text x="392" y="100" font-size="10" fill="#6b5f75" font-family="inherit">changes must not schedule a render</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">useState</text>
+  <text x="150" y="134" font-size="10" fill="#6b5f75" font-family="inherit">is this section expanded</text>
+  <text x="392" y="134" font-size="10" fill="#6b5f75" font-family="inherit">one component cares, and it repaints</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">context</text>
+  <text x="150" y="168" font-size="10" fill="#7b4f8a" font-family="inherit">the store instance — only that</text>
+  <text x="392" y="168" font-size="10" fill="#6b5f75" font-family="inherit">stable forever, so it never re-broadcasts</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Putting values in the last row is the single most common cause of a form that re-renders everything on every keystroke.</text>
+  <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">The instance is what consumers need; the values they should subscribe to individually.</text>
+</svg>
+
 ## Edge Cases and Failure Modes
 
 **Stale closure in debounced validate:** If `schema` is reconstructed on every render (common with inline `z.object({...})` definitions), the `useCallback` dep array changes on every render and the debounce timer resets before it can fire. Fix: hoist schema construction outside the component or memoize it with `useMemo`.
@@ -409,6 +443,36 @@ This hook architecture slots into the [Framework Adapters & Custom Hooks](https:
 | `setState` called on unmounted component warning | Verify `cancel()` is called in the `useEffect` cleanup | Return `cancel` from `useFormValidator` and call it in teardown |
 | Async validation resolves with stale data | Log `abortRef.current.signal.aborted` at the point where `setResult` is called | Guard every `setResult` call with `if (!controller.signal.aborted)` |
 | Hydrated form immediately marks all fields as dirty | External store dispatch is bypassing `HYDRATE` action path | Dispatch `{ type: 'HYDRATE', payload: values }` and set `touched: {}` inside that reducer branch |
+
+One consequence of that layout is worth stating on its own: the hook's return value is a contract, and every entry in it has a stability requirement.
+
+<svg viewBox="0 8 690 216" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The stability contract of the useFormField return value: value and error change per keystroke by design, onChange and onBlur must keep a stable identity, the field id must be stable for the component's life, and the aria props must be derived rather than stored." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>What each returned value promises its consumer</title>
+  <desc>The value and error entries are expected to change, and changing is what triggers the render. The onChange and onBlur callbacks must keep a stable identity across renders, or a memoized input child re-renders purely because its props got new function references. The field id must be stable for the life of the component, because aria-describedby points at it and a changing id silently breaks the association. The aria props should be derived from the slice on each render rather than stored, so they can never drift out of sync with the error they describe.</desc>
+  <rect x="0" y="8" width="690" height="216" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Returned</text>
+  <text x="164" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Stability required</text>
+  <text x="356" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">What breaks without it</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">value, error</text>
+  <text x="164" y="66" font-size="10" fill="#6b5f75" font-family="inherit">none — they change</text>
+  <text x="356" y="66" font-size="10" fill="#6b5f75" font-family="inherit">nothing; changing is the point</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">onChange, onBlur</text>
+  <text x="164" y="100" font-size="10" fill="#7b4f8a" font-family="inherit">identity, every render</text>
+  <text x="356" y="100" font-size="10" fill="#a63d6f" font-family="inherit">memoized inputs re-render anyway</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">field id</text>
+  <text x="164" y="134" font-size="10" fill="#7b4f8a" font-family="inherit">for the component&#39;s life</text>
+  <text x="356" y="134" font-size="10" fill="#a63d6f" font-family="inherit">describedby points at nothing</text>
+  <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">aria props</text>
+  <text x="164" y="168" font-size="10" fill="#6b5f75" font-family="inherit">derived, never stored</text>
+  <text x="356" y="168" font-size="10" fill="#a63d6f" font-family="inherit">state drifts from the message</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Row three is the one that fails silently: nothing throws, nothing is logged, and only a screen reader notices.</text>
+</svg>
 
 ## Testing and QA Hooks
 

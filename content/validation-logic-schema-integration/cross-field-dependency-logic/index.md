@@ -109,58 +109,59 @@ The validator for each dependent field moves through six explicit states. Unders
 <svg role="img" aria-label="State machine diagram for cross-field dependency validation showing transitions between IDLE, PENDING, VALIDATING, VALID, INVALID, and RETRYABLE states" viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;height:auto;display:block;margin:1.5rem auto;">
   <title>Cross-Field Dependency Validation State Machine</title>
   <desc>Six states: IDLE, PENDING, VALIDATING, VALID, INVALID, RETRYABLE. Arrows show transitions driven by field value changes, sequence IDs, and network outcomes.</desc>
+  <rect x="0" y="0" width="680" height="340" fill="#f9f5fb"/>
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- State boxes -->
   <!-- IDLE -->
-  <rect x="10" y="140" width="90" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
-  <text x="55" y="167" text-anchor="middle" font-size="13" fill="currentColor" font-family="monospace">IDLE</text>
+  <rect x="10" y="140" width="90" height="44" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="55" y="167" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="monospace">IDLE</text>
   <!-- PENDING -->
-  <rect x="160" y="60" width="100" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
-  <text x="210" y="87" text-anchor="middle" font-size="13" fill="currentColor" font-family="monospace">PENDING</text>
+  <rect x="160" y="60" width="100" height="44" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="210" y="87" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="monospace">PENDING</text>
   <!-- VALIDATING -->
-  <rect x="320" y="140" width="110" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
-  <text x="375" y="167" text-anchor="middle" font-size="13" fill="currentColor" font-family="monospace">VALIDATING</text>
+  <rect x="320" y="140" width="110" height="44" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="375" y="167" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="monospace">VALIDATING</text>
   <!-- VALID -->
-  <rect x="510" y="60" width="90" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
-  <text x="555" y="87" text-anchor="middle" font-size="13" fill="currentColor" font-family="monospace">VALID</text>
+  <rect x="510" y="60" width="90" height="44" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="555" y="87" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="monospace">VALID</text>
   <!-- INVALID -->
-  <rect x="510" y="220" width="90" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
-  <text x="555" y="247" text-anchor="middle" font-size="13" fill="currentColor" font-family="monospace">INVALID</text>
+  <rect x="510" y="220" width="90" height="44" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="555" y="247" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="monospace">INVALID</text>
   <!-- RETRYABLE -->
-  <rect x="320" y="260" width="110" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="375" y="287" text-anchor="middle" font-size="13" fill="currentColor" font-family="monospace">RETRYABLE</text>
+  <rect x="320" y="260" width="110" height="44" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="375" y="287" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="monospace">RETRYABLE</text>
   <!-- Arrows -->
   <!-- IDLE -> PENDING  (FIELD_VALUE_CHANGE) -->
-  <path d="M100,155 Q130,100 158,90" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.6" marker-end="url(#arr)"/>
-  <text x="118" y="110" font-size="10" fill="currentColor" opacity="0.7" font-family="sans-serif">value change</text>
+  <path d="M100,155 Q130,100 158,90" fill="none" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="118" y="110" font-size="10" fill="#6b5f75" font-family="sans-serif">value change</text>
   <!-- PENDING -> VALIDATING  (seq ID assigned) -->
-  <path d="M262,82 Q290,120 318,155" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.6" marker-end="url(#arr)"/>
-  <text x="264" y="130" font-size="10" fill="currentColor" opacity="0.7" font-family="sans-serif">seq assigned</text>
+  <path d="M262,82 Q290,120 318,155" fill="none" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="264" y="130" font-size="10" fill="#6b5f75" font-family="sans-serif">seq assigned</text>
   <!-- PENDING -> IDLE  (seq mismatch / abort) -->
-  <path d="M160,74 Q80,50 56,138" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-  <text x="60" y="55" font-size="10" fill="currentColor" opacity="0.6" font-family="sans-serif">seq mismatch</text>
+  <path d="M160,74 Q80,50 56,138" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <text x="60" y="55" font-size="10" fill="#6b5f75" font-family="sans-serif">seq mismatch</text>
   <!-- VALIDATING -> VALID -->
-  <path d="M430,150 Q480,100 508,87" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.6" marker-end="url(#arr)"/>
-  <text x="445" y="105" font-size="10" fill="currentColor" opacity="0.7" font-family="sans-serif">resolves ok</text>
+  <path d="M430,150 Q480,100 508,87" fill="none" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="445" y="105" font-size="10" fill="#6b5f75" font-family="sans-serif">resolves ok</text>
   <!-- VALIDATING -> INVALID -->
-  <path d="M430,170 Q480,210 508,230" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.6" marker-end="url(#arr)"/>
-  <text x="445" y="220" font-size="10" fill="currentColor" opacity="0.7" font-family="sans-serif">rule fails</text>
+  <path d="M430,170 Q480,210 508,230" fill="none" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="445" y="220" font-size="10" fill="#6b5f75" font-family="sans-serif">rule fails</text>
   <!-- VALIDATING -> RETRYABLE  (network error) -->
-  <path d="M375,184 L375,258" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-  <text x="380" y="230" font-size="10" fill="currentColor" opacity="0.6" font-family="sans-serif">network err</text>
+  <path d="M375,184 L375,258" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <text x="380" y="230" font-size="10" fill="#6b5f75" font-family="sans-serif">network err</text>
   <!-- RETRYABLE -> PENDING -->
-  <path d="M320,270 Q240,250 213,106" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.5" marker-end="url(#arr)"/>
-  <text x="222" y="210" font-size="10" fill="currentColor" opacity="0.6" font-family="sans-serif">retry</text>
+  <path d="M320,270 Q240,250 213,106" fill="none" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="222" y="210" font-size="10" fill="#6b5f75" font-family="sans-serif">retry</text>
   <!-- VALID -> IDLE  (upstream changes) -->
-  <path d="M510,74 Q300,20 100,148" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.4" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-  <text x="290" y="18" font-size="10" fill="currentColor" opacity="0.5" font-family="sans-serif">upstream changes</text>
+  <path d="M510,74 Q300,20 100,148" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <text x="290" y="18" font-size="10" fill="#6b5f75" font-family="sans-serif">upstream changes</text>
   <!-- INVALID -> IDLE  (upstream changes) -->
-  <path d="M510,248 Q300,320 102,168" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.4" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-  <text x="270" y="336" font-size="10" fill="currentColor" opacity="0.5" font-family="sans-serif">upstream changes</text>
+  <path d="M510,248 Q300,320 102,168" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <text x="270" y="336" font-size="10" fill="#6b5f75" font-family="sans-serif">upstream changes</text>
 </svg>
 
 | State | Meaning | Key trigger |
@@ -390,6 +391,47 @@ validator.register({
 
 When the user role or workflow stage changes, emit a `DEPENDENCY_GRAPH_REBUILD` event and re-evaluate all currently-dirty fields. Do not mutate the graph itself — only update what the resolver returns. This keeps the graph shape stable and prevents stale cached results.
 
+### Reading the dependency graph as a graph
+
+Cross-field rules form a directed graph whether or not you model one, and every hard bug in this area is a property of that graph rather than of any single rule.
+
+<svg viewBox="0 8 664 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A field dependency graph for a shipping form. Country feeds post code and state, delivery method feeds address required and collection point, and post code feeds a shipping estimate. A cycle between two fields is shown separately as the shape to detect and reject." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>A dependency graph, and the shape that must never appear in one</title>
+  <desc>On the left, a valid graph: country determines which post code format applies and whether a state field is shown; delivery method determines whether the address is required and whether a collection point must be chosen; post code feeds the shipping estimate. Every edge points forward and the graph can be sorted topologically, so a single pass in that order evaluates every rule with its inputs already settled. On the right, an invalid shape: two fields that each require the other, which no evaluation order can satisfy and which produces either an infinite loop or an arbitrary winner depending on which field the reader edits first.</desc>
+  <rect x="0" y="8" width="664" height="226" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">A graph you can sort — evaluate in one pass</text>
+  <rect x="14" y="36" width="120" height="40" rx="7" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="74" y="61" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">country</text>
+  <rect x="14" y="120" width="120" height="40" rx="7" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="74" y="145" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">delivery method</text>
+  <path d="M134,56 H176" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M134,66 H156 V104 H176" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M134,140 H176" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M134,150 H156 V188 H176" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="176" y="36" width="130" height="40" rx="7" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="241" y="61" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">post code format</text>
+  <rect x="176" y="84" width="130" height="40" rx="7" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="241" y="109" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">state shown</text>
+  <rect x="176" y="132" width="130" height="40" rx="7" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="241" y="157" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">address required</text>
+  <rect x="176" y="180" width="130" height="40" rx="7" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="241" y="205" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">collection point</text>
+  <path d="M306,56 H340" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="340" y="36" width="130" height="40" rx="7" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="405" y="61" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">shipping estimate</text>
+  <text x="500" y="26" font-size="11.5" font-weight="700" fill="#a63d6f" font-family="inherit">The shape to reject</text>
+  <rect x="500" y="36" width="146" height="40" rx="7" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="573" y="61" text-anchor="middle" font-size="10" fill="#a63d6f" font-family="inherit">field A requires B</text>
+  <path d="M540,76 V104" stroke="#a63d6f" stroke-width="1.4"/>
+  <path d="M606,104 V76" stroke="#a63d6f" stroke-width="1.4"/>
+  <rect x="500" y="104" width="146" height="40" rx="7" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="573" y="129" text-anchor="middle" font-size="10" fill="#a63d6f" font-family="inherit">field B requires A</text>
+  <text x="500" y="166" font-size="9.5" fill="#6b5f75" font-family="inherit">No order satisfies both.</text>
+  <text x="500" y="182" font-size="9.5" fill="#6b5f75" font-family="inherit">Whichever the reader edits</text>
+  <text x="500" y="198" font-size="9.5" fill="#6b5f75" font-family="inherit">first wins, arbitrarily.</text>
+  <text x="14" y="230" font-size="10" fill="#6b5f75" font-family="inherit">Detect cycles when the rule set is built, not when a reader hits one — a unit test over the edge list is enough.</text>
+</svg>
+
 ## Edge Cases and Failure Modes
 
 **Conditional field removal from the DOM.** When a field exits the DOM (a conditional step, an accordion collapse), its node remains registered. Mark it inactive by setting a flag on the node rather than deleting it from the graph. Deletion breaks topological ordering if other nodes still declare the removed node as a dependency. On re-entry, reset the node to `idle` and re-evaluate.
@@ -411,6 +453,30 @@ When the user role or workflow stage changes, emit a `DEPENDENCY_GRAPH_REBUILD` 
 | `abort` never fires, in-flight requests pile up | Confirm `controllers.get(fieldId)?.abort()` is reached before new controller is created | Check that `resolveDownstream` is not being awaited at the call site before the abort |
 | Hidden field shows stale error after re-show | Check whether `DEPENDENCY_GRAPH_REBUILD` resets the node's state to `idle` | Explicitly call `states.set(fieldId, 'idle')` when toggling visibility |
 | Network failure marks field invalid rather than retryable | Check `catch` block — fetch errors and `AbortError` must be handled separately | Re-throw after `AbortError` check; only non-abort errors reach the retryable branch |
+
+Evaluation order follows directly from the graph, and doing it in the wrong order is the difference between one pass and an unpredictable number:
+
+<svg viewBox="0 8 668 206" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two evaluation strategies after one field changes: re-running every rule repeatedly until nothing changes, versus walking only the affected subgraph once in topological order. The second is deterministic and cheaper." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Fixed-point iteration versus one topological pass</title>
+  <desc>Left: re-run every rule, then check whether anything changed, and repeat until it does not. This terminates on an acyclic graph but the number of passes depends on rule ordering, cost scales with rule count times graph depth, and an accidental cycle turns it into an infinite loop at runtime. Right: from the changed field, walk only its dependants in topological order, evaluating each rule exactly once with inputs that are already settled. Cost is proportional to the affected subgraph alone, the pass count is always one, and a cycle is impossible because it was rejected when the graph was built.</desc>
+  <rect x="0" y="8" width="668" height="206" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#b07a55" font-family="inherit">re-run everything until it settles</text>
+  <rect x="14" y="36" width="308" height="116" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
+  <text x="28" y="58" font-size="10" fill="#6b5f75" font-family="inherit">evaluate all rules</text>
+  <text x="28" y="80" font-size="10" fill="#6b5f75" font-family="inherit">did anything change? then repeat</text>
+  <text x="28" y="102" font-size="10" fill="#6b5f75" font-family="inherit">passes depend on rule ordering</text>
+  <text x="28" y="124" font-size="10" fill="#a63d6f" font-family="inherit">a cycle hangs the tab at runtime</text>
+  <text x="28" y="144" font-size="9.5" fill="#6b5f75" font-family="inherit">cost: rules × depth</text>
+  <text x="346" y="26" font-size="11.5" font-weight="700" fill="#2d6342" font-family="inherit">walk the affected subgraph once</text>
+  <rect x="346" y="36" width="308" height="116" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="360" y="58" font-size="10" fill="#6b5f75" font-family="inherit">start at the changed field</text>
+  <text x="360" y="80" font-size="10" fill="#6b5f75" font-family="inherit">visit dependants in sorted order</text>
+  <text x="360" y="102" font-size="10" fill="#6b5f75" font-family="inherit">each rule runs exactly once</text>
+  <text x="360" y="124" font-size="10" fill="#2d6342" font-family="inherit">a cycle was rejected at build time</text>
+  <text x="360" y="144" font-size="9.5" fill="#6b5f75" font-family="inherit">cost: the subgraph only</text>
+  <text x="14" y="188" font-size="10" fill="#6b5f75" font-family="inherit">Sort once when the rules are registered and cache the order; it changes only when the rule set does, not per keystroke.</text>
+  <text x="14" y="204" font-size="10" fill="#6b5f75" font-family="inherit">The sorted order is also the order to announce in, so a reader hears consequences after the cause rather than before it.</text>
+</svg>
 
 ## Testing and QA Hooks
 

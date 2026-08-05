@@ -3,7 +3,7 @@ layout: page.njk
 title: "Handling Svelte Form Hydration Mismatches"
 description: "Fix SvelteKit hydration mismatches in forms by gating client-side validation behind a reactive hydration flag, wiring accessible ARIA state, and cleaning up on navigation."
 slug: "handling-svelte-form-hydration-mismatches"
-type: guide
+type: howto
 breadcrumb: "Handling Svelte Form Hydration Mismatches"
 datePublished: "2025-09-01"
 dateModified: "2026-07-09"
@@ -84,43 +84,31 @@ This page drills into one specific failure mode inside the broader topic of [hyd
 
 The diagram below shows the two timelines — server render and client hydration — and the narrow window where premature validation causes the mismatch:
 
-<svg role="img" aria-label="Timeline showing server render vs client hydration phases, with the hydration mismatch window highlighted" viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;display:block;margin:1.5rem 0">
+<svg role="img" aria-label="Timeline showing the server render lane above the client lane, with the window between the hydration checksum and the first tick marked as the mismatch danger zone and everything after it marked safe to validate" viewBox="0 30 640 190" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;display:block;margin:1.5rem 0">
   <title>Svelte hydration mismatch window</title>
-  <desc>Two parallel horizontal timelines. The top lane (Server) shows HTML render completing before the client connects. The bottom lane (Client) shows script parse, hydration checksum, onMount, and then tick() completing — the gap between hydration checksum and tick() is shaded as the mismatch danger zone.</desc>
-  <!-- background -->
-  <rect width="640" height="220" fill="none"/>
-  <!-- lane labels -->
-  <text x="10" y="52" font-size="13" fill="currentColor" font-family="sans-serif" font-weight="600">Server</text>
-  <text x="10" y="142" font-size="13" fill="currentColor" font-family="sans-serif" font-weight="600">Client</text>
-  <!-- server timeline bar -->
-  <rect x="80" y="38" width="200" height="24" rx="4" fill="#7c5c8a" opacity="0.85"/>
-  <text x="180" y="55" font-size="11" fill="#fff" text-anchor="middle" font-family="sans-serif">HTML render + serialize $page.form</text>
-  <!-- client timeline segments -->
-  <!-- script parse -->
-  <rect x="80" y="128" width="80" height="24" rx="4" fill="#4a6080" opacity="0.85"/>
-  <text x="120" y="145" font-size="11" fill="#fff" text-anchor="middle" font-family="sans-serif">JS parse</text>
-  <!-- hydration checksum — danger zone start -->
-  <rect x="162" y="128" width="100" height="24" rx="4" fill="#9e3d3d"/>
-  <text x="212" y="145" font-size="11" fill="#fff" text-anchor="middle" font-family="sans-serif">Hydration checksum</text>
-  <!-- mismatch zone shading -->
-  <rect x="162" y="100" width="100" height="68" rx="4" fill="#b85c5c" opacity="0.10"/>
-  <text x="212" y="114" font-size="10" fill="#963131" text-anchor="middle" font-family="sans-serif" font-weight="600">⚠ mismatch zone</text>
-  <!-- onMount -->
-  <rect x="264" y="128" width="80" height="24" rx="4" fill="#4a6080" opacity="0.85"/>
-  <text x="304" y="145" font-size="11" fill="#fff" text-anchor="middle" font-family="sans-serif">onMount</text>
-  <!-- tick -->
-  <rect x="346" y="128" width="60" height="24" rx="4" fill="#4a6080" opacity="0.85"/>
-  <text x="376" y="145" font-size="11" fill="#fff" text-anchor="middle" font-family="sans-serif">tick()</text>
-  <!-- safe zone -->
-  <rect x="408" y="128" width="140" height="24" rx="4" fill="#3a7a5a" opacity="0.85"/>
-  <text x="478" y="145" font-size="11" fill="#fff" text-anchor="middle" font-family="sans-serif">✓ safe to validate</text>
-  <!-- connecting arrow from server to client start -->
-  <line x1="280" y1="62" x2="280" y2="90" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
-  <text x="285" y="84" font-size="10" fill="currentColor" opacity="0.6" font-family="sans-serif">HTML delivered</text>
-  <!-- time arrow -->
-  <line x1="80" y1="195" x2="555" y2="195" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
-  <polygon points="555,191 563,195 555,199" fill="currentColor" opacity="0.4"/>
-  <text x="316" y="212" font-size="11" fill="currentColor" text-anchor="middle" opacity="0.5" font-family="sans-serif">time →</text>
+  <desc>Two parallel horizontal timelines. The top lane, Server, shows HTML render and form serialisation completing before the client connects. The bottom lane, Client, runs JS parse, then the hydration checksum, then onMount, then tick. The window over the hydration checksum is marked as the mismatch danger zone; everything from the segment after tick onward is marked safe to validate.</desc>
+  <rect x="0" y="30" width="640" height="190" fill="#f9f5fb"/>
+  <text x="10" y="52" font-size="13" fill="#1e1a24" font-family="sans-serif" font-weight="600">Server</text>
+  <text x="10" y="145" font-size="13" fill="#1e1a24" font-family="sans-serif" font-weight="600">Client</text>
+  <rect x="80" y="38" width="200" height="24" rx="4" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="180" y="55" font-size="10.5" fill="#1e1a24" text-anchor="middle" font-family="sans-serif">HTML render + serialize $page.form</text>
+  <rect x="162" y="96" width="100" height="26" rx="4" fill="#f9f5fb" stroke="#a63d6f" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="212" y="113" font-size="10" fill="#a63d6f" text-anchor="middle" font-family="sans-serif" font-weight="600">mismatch zone</text>
+  <rect x="80" y="128" width="80" height="24" rx="4" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="120" y="145" font-size="11" fill="#1e1a24" text-anchor="middle" font-family="sans-serif">JS parse</text>
+  <rect x="162" y="128" width="100" height="24" rx="4" fill="#ede5f2" stroke="#a63d6f" stroke-width="2"/>
+  <text x="212" y="145" font-size="10" fill="#a63d6f" text-anchor="middle" font-family="sans-serif">checksum</text>
+  <rect x="264" y="128" width="80" height="24" rx="4" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="304" y="145" font-size="11" fill="#1e1a24" text-anchor="middle" font-family="sans-serif">onMount</text>
+  <rect x="346" y="128" width="60" height="24" rx="4" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="376" y="145" font-size="11" fill="#1e1a24" text-anchor="middle" font-family="sans-serif">tick()</text>
+  <rect x="408" y="128" width="140" height="24" rx="4" fill="#ede5f2" stroke="#2d6342" stroke-width="2"/>
+  <text x="478" y="145" font-size="11" fill="#2d6342" text-anchor="middle" font-family="sans-serif">safe to validate</text>
+  <line x1="280" y1="62" x2="280" y2="126" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="288" y="82" font-size="10" fill="#6b5f75" font-family="sans-serif">HTML delivered</text>
+  <line x1="80" y1="188" x2="555" y2="188" stroke="#7b4f8a" stroke-width="1.5"/>
+  <polygon points="555,184 563,188 555,192" fill="#7b4f8a"/>
+  <text x="316" y="208" font-size="11" fill="#6b5f75" text-anchor="middle" font-family="sans-serif">time</text>
 </svg>
 
 ## Core pattern: the hydration gate
@@ -302,6 +290,37 @@ The single implementation below addresses the entire mismatch class. Every non-o
 
 7. **Use `AbortController` to cancel in-flight async validation.** Each call to `validateField` aborts the previous controller and creates a fresh one. The `signal` is checked after any async operation to discard stale results — this is the pattern described in [implementing async email availability checks](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/implementing-async-email-availability-checks/).
 
+The gate is a single boolean, but its lifetime spans mount, navigation and teardown — and each of those has to move it deliberately:
+
+<svg viewBox="0 8 664 198" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lifecycle of the isHydrated flag: it starts false at module evaluation and during server render, becomes true inside onMount after awaiting tick, stays true while the reader interacts, and is reset to false in beforeNavigate so the next route starts closed." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The hydration flag's lifetime</title>
+  <desc>The flag is false when the module is evaluated and throughout the server render, so no ARIA attribute is written into the server HTML. It stays false during the first client pass. Inside onMount, after awaiting tick so that reconciliation has finished, it becomes true. While it is true, validation may write aria-invalid and the live region freely. In beforeNavigate it is reset to false, so a client-side navigation to another instance of the same form starts from a closed gate instead of inheriting an open one.</desc>
+  <rect x="0" y="8" width="664" height="198" fill="#f9f5fb"/>
+  <rect x="14" y="34" width="150" height="66" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="89" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">false</text>
+  <text x="89" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">server render and</text>
+  <text x="89" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">first client pass</text>
+  <path d="M164,67 H186" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="186" y="34" width="150" height="66" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="261" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">onMount + tick</text>
+  <text x="261" y="74" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">reconciliation done,</text>
+  <text x="261" y="88" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">then flip it</text>
+  <path d="M336,67 H358" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="358" y="34" width="150" height="66" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="433" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">true</text>
+  <text x="433" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">ARIA writes allowed,</text>
+  <text x="433" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">validation live</text>
+  <path d="M508,67 H530" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="530" y="34" width="118" height="66" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="589" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">beforeNavigate</text>
+  <text x="589" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">reset to false,</text>
+  <text x="589" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">abort in flight</text>
+  <text x="14" y="132" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Why the reset matters on a client-side navigation</text>
+  <text x="14" y="150" font-size="10" fill="#6b5f75" font-family="inherit">Navigating to the same route with different parameters can reuse the component instance. Without the reset the gate is</text>
+  <text x="14" y="166" font-size="10" fill="#6b5f75" font-family="inherit">already open, so validation writes into markup the new data has not finished replacing.</text>
+  <text x="14" y="190" font-size="10" fill="#6b5f75" font-family="inherit">A module-level flag has the same bug across every instance at once; keep it per component.</text>
+</svg>
+
 ## Failure modes and edge cases
 
 ### 1. Setting `isHydrated = true` without `await tick()`
@@ -339,6 +358,29 @@ const debouncedValidate = debounce((name: string, value: string) => {
 ### 5. Design system wrapper components that forward ARIA props
 
 If you use a component library where `<Input>` wraps a native `<input>`, confirm the wrapper forwards `aria-invalid` and `aria-describedby` directly to the underlying element. Wrappers that cache ARIA props internally may delay propagation, making the gate ineffective for those attributes.
+
+Not everything needs gating, and gating too much makes a form feel dead for the first frame. The line falls between what the server could have rendered and what only the client knows:
+
+<svg viewBox="0 8 690 206" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="What must be behind the hydration gate and what must not: writing aria-invalid and swapping live region text must wait, while rendering server-supplied errors, marking required fields and wiring describedby to static hint ids can all happen in the server pass." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Gate the client-only writes, not the whole form</title>
+  <desc>Behind the gate: writing aria-invalid, swapping live region text, focusing the first invalid field, and running any validator that reads the clock or storage — all of these either differ across the boundary or announce something before the reader has done anything. In front of the gate: rendering errors the server already returned, marking required fields, wiring aria-describedby to hint elements whose ids are deterministic, and disabling the submit button while a server action is pending — none of these differ between the two renders, so gating them only delays correct markup.</desc>
+  <rect x="0" y="8" width="690" height="206" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#a63d6f" font-family="inherit">Behind the gate — differs across the boundary</text>
+  <rect x="14" y="36" width="326" height="140" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="28" y="60" font-size="10" fill="#1e1a24" font-family="inherit">writing aria-invalid on a field</text>
+  <text x="28" y="84" font-size="10" fill="#1e1a24" font-family="inherit">swapping live region text</text>
+  <text x="28" y="108" font-size="10" fill="#1e1a24" font-family="inherit">focusing the first invalid field</text>
+  <text x="28" y="132" font-size="10" fill="#1e1a24" font-family="inherit">validators reading the clock or storage</text>
+  <text x="28" y="158" font-size="9.5" fill="#6b5f75" font-family="inherit">each of these either differs, or speaks too early</text>
+  <text x="364" y="26" font-size="11.5" font-weight="700" fill="#2d6342" font-family="inherit">In front of it — identical on both sides</text>
+  <rect x="364" y="36" width="312" height="140" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="378" y="60" font-size="10" fill="#1e1a24" font-family="inherit">errors the server action already returned</text>
+  <text x="378" y="84" font-size="10" fill="#1e1a24" font-family="inherit">required and pattern attributes</text>
+  <text x="378" y="108" font-size="10" fill="#1e1a24" font-family="inherit">describedby pointing at static hint ids</text>
+  <text x="378" y="132" font-size="10" fill="#1e1a24" font-family="inherit">disabling submit while an action is pending</text>
+  <text x="378" y="158" font-size="9.5" fill="#6b5f75" font-family="inherit">gating these only delays correct markup</text>
+  <text x="14" y="202" font-size="10" fill="#6b5f75" font-family="inherit">The right-hand column is why a gated form still works with JavaScript disabled: everything essential was already in the HTML.</text>
+</svg>
 
 ## Verification checklist
 

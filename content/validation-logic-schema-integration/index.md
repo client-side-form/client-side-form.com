@@ -78,45 +78,46 @@ eleventyNavigation:
 Production form bugs rarely come from incorrect field rules — they come from the gaps between rules: async responses that resolve after a reset, cross-field constraints that fire in the wrong order, error messages that never reach screen readers, and cancellation logic that leaks memory across route changes. This page covers the architecture that closes those gaps.
 
 <!-- SVG: Validation pipeline overview diagram -->
-<svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Validation pipeline: input event flows through sync schema check, then async checks, then error normalization, then ARIA sync" style="width:100%;max-width:760px;display:block;margin:2rem auto;">
+<svg viewBox="-6 64 772 223" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Validation pipeline: input event flows through sync schema check, then async checks, then error normalization, then ARIA sync" style="width:100%;max-width:760px;display:block;margin:2rem auto;">
   <title>Validation Pipeline Overview</title>
   <desc>A left-to-right flow diagram showing an input event entering a synchronous schema check, branching to async validators in parallel, merging into an error normalization layer, and finally updating ARIA attributes on the input element.</desc>
+  <rect x="-6" y="64" width="772" height="223" fill="#f9f5fb"/>
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.6"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- Stage boxes -->
-  <rect x="10" y="120" width="110" height="56" rx="8" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
-  <text x="65" y="144" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.9" font-family="system-ui,sans-serif">Input Event</text>
-  <text x="65" y="160" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6" font-family="system-ui,sans-serif">(blur / keystroke)</text>
-  <rect x="160" y="120" width="120" height="56" rx="8" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
-  <text x="220" y="144" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.9" font-family="system-ui,sans-serif">Sync Schema</text>
-  <text x="220" y="160" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6" font-family="system-ui,sans-serif">Parse &amp; type-check</text>
+  <rect x="10" y="120" width="110" height="56" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="65" y="144" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="system-ui,sans-serif">Input Event</text>
+  <text x="65" y="160" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="system-ui,sans-serif">(blur / keystroke)</text>
+  <rect x="160" y="120" width="120" height="56" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="220" y="144" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="system-ui,sans-serif">Sync Schema</text>
+  <text x="220" y="160" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="system-ui,sans-serif">Parse &amp; type-check</text>
   <!-- Async branch boxes -->
-  <rect x="340" y="80" width="120" height="48" rx="8" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
-  <text x="400" y="100" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.9" font-family="system-ui,sans-serif">Async Check 1</text>
-  <text x="400" y="116" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6" font-family="system-ui,sans-serif">e.g. email unique</text>
-  <rect x="340" y="164" width="120" height="48" rx="8" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
-  <text x="400" y="184" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.9" font-family="system-ui,sans-serif">Async Check N</text>
-  <text x="400" y="200" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6" font-family="system-ui,sans-serif">AbortController</text>
+  <rect x="340" y="80" width="120" height="48" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="400" y="100" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="system-ui,sans-serif">Async Check 1</text>
+  <text x="400" y="116" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="system-ui,sans-serif">e.g. email unique</text>
+  <rect x="340" y="164" width="120" height="48" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="400" y="184" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="system-ui,sans-serif">Async Check N</text>
+  <text x="400" y="200" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="system-ui,sans-serif">AbortController</text>
   <!-- Normalize -->
-  <rect x="520" y="120" width="120" height="56" rx="8" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
-  <text x="580" y="144" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.9" font-family="system-ui,sans-serif">Normalize</text>
-  <text x="580" y="160" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6" font-family="system-ui,sans-serif">field-keyed errors</text>
+  <rect x="520" y="120" width="120" height="56" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="580" y="144" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="system-ui,sans-serif">Normalize</text>
+  <text x="580" y="160" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="system-ui,sans-serif">field-keyed errors</text>
   <!-- ARIA -->
-  <rect x="700" y="120" width="50" height="56" rx="8" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
-  <text x="725" y="144" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.9" font-family="system-ui,sans-serif">ARIA</text>
-  <text x="725" y="160" text-anchor="middle" font-size="9" fill="currentColor" opacity="0.6" font-family="system-ui,sans-serif">sync</text>
+  <rect x="700" y="120" width="50" height="56" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="725" y="144" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="system-ui,sans-serif">ARIA</text>
+  <text x="725" y="160" text-anchor="middle" font-size="9" fill="#6b5f75" font-family="system-ui,sans-serif">sync</text>
   <!-- Arrows -->
-  <line x1="120" y1="148" x2="157" y2="148" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="280" y1="140" x2="337" y2="104" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="280" y1="156" x2="337" y2="180" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="460" y1="104" x2="517" y2="140" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="460" y1="180" x2="517" y2="156" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="640" y1="148" x2="697" y2="148" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="120" y1="148" x2="157" y2="148" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="280" y1="140" x2="337" y2="104" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="280" y1="156" x2="337" y2="180" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="460" y1="104" x2="517" y2="140" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="460" y1="180" x2="517" y2="156" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="640" y1="148" x2="697" y2="148" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
   <!-- Status label -->
-  <text x="380" y="268" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.45" font-family="system-ui,sans-serif">Async checks run in parallel; AbortController cancels stale responses</text>
+  <text x="380" y="268" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="system-ui,sans-serif">Async checks run in parallel; AbortController cancels stale responses</text>
 </svg>
 
 ## Problem Framing
@@ -348,6 +349,90 @@ function getFieldsToRevalidate(changedField: string): string[] {
 ```
 
 The DAG approach means a `password` change re-validates `confirmPassword`, but does not re-trigger the async uniqueness check on `email`. Without this, multi-step forms with async validators make far more network requests than necessary.
+
+## Subsystem: Choosing and Isolating the Schema Layer
+
+The three subsystems above assume a schema library exists and produces issues. Which library, and how tightly the rest of the form is bound to it, is a separate decision — and one worth making deliberately, because it is the piece most likely to be replaced within the lifetime of the code around it.
+
+[Choosing a schema validation library](https://www.client-side-form.com/validation-logic-schema-integration/choosing-a-schema-validation-library/) works through the comparison in full. The architectural point is narrower: almost every property teams compare on is cheap to change later, and the two that are expensive are rarely on the list. Bundle size and parse throughput belong to the library, so swapping it changes them wholesale. The refinement model — how you express "this field is required only when that one is set" — belongs to *your schemas*, and it is spread across every form you own. So is the set of ecosystem bindings you have adopted.
+
+The way to keep the expensive properties cheap is a boundary, not a benchmark. Define the call your form makes and the shape it gets back, and let exactly one module know which library sits behind it:
+
+```typescript
+// The entire surface the form knows about. Everything library-specific lives
+// behind this one function, which is also the only thing that needs rewriting
+// if the library is replaced.
+export type Validate<T> = (values: T) => FieldErrorMap;
+
+// The adapter: schema in, normalized map out. ~30 lines, fully unit-testable
+// against a table of inputs and expected maps — a suite that survives the swap.
+export function makeValidator<T>(schema: Schema<T>): Validate<T> {
+  return (values) => {
+    const result = schema.safeParse(values);
+    // A pass produces no entries at all, not an empty-string entry per field:
+    // downstream code tests presence, and "" is present.
+    return result.success ? {} : toFieldErrorMap(result.error.issues);
+  };
+}
+```
+
+Two things are deliberate here. The adapter returns a normalized `FieldErrorMap` rather than the library's own issue list, so nothing downstream — rendering, ARIA wiring, the error summary, analytics — ever imports the library. And a successful parse returns an empty object rather than a map of empty strings, because every consumer tests for the *presence* of an error and an empty string is present.
+
+What should not be abstracted is the schema DSL itself. Wrapping `z.string().email()` in a house `field.email()` produces a second, worse library that has to track the first, and it usually loses the type inference that made the original worth adopting. Abstract the call and the error shape; write the schemas in the library's own idiom.
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A layered view of the validation stack: schemas written in the library's own idiom, one adapter that normalises the result, and above it the form, the ARIA wiring, the error summary and analytics — none of which import the library. An arrow marks the single replaceable layer." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>One layer knows the library; nothing above it does</title>
+  <desc>Bottom layer: the schemas, written in the chosen library's own idiom so its type inference and refinement syntax are used directly rather than wrapped. Middle layer: a single adapter module that calls the schema and converts its issue list into a normalized field error map keyed by field name. Top layer: the form, the ARIA wiring, the error summary and analytics, each consuming only the normalized map. Replacing the library means rewriting the middle layer only, and the adapter's test table — inputs paired with expected maps — carries over unchanged.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="14" y="26" width="150" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="89" y="48" text-anchor="middle" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">the form</text>
+  <text x="89" y="66" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">renders messages</text>
+  <rect x="180" y="26" width="150" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="255" y="48" text-anchor="middle" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">ARIA wiring</text>
+  <text x="255" y="66" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">invalid, describedby</text>
+  <rect x="346" y="26" width="150" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="421" y="48" text-anchor="middle" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">error summary</text>
+  <text x="421" y="66" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">one entry per field</text>
+  <rect x="512" y="26" width="150" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="587" y="48" text-anchor="middle" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">analytics</text>
+  <text x="587" y="66" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">which rule fired</text>
+  <path d="M89,78 V102" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M255,78 V102" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M421,78 V102" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M587,78 V102" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="14" y="102" width="648" height="52" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="2"/>
+  <text x="338" y="124" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">one adapter — the only module that imports the library</text>
+  <text x="338" y="142" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">issue list in, normalized FieldErrorMap out · ~30 lines · the only thing a swap rewrites</text>
+  <path d="M338,154 V178" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="14" y="178" width="648" height="46" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="338" y="198" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">the schemas, in the library&#39;s own idiom</text>
+  <text x="338" y="216" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">no house DSL on top — that is a second, worse library that also loses the type inference</text>
+</svg>
+
+The same boundary pays for itself the first time a rule has to run in two places. A schema that lives behind an adapter can be imported by a server route as easily as by a form, so the browser and the API enforce one definition instead of two that drift. That is worth more than any figure in a bundle-size comparison: a rule the client enforces and the server does not is a bug, and a rule the server enforces and the client does not is a wasted round trip.
+
+<svg viewBox="0 8 664 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One schema module imported by both the browser form and the server route, so client-side validation and server-side enforcement cannot diverge. Below, the two failure modes of duplicated rules: a client-only rule that the server does not enforce, and a server-only rule the client cannot anticipate." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>One definition, two enforcement points</title>
+  <desc>A single schema module is imported by the browser form and by the server route that receives the submission, so both enforce exactly the same rules and a change is made once. Below, the two failure modes when the rules are written twice. A rule the client enforces but the server does not is a bug that any direct API call bypasses. A rule the server enforces but the client does not know about is a wasted round trip that the reader experiences as a form that accepted their input and then rejected it.</desc>
+  <rect x="0" y="8" width="664" height="214" fill="#f9f5fb"/>
+  <rect x="180" y="24" width="304" height="46" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="332" y="44" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">one schema module</text>
+  <text x="332" y="62" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">changed once, enforced twice</text>
+  <path d="M240,70 V94 H150" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M424,70 V94 H514" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="14" y="94" width="212" height="46" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="120" y="114" text-anchor="middle" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">the browser form</text>
+  <text x="120" y="132" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">fast feedback, per field</text>
+  <rect x="438" y="94" width="212" height="46" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="544" y="114" text-anchor="middle" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">the server route</text>
+  <text x="544" y="132" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">the actual guarantee</text>
+  <rect x="14" y="158" width="316" height="46" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="28" y="178" font-size="10" font-weight="700" fill="#a63d6f" font-family="inherit">client-only rule</text>
+  <text x="28" y="196" font-size="9.5" fill="#6b5f75" font-family="inherit">a bug — any direct API call walks past it</text>
+  <rect x="346" y="158" width="304" height="46" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
+  <text x="360" y="178" font-size="10" font-weight="700" fill="#b07a55" font-family="inherit">server-only rule</text>
+  <text x="360" y="196" font-size="9.5" fill="#6b5f75" font-family="inherit">a wasted trip — accepted, then rejected</text>
+</svg>
 
 ## Error Propagation & Accessibility
 

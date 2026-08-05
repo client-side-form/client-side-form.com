@@ -99,45 +99,46 @@ The form itself aggregates field states: it is `SUBMITTABLE` only when every fie
 <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Svelte form field state machine diagram" style="width:100%;max-width:720px;display:block;margin:1.5rem auto;" >
   <title>Svelte form field state machine</title>
   <desc>State transitions for a single form field: IDLE → PENDING → VALIDATING → VALID or INVALID, with reset back to IDLE</desc>
+  <rect x="0" y="0" width="720" height="220" fill="#f9f5fb"/>
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 Z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 Z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- Nodes -->
   <!-- IDLE -->
-  <rect x="10" y="80" width="90" height="40" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="55" y="105" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">IDLE</text>
+  <rect x="10" y="80" width="90" height="40" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="55" y="105" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">IDLE</text>
   <!-- PENDING -->
-  <rect x="155" y="80" width="100" height="40" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
-  <text x="205" y="105" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">PENDING</text>
+  <rect x="155" y="80" width="100" height="40" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="205" y="105" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">PENDING</text>
   <!-- VALIDATING -->
-  <rect x="315" y="80" width="120" height="40" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-  <text x="375" y="105" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">VALIDATING</text>
+  <rect x="315" y="80" width="120" height="40" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="375" y="105" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">VALIDATING</text>
   <!-- VALID -->
-  <rect x="500" y="30" width="90" height="40" rx="8" fill="none" stroke="currentColor" stroke-width="2" opacity="0.9"/>
-  <text x="545" y="55" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">VALID</text>
+  <rect x="500" y="30" width="90" height="40" rx="8" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="545" y="55" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">VALID</text>
   <!-- INVALID -->
-  <rect x="500" y="135" width="90" height="40" rx="8" fill="none" stroke="currentColor" stroke-width="2" opacity="0.9"/>
-  <text x="545" y="160" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">INVALID</text>
+  <rect x="500" y="135" width="90" height="40" rx="8" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="545" y="160" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">INVALID</text>
   <!-- Arrows: IDLE → PENDING -->
-  <line x1="100" y1="100" x2="153" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/>
-  <text x="125" y="92" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">input</text>
+  <line x1="100" y1="100" x2="153" y2="100" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="125" y="92" text-anchor="middle" font-size="10" fill="#6b5f75">input</text>
   <!-- PENDING → VALIDATING -->
-  <line x1="255" y1="100" x2="313" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/>
-  <text x="283" y="92" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">debounce end</text>
+  <line x1="255" y1="100" x2="313" y2="100" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="283" y="92" text-anchor="middle" font-size="10" fill="#6b5f75">debounce end</text>
   <!-- VALIDATING → VALID -->
-  <line x1="435" y1="90" x2="498" y2="58" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.8"/>
-  <text x="470" y="64" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">null error</text>
+  <line x1="435" y1="90" x2="498" y2="58" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="470" y="64" text-anchor="middle" font-size="10" fill="#6b5f75">null error</text>
   <!-- VALIDATING → INVALID -->
-  <line x1="435" y1="110" x2="498" y2="145" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.8"/>
-  <text x="470" y="138" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">error string</text>
+  <line x1="435" y1="110" x2="498" y2="145" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="470" y="138" text-anchor="middle" font-size="10" fill="#6b5f75">error string</text>
   <!-- VALID → IDLE (reset arc, top) -->
-  <path d="M545,30 Q620,10 640,100 Q620,190 545,175" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr)" opacity="0.4"/>
-  <text x="660" y="105" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.5">reset</text>
+  <path d="M545,30 Q620,10 640,100 Q620,190 545,175" fill="none" stroke="#6b5f75" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <text x="660" y="105" text-anchor="middle" font-size="10" fill="#6b5f75">reset</text>
   <!-- INVALID → PENDING (re-input arc, bottom) -->
-  <path d="M500,162 Q460,200 375,200 Q280,200 205,175" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr)" opacity="0.4"/>
-  <text x="360" y="215" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.5">re-input</text>
+  <path d="M500,162 Q460,200 375,200 Q280,200 205,175" fill="none" stroke="#6b5f75" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <text x="360" y="215" text-anchor="middle" font-size="10" fill="#6b5f75">re-input</text>
 </svg>
 
 ---
@@ -387,6 +388,38 @@ For [dirty and pristine state tracking](https://www.client-side-form.com/form-st
 
 ---
 
+### Which store primitive each piece of form state wants
+
+Svelte's store contract is small enough that the interesting decision is not how to write one, but which of the three shapes each piece of state should be. Choosing wrongly is what produces the two classic bugs: a derived value that will not update, and a writable that has drifted out of sync with the value it was derived from.
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three Svelte store shapes matched to the form state that belongs in each: writable for values and touched flags, derived for the dirty map and validity, and readable for anything the form only observes such as a connectivity flag." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>writable, derived, readable — and what belongs in each</title>
+  <desc>Writable holds the field values and the touched flags, because the reader writes them and nothing else computes them. Derived holds the dirty map, the per-field validity and the form-level can-submit flag, because every one of them is a pure function of values plus the baseline, and storing them separately is how they drift. Readable holds anything the form observes but never writes, such as an online or offline flag or a server-pushed lock. A note warns that a derived store with an incorrect dependency list simply never updates, silently, because Svelte has no way to know what you meant to depend on.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Shape</text>
+  <text x="140" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Holds</text>
+  <text x="400" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Because</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">writable</text>
+  <text x="140" y="66" font-size="10" fill="#6b5f75" font-family="inherit">values, touched flags</text>
+  <text x="400" y="66" font-size="10" fill="#6b5f75" font-family="inherit">the reader writes them; nothing derives them</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">derived</text>
+  <text x="140" y="100" font-size="10" fill="#6b5f75" font-family="inherit">dirty map, validity, canSubmit</text>
+  <text x="400" y="100" font-size="10" fill="#6b5f75" font-family="inherit">pure functions of values — storing them lets them drift</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">readable</text>
+  <text x="140" y="134" font-size="10" fill="#6b5f75" font-family="inherit">online flag, server lock</text>
+  <text x="400" y="134" font-size="10" fill="#6b5f75" font-family="inherit">the form observes but never writes them</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#a63d6f" font-family="inherit">the classic failure</text>
+  <text x="140" y="168" font-size="10" fill="#6b5f75" font-family="inherit">a derived with a wrong dep list</text>
+  <text x="400" y="168" font-size="10" fill="#a63d6f" font-family="inherit">never updates, silently — nothing throws</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">If you find yourself calling set on something in the second row, it belonged in the first — or it should not exist.</text>
+</svg>
+
 ## Edge cases & failure modes
 
 ### Concurrent field updates during rapid tab-navigation
@@ -422,6 +455,29 @@ If the form component is mounted inside a Web Component with a closed shadow roo
 | Duplicate validation requests firing per keystroke | Check that `debounce` is created once at module scope, not inside the function | Move `makeDebounce` call outside `updateField` so it shares one timer across all calls |
 
 ---
+
+Auto-subscription is the other place Svelte's ergonomics hide a lifetime. The `$store` syntax is doing real work, and it only does that work inside a component:
+
+<svg viewBox="0 8 664 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of auto-subscription with the dollar prefix against a manual subscribe call: the compiler adds the unsubscribe on destroy for the first, while the second leaks unless you call the returned function yourself, and only the manual form is available in a plain module." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>$store unsubscribes for you; subscribe() does not</title>
+  <desc>Inside a component, writing dollar-store compiles to a subscribe call plus an unsubscribe registered on component destroy, so the lifetime is handled and the value is always current. Inside a plain module — a validation helper, a store factory, an adapter — the dollar prefix is unavailable, so you must call subscribe yourself and you own the returned unsubscribe function. Forgetting it keeps the module's closure, and everything it captured, alive for the lifetime of the page. A note recommends get(store) for a single read, since it subscribes and unsubscribes immediately and cannot leak.</desc>
+  <rect x="0" y="8" width="664" height="210" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#2d6342" font-family="inherit">inside a component: $values</text>
+  <rect x="14" y="36" width="304" height="106" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="28" y="58" font-size="10" fill="#6b5f75" font-family="inherit">compiles to subscribe() on init</text>
+  <text x="28" y="80" font-size="10" fill="#6b5f75" font-family="inherit">and unsubscribe() on destroy</text>
+  <text x="28" y="102" font-size="10" fill="#2d6342" font-family="inherit">lifetime handled for you</text>
+  <text x="28" y="124" font-size="10" fill="#6b5f75" font-family="inherit">always the current value</text>
+  <text x="346" y="26" font-size="11.5" font-weight="700" fill="#b07a55" font-family="inherit">inside a plain module: subscribe()</text>
+  <rect x="346" y="36" width="304" height="106" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
+  <text x="360" y="58" font-size="10" fill="#6b5f75" font-family="inherit">no $ prefix available at all</text>
+  <text x="360" y="80" font-size="10" fill="#6b5f75" font-family="inherit">you own the returned function</text>
+  <text x="360" y="102" font-size="10" fill="#a63d6f" font-family="inherit">forget it and the closure never dies</text>
+  <text x="360" y="124" font-size="10" fill="#6b5f75" font-family="inherit">use get(store) for a single read</text>
+  <text x="14" y="176" font-size="10" fill="#6b5f75" font-family="inherit">Validation helpers and store factories are exactly the modules where this bites: they outlive every component that used them.</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">get(store) subscribes and unsubscribes in the same call, so a helper that only needs the value now cannot leak at all.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">For a helper that needs updates over time, take the unsubscribe and return it — let the caller own the lifetime.</text>
+</svg>
 
 ## Testing & QA hooks
 

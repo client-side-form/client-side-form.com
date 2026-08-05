@@ -88,51 +88,52 @@ Before writing a single `ref`, model the states the form can occupy. Every unexp
 <svg role="img" aria-label="Vue form adapter state machine: IDLE transitions to VALIDATING on input, then to VALID or INVALID. VALID transitions to SUBMITTING on submit, then to SUBMITTED or ERROR." viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:2rem auto;">
   <title>Vue Form Adapter State Machine</title>
   <desc>State diagram showing transitions: IDLE to VALIDATING on user input, VALIDATING to VALID or INVALID, VALID to SUBMITTING on submit, SUBMITTING to SUBMITTED or ERROR, ERROR back to VALIDATING on retry.</desc>
+  <rect x="0" y="0" width="700" height="320" fill="#f9f5fb"/>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 Z" fill="currentColor" opacity="0.6"/>
+      <path d="M0,0 L0,6 L8,3 Z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- IDLE -->
-  <rect x="20" y="130" width="90" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="65" y="157" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">IDLE</text>
+  <rect x="20" y="130" width="90" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="65" y="157" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">IDLE</text>
   <!-- Arrow IDLE -> VALIDATING -->
-  <line x1="110" y1="152" x2="168" y2="152" stroke="currentColor" stroke-width="1.5" opacity="0.6" marker-end="url(#arrow)"/>
-  <text x="139" y="144" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">input</text>
+  <line x1="110" y1="152" x2="168" y2="152" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="139" y="144" text-anchor="middle" font-size="10" fill="#6b5f75">input</text>
   <!-- VALIDATING -->
-  <rect x="170" y="130" width="110" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-  <text x="225" y="157" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">VALIDATING</text>
+  <rect x="170" y="130" width="110" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="225" y="157" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">VALIDATING</text>
   <!-- Arrow VALIDATING -> VALID -->
-  <line x1="280" y1="140" x2="358" y2="100" stroke="currentColor" stroke-width="1.5" opacity="0.6" marker-end="url(#arrow)"/>
-  <text x="328" y="110" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">pass</text>
+  <line x1="280" y1="140" x2="358" y2="100" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="328" y="110" text-anchor="middle" font-size="10" fill="#6b5f75">pass</text>
   <!-- Arrow VALIDATING -> INVALID -->
-  <line x1="280" y1="164" x2="358" y2="210" stroke="currentColor" stroke-width="1.5" opacity="0.6" marker-end="url(#arrow)"/>
-  <text x="328" y="200" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">fail</text>
+  <line x1="280" y1="164" x2="358" y2="210" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="328" y="200" text-anchor="middle" font-size="10" fill="#6b5f75">fail</text>
   <!-- VALID -->
-  <rect x="360" y="70" width="80" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-  <text x="400" y="97" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">VALID</text>
+  <rect x="360" y="70" width="80" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="400" y="97" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">VALID</text>
   <!-- INVALID -->
-  <rect x="360" y="192" width="80" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-  <text x="400" y="219" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">INVALID</text>
+  <rect x="360" y="192" width="80" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="400" y="219" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">INVALID</text>
   <!-- Arrow INVALID -> VALIDATING (retry) -->
-  <path d="M360,214 Q270,270 225,174" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-  <text x="268" y="264" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">input (retry)</text>
+  <path d="M360,214 Q270,270 225,174" fill="none" stroke="#6b5f75" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <text x="268" y="264" text-anchor="middle" font-size="10" fill="#6b5f75">input (retry)</text>
   <!-- Arrow VALID -> SUBMITTING -->
-  <line x1="440" y1="92" x2="518" y2="130" stroke="currentColor" stroke-width="1.5" opacity="0.6" marker-end="url(#arrow)"/>
-  <text x="492" y="105" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">submit</text>
+  <line x1="440" y1="92" x2="518" y2="130" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="492" y="105" text-anchor="middle" font-size="10" fill="#6b5f75">submit</text>
   <!-- SUBMITTING -->
-  <rect x="520" y="108" width="110" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-  <text x="575" y="135" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">SUBMITTING</text>
+  <rect x="520" y="108" width="110" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="575" y="135" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">SUBMITTING</text>
   <!-- Arrow SUBMITTING -> SUBMITTED -->
-  <line x1="630" y1="118" x2="670" y2="80" stroke="currentColor" stroke-width="1.5" opacity="0.6" marker-end="url(#arrow)"/>
-  <text x="648" y="92" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">ok</text>
+  <line x1="630" y1="118" x2="670" y2="80" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="648" y="92" text-anchor="middle" font-size="10" fill="#6b5f75">ok</text>
   <!-- Arrow SUBMITTING -> ERROR -->
-  <line x1="630" y1="150" x2="668" y2="205" stroke="currentColor" stroke-width="1.5" opacity="0.6" marker-end="url(#arrow)"/>
-  <text x="648" y="175" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">error</text>
+  <line x1="630" y1="150" x2="668" y2="205" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="648" y="175" text-anchor="middle" font-size="10" fill="#6b5f75">error</text>
   <!-- SUBMITTED label -->
-  <text x="670" y="72" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.6">DONE</text>
+  <text x="670" y="72" text-anchor="middle" font-size="11" fill="#6b5f75">DONE</text>
   <!-- ERROR label -->
-  <text x="668" y="215" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.6">ERROR</text>
+  <text x="668" y="215" text-anchor="middle" font-size="11" fill="#6b5f75">ERROR</text>
 </svg>
 
 The state table below maps each state to its Vue primitive and to the transition that triggers it.
@@ -335,6 +336,40 @@ For forms that also need to signal [dirty and pristine state tracking](https://w
 
 ---
 
+### ref, reactive, shallowRef — and what each costs a form
+
+Vue offers three ways to make form state reactive, and they differ in exactly the dimension that matters at scale: how much work a single keystroke triggers.
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three Vue reactivity primitives compared for form state: ref of an object, reactive, and shallowRef with per-field refs. Each row gives what a keystroke invalidates, whether replacing the whole object works, and the size of form it suits." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Three primitives, three keystroke costs</title>
+  <desc>A ref holding one object: a keystroke replaces the object, so every computed reading it recomputes and every template using it re-renders; replacing the whole object is natural, and it suits forms up to roughly forty fields. Reactive: a keystroke touches one property, so only computeds that read that property recompute — but the object cannot be replaced wholesale without losing reactivity, which makes reset and hydration awkward. A shallowRef holding a map of per-field refs: a keystroke touches one field ref only, replacing the outer map is a single trigger, and it scales to hundreds of fields at the cost of more setup.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Primitive</text>
+  <text x="176" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">A keystroke invalidates</text>
+  <text x="384" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Replace wholesale?</text>
+  <text x="536" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Suits</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">ref({ …fields })</text>
+  <text x="176" y="66" font-size="10" fill="#b07a55" font-family="inherit">every reader of the ref</text>
+  <text x="384" y="66" font-size="10" fill="#2d6342" font-family="inherit">yes, naturally</text>
+  <text x="536" y="66" font-size="10" fill="#6b5f75" font-family="inherit">up to ~40 fields</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">reactive({ …fields })</text>
+  <text x="176" y="100" font-size="10" fill="#2d6342" font-family="inherit">readers of that key only</text>
+  <text x="384" y="100" font-size="10" fill="#a63d6f" font-family="inherit">no — loses reactivity</text>
+  <text x="536" y="100" font-size="10" fill="#6b5f75" font-family="inherit">stable field sets</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">shallowRef + per-field refs</text>
+  <text x="176" y="134" font-size="10" fill="#2d6342" font-family="inherit">one field ref</text>
+  <text x="384" y="134" font-size="10" fill="#2d6342" font-family="inherit">yes, one trigger</text>
+  <text x="536" y="134" font-size="10" fill="#6b5f75" font-family="inherit">hundreds of fields</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#6b5f75" font-family="inherit">The middle row&#39;s "no" is why reset and async hydration are awkward with reactive: Object.assign, never assignment.</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Start at row one. Move to row three only when a profile shows the recompute fan-out, not because a form "feels" large.</text>
+</svg>
+
 ## Edge Cases and Failure Modes
 
 ### Concurrency: the debounce-vs-async race
@@ -394,6 +429,38 @@ if ((err as Error).name === 'AbortError') return;
 | AbortController is undefined in test environment | Polyfill is missing | Add `global.AbortController = AbortController` in your Vitest/Jest setup file, or import from `node-abort-controller` |
 
 ---
+
+Flush timing is the second thing to get right, because it decides whether the DOM you are reading is the DOM the reader is looking at:
+
+<svg viewBox="0 8 690 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vue watcher flush timings compared: pre runs before the component updates, post runs after the DOM is patched, and sync runs immediately on the write. Each row states what the DOM contains at that moment and what the option is for." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Three flush timings, three views of the DOM</title>
+  <desc>Pre, the default: the callback runs before the component re-renders, so the DOM still shows the previous value; it is right for deriving state and for validation that does not touch the DOM. Post: the callback runs after Vue has patched the DOM, so measurements and focus calls see the new markup; it is required for anything that focuses a field or reads a bounding box. Sync: the callback runs immediately during the write, before Vue has scheduled anything; it is right only for a guard that must reject a write, and it is easy to turn into an infinite loop.</desc>
+  <rect x="0" y="8" width="690" height="214" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="136" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">flush</text>
+  <text x="120" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Runs</text>
+  <text x="300" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">The DOM then shows</text>
+  <text x="480" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Use it for</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">pre</text>
+  <text x="120" y="66" font-size="10" fill="#6b5f75" font-family="inherit">before the update</text>
+  <text x="300" y="66" font-size="10" fill="#6b5f75" font-family="inherit">the previous value</text>
+  <text x="480" y="66" font-size="10" fill="#6b5f75" font-family="inherit">deriving state, validation</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">post</text>
+  <text x="120" y="100" font-size="10" fill="#6b5f75" font-family="inherit">after the patch</text>
+  <text x="300" y="100" font-size="10" fill="#2d6342" font-family="inherit">the new value</text>
+  <text x="480" y="100" font-size="10" fill="#6b5f75" font-family="inherit">focus, measuring, scroll</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">sync</text>
+  <text x="120" y="134" font-size="10" fill="#a63d6f" font-family="inherit">during the write</text>
+  <text x="300" y="134" font-size="10" fill="#6b5f75" font-family="inherit">nothing has changed</text>
+  <text x="480" y="134" font-size="10" fill="#6b5f75" font-family="inherit">a guard that rejects a write</text>
+  <text x="14" y="176" font-size="10" fill="#6b5f75" font-family="inherit">"focus() did nothing" is almost always a pre watcher: the element it targeted had not been rendered when the call ran.</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">"Maximum recursive updates exceeded" is almost always a sync watcher writing something it also reads.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">await nextTick() inside a pre watcher is a workaround for needing post — prefer saying what you mean.</text>
+</svg>
 
 ## Testing and QA Hooks
 

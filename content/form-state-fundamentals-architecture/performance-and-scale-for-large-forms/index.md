@@ -98,50 +98,51 @@ The mental model that keeps a large form fast is a single input event fanning ou
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" role="img" aria-label="Render budget data flow: an input event updates one store slice, which notifies only the subscribed field while other fields are skipped, all within a 16 millisecond frame budget" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>Render Budget Data Flow for a Single Keystroke</title>
   <desc>A keystroke enters the input handler, updates one slice of the subscription store, and notifies only the subscribed field component. Two sibling fields are skipped at their memo boundaries. The whole path must complete inside a 16 millisecond frame budget.</desc>
+  <rect x="0" y="0" width="760" height="360" fill="#f9f5fb"/>
   <defs>
     <marker id="arr-perf" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.75"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
-  <rect width="760" height="360" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+  <rect width="760" height="360" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
   <!-- Frame budget banner -->
-  <rect x="30" y="24" width="700" height="30" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.3" stroke-width="1.5"/>
-  <text x="380" y="43" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor" opacity="0.8">frame budget: 16.7ms @ 60fps  ·  8.3ms @ 120Hz  —  the entire path below must fit inside it</text>
+  <rect x="30" y="24" width="700" height="30" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="380" y="43" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">frame budget: 16.7ms @ 60fps  ·  8.3ms @ 120Hz  —  the entire path below must fit inside it</text>
   <!-- input event -->
-  <rect x="40" y="100" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="105" y="122" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">input event</text>
-  <text x="105" y="139" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">1 keystroke</text>
+  <rect x="40" y="100" width="130" height="50" rx="8" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="105" y="122" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">input event</text>
+  <text x="105" y="139" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">1 keystroke</text>
   <!-- store slice update -->
-  <rect x="250" y="100" width="150" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="325" y="122" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">store.setField</text>
-  <text x="325" y="139" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">writes slice[email]</text>
+  <rect x="250" y="100" width="150" height="50" rx="8" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="325" y="122" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">store.setField</text>
+  <text x="325" y="139" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">writes slice[email]</text>
   <!-- notifier -->
-  <rect x="480" y="100" width="150" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="555" y="122" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">notify(email)</text>
-  <text x="555" y="139" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">selector diff</text>
+  <rect x="480" y="100" width="150" height="50" rx="8" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="555" y="122" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">notify(email)</text>
+  <text x="555" y="139" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">selector diff</text>
   <!-- subscribed field (re-renders) -->
-  <rect x="480" y="215" width="150" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.75"/>
-  <text x="555" y="237" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">Field: email</text>
-  <text x="555" y="254" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.7">re-renders ✓</text>
+  <rect x="480" y="215" width="150" height="52" rx="8" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="555" y="237" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">Field: email</text>
+  <text x="555" y="254" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">re-renders ✓</text>
   <!-- skipped siblings -->
-  <rect x="250" y="215" width="150" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.35" stroke-dasharray="5 3"/>
-  <text x="325" y="237" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor" opacity="0.6">Field: phone</text>
-  <text x="325" y="254" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.55">skipped at memo</text>
-  <rect x="40" y="215" width="150" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.35" stroke-dasharray="5 3"/>
-  <text x="115" y="237" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor" opacity="0.6">Field: address</text>
-  <text x="115" y="254" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.55">skipped at memo</text>
+  <rect x="250" y="215" width="150" height="52" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="325" y="237" text-anchor="middle" font-family="inherit" font-size="12" fill="#6b5f75">Field: phone</text>
+  <text x="325" y="254" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">skipped at memo</text>
+  <rect x="40" y="215" width="150" height="52" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="115" y="237" text-anchor="middle" font-family="inherit" font-size="12" fill="#6b5f75">Field: address</text>
+  <text x="115" y="254" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">skipped at memo</text>
   <!-- paint -->
-  <rect x="480" y="300" width="150" height="42" rx="8" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.55"/>
-  <text x="555" y="326" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">layout + paint</text>
+  <rect x="480" y="300" width="150" height="42" rx="8" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="555" y="326" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">layout + paint</text>
   <!-- arrows -->
-  <line x1="170" y1="125" x2="242" y2="125" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-perf)"/>
-  <line x1="400" y1="125" x2="472" y2="125" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-perf)"/>
-  <line x1="555" y1="150" x2="555" y2="207" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-perf)"/>
-  <line x1="555" y1="267" x2="555" y2="292" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-perf)"/>
+  <line x1="170" y1="125" x2="242" y2="125" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-perf)"/>
+  <line x1="400" y1="125" x2="472" y2="125" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-perf)"/>
+  <line x1="555" y1="150" x2="555" y2="207" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-perf)"/>
+  <line x1="555" y1="267" x2="555" y2="292" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-perf)"/>
   <!-- notify does NOT reach siblings: faint blocked links -->
-  <line x1="505" y1="150" x2="360" y2="207" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.25" stroke-dasharray="3 4"/>
-  <line x1="500" y1="150" x2="175" y2="207" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.25" stroke-dasharray="3 4"/>
-  <text x="300" y="185" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.55">no subscription match → no notification</text>
+  <line x1="505" y1="150" x2="360" y2="207" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="3 4"/>
+  <line x1="500" y1="150" x2="175" y2="207" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="3 4"/>
+  <text x="300" y="185" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">no subscription match → no notification</text>
 </svg>
 
 The budget table below is the target every technique on this page serves. Numbers assume a mid-tier laptop; halve them for a throttled mobile CPU.
@@ -299,6 +300,48 @@ Two rules keep this from introducing new bugs. First, tag every request with a m
 
 ---
 
+### Where the frame budget actually goes
+
+A keystroke has about 16 ms before the next frame is due. Measuring where that budget is spent, rather than guessing, is what separates a fix from a rewrite:
+
+<svg viewBox="0 8 690 232" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Stacked frame budgets for one keystroke at three form sizes. At twenty fields the work fits comfortably inside sixteen milliseconds. At one hundred fields with a shared state object, render dominates and the frame is missed. At one hundred fields with per-field subscriptions the frame fits again, with validation becoming the largest remaining slice." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>One keystroke, three architectures, against a 16ms frame</title>
+  <desc>Three stacked bars against a sixteen millisecond frame line. Twenty fields with a shared state object: roughly one millisecond of event handling, two of validation, three of render and one of paint, comfortably inside budget. One hundred fields with a shared state object: one millisecond of event handling, two of validation, eighteen of render and three of paint, which overruns the frame badly and is felt as lag. One hundred fields with per-field subscriptions: one millisecond of event handling, two of validation, one of render and one of paint — render collapses because only the edited field re-renders, and validation becomes the biggest remaining slice.</desc>
+  <rect x="0" y="8" width="690" height="232" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">Milliseconds per keystroke, measured in the profiler</text>
+  <line x1="182" y1="36" x2="182" y2="176" stroke="#7b4f8a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="188" y="46" font-size="9.5" fill="#7b4f8a" font-family="inherit">0ms</text>
+  <line x1="502" y1="36" x2="502" y2="176" stroke="#a63d6f" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="508" y="46" font-size="9.5" fill="#a63d6f" font-family="inherit">16ms frame deadline</text>
+  <text x="14" y="72" font-size="10" fill="#1e1a24" font-family="inherit">20 fields, shared state</text>
+  <rect x="182" y="60" width="20" height="20" fill="#ede5f2" stroke="#6b5f75" stroke-width="1.2"/>
+  <rect x="202" y="60" width="40" height="20" fill="#ede5f2" stroke="#b07a55" stroke-width="1.2"/>
+  <rect x="242" y="60" width="60" height="20" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.2"/>
+  <rect x="302" y="60" width="20" height="20" fill="#ede5f2" stroke="#2d6342" stroke-width="1.2"/>
+  <text x="332" y="75" font-size="9.5" fill="#2d6342" font-family="inherit">7ms — fine</text>
+  <text x="14" y="118" font-size="10" fill="#1e1a24" font-family="inherit">100 fields, shared state</text>
+  <rect x="182" y="106" width="20" height="20" fill="#ede5f2" stroke="#6b5f75" stroke-width="1.2"/>
+  <rect x="202" y="106" width="40" height="20" fill="#ede5f2" stroke="#b07a55" stroke-width="1.2"/>
+  <rect x="242" y="106" width="360" height="20" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.2"/>
+  <rect x="602" y="106" width="60" height="20" fill="#ede5f2" stroke="#2d6342" stroke-width="1.2"/>
+  <text x="332" y="146" font-size="9.5" fill="#a63d6f" font-family="inherit">24ms — every keystroke drops a frame; render is 75% of it</text>
+  <text x="14" y="166" font-size="10" fill="#1e1a24" font-family="inherit">100 fields, per-field subs</text>
+  <rect x="182" y="154" width="20" height="20" fill="#ede5f2" stroke="#6b5f75" stroke-width="1.2"/>
+  <rect x="202" y="154" width="40" height="20" fill="#ede5f2" stroke="#b07a55" stroke-width="1.2"/>
+  <rect x="242" y="154" width="20" height="20" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.2"/>
+  <rect x="262" y="154" width="20" height="20" fill="#ede5f2" stroke="#2d6342" stroke-width="1.2"/>
+  <text x="292" y="169" font-size="9.5" fill="#2d6342" font-family="inherit">5ms — validation is now the biggest slice</text>
+  <rect x="14" y="196" width="16" height="12" fill="#ede5f2" stroke="#6b5f75" stroke-width="1.2"/>
+  <text x="36" y="206" font-size="9.5" fill="#6b5f75" font-family="inherit">event handling</text>
+  <rect x="140" y="196" width="16" height="12" fill="#ede5f2" stroke="#b07a55" stroke-width="1.2"/>
+  <text x="162" y="206" font-size="9.5" fill="#6b5f75" font-family="inherit">validation</text>
+  <rect x="240" y="196" width="16" height="12" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.2"/>
+  <text x="262" y="206" font-size="9.5" fill="#6b5f75" font-family="inherit">render</text>
+  <rect x="330" y="196" width="16" height="12" fill="#ede5f2" stroke="#2d6342" stroke-width="1.2"/>
+  <text x="352" y="206" font-size="9.5" fill="#6b5f75" font-family="inherit">paint</text>
+  <text x="14" y="230" font-size="10" fill="#6b5f75" font-family="inherit">Note what did not change: validation cost is identical in all three rows. Moving it off the main thread only helps once render is fixed.</text>
+</svg>
+
 ## Edge Cases and Failure Modes
 
 **Referential instability defeats every memo.** A single object literal prop — `style={{}}`, `rules={[...]}` — recreated each render invalidates the child's memo and re-renders the whole windowed list. Hoist stable props out of render or memoize them.
@@ -324,6 +367,42 @@ Two rules keep this from introducing new bugs. First, tag every request with a m
 | Stale errors flash after fast typing | Worker replies arrive out of order | Tag requests with a monotonic id; drop non-latest replies |
 
 ---
+
+Which is why the order of the optimisations matters more than the list of them:
+
+<svg viewBox="0 8 640 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Decision tree for large-form performance work. Profile first, then branch on which phase dominates: render work is fixed with per-field subscriptions and memoization, script work outside render is fixed by moving validation off the main thread or debouncing it, and layout and paint work is fixed by virtualising the fieldset or simplifying the field markup." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Fix the phase that dominates, not the one you read about</title>
+  <desc>Start by recording a profile while typing. If render dominates, the fix is subscription isolation so that only the edited field re-renders, plus memoization boundaries around the field components. If scripting outside render dominates, the fix is to debounce the validator or move it to a worker. If layout and paint dominate, the fix is to virtualise the fieldset so off-screen fields are not in the document, and to simplify per-field markup. Each branch names the symptom that identifies it in the profiler.</desc>
+  <rect x="0" y="8" width="640" height="230" fill="#f9f5fb"/>
+  <rect x="14" y="82" width="164" height="60" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="96" y="106" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">record a profile</text>
+  <text x="96" y="124" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">type 20 characters</text>
+  <path d="M178,112 H206 V44 H234" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M178,112 H234" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M178,112 H206 V180 H234" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="234" y="20" width="180" height="48" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="246" y="40" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">render dominates</text>
+  <text x="246" y="58" font-size="9.5" fill="#6b5f75" font-family="inherit">wide commit, many components</text>
+  <path d="M414,44 H442" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="442" y="20" width="184" height="48" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="454" y="40" font-size="10" fill="#2d6342" font-family="inherit">per-field subscriptions</text>
+  <text x="454" y="58" font-size="9.5" fill="#6b5f75" font-family="inherit">then memo boundaries</text>
+  <rect x="234" y="88" width="180" height="48" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="246" y="108" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">script dominates</text>
+  <text x="246" y="126" font-size="9.5" fill="#6b5f75" font-family="inherit">long task before the commit</text>
+  <path d="M414,112 H442" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="442" y="88" width="184" height="48" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="454" y="108" font-size="10" fill="#2d6342" font-family="inherit">debounce, then a worker</text>
+  <text x="454" y="126" font-size="9.5" fill="#6b5f75" font-family="inherit">schema parsing is the usual cause</text>
+  <rect x="234" y="156" width="180" height="48" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="246" y="176" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">layout dominates</text>
+  <text x="246" y="194" font-size="9.5" fill="#6b5f75" font-family="inherit">recalculate style, huge tree</text>
+  <path d="M414,180 H442" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="442" y="156" width="184" height="48" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="454" y="176" font-size="10" fill="#2d6342" font-family="inherit">virtualise the fieldset</text>
+  <text x="454" y="194" font-size="9.5" fill="#6b5f75" font-family="inherit">and thin the per-field markup</text>
+  <text x="14" y="228" font-size="10" fill="#6b5f75" font-family="inherit">Doing these in the wrong order is how teams end up with a worker, a virtual list, and a form that is still slow.</text>
+</svg>
 
 ## Testing and QA Hooks
 

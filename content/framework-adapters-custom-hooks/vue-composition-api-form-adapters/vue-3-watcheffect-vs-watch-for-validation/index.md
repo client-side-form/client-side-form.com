@@ -3,7 +3,7 @@ layout: page.njk
 title: "Vue 3 watchEffect vs watch for Validation Triggers"
 description: "When to use watch vs watchEffect to fire form validation in Vue 3 — explicit deps and old/new values vs auto-tracking, flush timing (post/pre/sync), stopping watchers, and avoiding double-fire."
 slug: vue-3-watcheffect-vs-watch-for-validation
-type: guide
+type: howto
 breadcrumb: "watchEffect vs watch"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -188,6 +188,37 @@ export function useValidation(form: SignupForm & Record<string, unknown>) {
 
 ---
 
+Before timing, the choice itself. The two differ in one respect that decides almost every case: who names the dependencies.
+
+<svg viewBox="0 8 690 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of watchEffect and watch across five properties: how dependencies are determined, whether the callback runs immediately, whether the previous value is available, what happens when a conditional branch is not taken, and which validation shapes each suits." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>watchEffect infers dependencies; watch is told them</title>
+  <desc>Dependencies: watchEffect tracks whatever the callback reads on its last run, while watch uses exactly the sources you list. First run: watchEffect always runs immediately, while watch waits for a change unless immediate is set. Previous value: watchEffect has none, while watch receives the old value as its second argument. Conditional reads: a dependency read inside a branch that was not taken is not tracked by watchEffect, so the effect stops reacting to it — a real and silent failure — while watch is unaffected. Suits: watchEffect for validation that always reads the same handful of fields, watch for cross-field rules where you need the previous value or must not run on mount.</desc>
+  <rect x="0" y="8" width="690" height="220" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Property</text>
+  <text x="220" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">watchEffect</text>
+  <text x="450" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">watch</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">dependencies</text>
+  <text x="220" y="66" font-size="10" fill="#6b5f75" font-family="inherit">whatever the last run read</text>
+  <text x="450" y="66" font-size="10" fill="#6b5f75" font-family="inherit">exactly the sources listed</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">runs on mount</text>
+  <text x="220" y="100" font-size="10" fill="#6b5f75" font-family="inherit">always</text>
+  <text x="450" y="100" font-size="10" fill="#6b5f75" font-family="inherit">only with immediate: true</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">previous value</text>
+  <text x="220" y="134" font-size="10" fill="#a63d6f" font-family="inherit">not available</text>
+  <text x="450" y="134" font-size="10" fill="#2d6342" font-family="inherit">second argument</text>
+  <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">reads inside a branch</text>
+  <text x="220" y="168" font-size="10" fill="#a63d6f" font-family="inherit">untracked if not taken</text>
+  <text x="450" y="168" font-size="10" fill="#2d6342" font-family="inherit">unaffected</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">The last row is the one that produces a validator that "works, then stops": a field read only in the else branch is dropped.</text>
+  <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">Rule of thumb: unconditional reads of a fixed set, watchEffect. Anything conditional or comparative, watch.</text>
+</svg>
+
 ## Flush timing
 
 `flush` controls *when* in the update cycle the callback runs:
@@ -197,6 +228,36 @@ export function useValidation(form: SignupForm & Record<string, unknown>) {
 - **`sync`** — fires synchronously on every mutation, before batching. It defeats Vue's coalescing and can run many times per interaction; reserve it for cases that genuinely cannot wait a microtask.
 
 ---
+
+The conditional-dependency failure is worth drawing, because the code that produces it looks completely reasonable:
+
+<svg viewBox="0 8 668 224" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three runs of a watchEffect whose body reads the postcode field only when the country is set to a value requiring it. On the first run country is empty so postcode is never read and never tracked; changing postcode therefore does not re-run the effect, and the validation error never appears." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>A dependency that was never read is a dependency you do not have</title>
+  <desc>Run one, on mount: country is empty, so the branch that reads postcode is not taken, and the tracked set contains country only. The reader then edits postcode: because postcode is not in the tracked set, the effect does not run and no validation happens. The reader sets country to a value that requires a postcode: country is tracked, so the effect runs, now reads postcode, and postcode joins the tracked set. From this point the effect behaves correctly — which is why the bug is so often reported as intermittent.</desc>
+  <rect x="0" y="8" width="668" height="224" fill="#f9f5fb"/>
+  <rect x="14" y="30" width="200" height="84" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="28" y="52" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">run 1 · on mount</text>
+  <text x="28" y="72" font-size="9.5" fill="#6b5f75" font-family="inherit">country is empty</text>
+  <text x="28" y="88" font-size="9.5" fill="#6b5f75" font-family="inherit">branch not taken</text>
+  <text x="28" y="106" font-size="9.5" fill="#a63d6f" font-family="inherit">tracked: { country }</text>
+  <path d="M214,72 H240" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="240" y="30" width="200" height="84" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="254" y="52" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">reader edits postcode</text>
+  <text x="254" y="72" font-size="9.5" fill="#6b5f75" font-family="inherit">postcode is not tracked</text>
+  <text x="254" y="88" font-size="9.5" fill="#6b5f75" font-family="inherit">effect does not run</text>
+  <text x="254" y="106" font-size="9.5" fill="#a63d6f" font-family="inherit">no validation, no error</text>
+  <path d="M440,72 H466" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="466" y="30" width="188" height="84" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="480" y="52" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">reader sets country</text>
+  <text x="480" y="72" font-size="9.5" fill="#6b5f75" font-family="inherit">country IS tracked</text>
+  <text x="480" y="88" font-size="9.5" fill="#6b5f75" font-family="inherit">effect runs, reads postcode</text>
+  <text x="480" y="106" font-size="9.5" fill="#2d6342" font-family="inherit">tracked: { country, postcode }</text>
+  <rect x="14" y="134" width="640" height="52" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="28" y="156" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">Two fixes, both one line</text>
+  <text x="28" y="174" font-size="9.5" fill="#6b5f75" font-family="inherit">Read every dependency before the branch, or use watch([country, postcode], …) and declare them.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Reported as "validation is flaky": it is deterministic, but the determining factor is the order the reader filled the form in.</text>
+  <text x="14" y="224" font-size="10" fill="#6b5f75" font-family="inherit">A test that fills fields top to bottom will never reproduce it; fill postcode first and it fails every time.</text>
+</svg>
 
 ## Failure modes and fixes
 
@@ -248,6 +309,30 @@ watch(() => form.address, onChange, { deep: true });
 Without cancellation, a slow earlier request resolves after a faster later one and clobbers current state. Use `AbortController` with `onWatcherCleanup` as shown in Case 4 above; do not track the controller in an ad-hoc `ref`, because cleanup ordering with flush timing gets subtle.
 
 ---
+
+Async validation adds one more requirement that neither option handles by itself: the run you started may not be the run whose answer you want.
+
+<svg viewBox="0 8 664 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two overlapping async validation runs. Without onWatcherCleanup the first, slower run resolves last and overwrites the second run's correct result. With cleanup, the first run is aborted when the second starts, so only the newest answer is ever written." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The last answer to arrive is not the answer you want</title>
+  <desc>Without cleanup: run A starts for the value "ad" and takes eight hundred milliseconds. Run B starts for "ada" and takes two hundred. B resolves first and writes the correct result, then A resolves and overwrites it with a result for a value the field no longer holds. With cleanup registered through the watcher's cleanup hook: starting run B aborts run A's request, so A never resolves, and the field ends on B's answer. The general rule is that the guard belongs in the watcher, not in the validator, because only the watcher knows a newer run has begun.</desc>
+  <rect x="0" y="8" width="664" height="214" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#a63d6f" font-family="inherit">no cleanup — the slow answer wins</text>
+  <rect x="14" y="36" width="300" height="80" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="28" y="58" font-size="9.5" fill="#6b5f75" font-family="inherit">run A ("ad") starts — 800ms</text>
+  <text x="28" y="76" font-size="9.5" fill="#6b5f75" font-family="inherit">run B ("ada") starts — 200ms</text>
+  <text x="28" y="94" font-size="9.5" fill="#2d6342" font-family="inherit">B resolves: correct result written</text>
+  <text x="28" y="110" font-size="9.5" fill="#a63d6f" font-family="inherit">A resolves: overwrites it, stale</text>
+  <text x="350" y="26" font-size="11.5" font-weight="700" fill="#2d6342" font-family="inherit">with cleanup — A never resolves</text>
+  <rect x="350" y="36" width="300" height="80" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="364" y="58" font-size="9.5" fill="#6b5f75" font-family="inherit">run A ("ad") starts — 800ms</text>
+  <text x="364" y="76" font-size="9.5" fill="#6b5f75" font-family="inherit">run B starts, cleanup aborts A</text>
+  <text x="364" y="94" font-size="9.5" fill="#2d6342" font-family="inherit">B resolves: correct result written</text>
+  <text x="364" y="110" font-size="9.5" fill="#6b5f75" font-family="inherit">nothing else can write after it</text>
+  <text x="14" y="150" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Why the guard belongs in the watcher</text>
+  <text x="14" y="168" font-size="10" fill="#6b5f75" font-family="inherit">Only the watcher knows a newer run has started. A validator that checks "is my value still current" has to reach back</text>
+  <text x="14" y="184" font-size="10" fill="#6b5f75" font-family="inherit">into form state, which couples it to the form and makes it untestable in isolation.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Both watch and watchEffect give you the cleanup hook, so this is one thing the choice above does not affect.</text>
+</svg>
 
 ## Verification checklist
 

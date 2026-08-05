@@ -3,7 +3,7 @@ layout: page.njk
 title: "Best Practices for Uncontrolled Form State"
 description: "Production best practices for managing uncontrolled form inputs with refs: preventing pristine state drift, handling hydration mismatches, and wiring validation without per-keystroke re-renders."
 slug: "best-practices-for-uncontrolled-form-state"
-type: guide
+type: howto
 breadcrumb: "Best Practices for Uncontrolled Form State"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -90,56 +90,56 @@ The hook below also relies on [dirty and pristine state tracking](https://www.cl
 
 The diagram below shows the three failure windows that appear in nearly every uncontrolled form at scale: snapshot desync during async load, stale validation results from rapid keypresses, and memory leaks when the form unmounts before in-flight requests resolve.
 
-<svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three failure windows in uncontrolled form state: snapshot desync, validation race, and memory leak" style="width:100%;max-width:720px;display:block;margin:1.5rem auto;">
+<svg viewBox="24 59 682 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three failure windows in uncontrolled form state: snapshot desync, validation race, and memory leak" style="width:100%;max-width:720px;display:block;margin:1.5rem auto;">
   <title>Uncontrolled form state failure windows</title>
   <desc>A timeline diagram showing Mount, Async Load, User Typing, and Unmount phases, annotating where snapshot desync, validation race conditions, and memory leaks occur.</desc>
+  <rect x="24" y="59" width="682" height="230" fill="#f9f5fb"/>
   <!-- Background -->
-  <rect width="720" height="340" rx="8" fill="none"/>
   <!-- Timeline rail -->
-  <line x1="40" y1="100" x2="680" y2="100" stroke="currentColor" stroke-width="2" stroke-opacity="0.25"/>
+  <line x1="40" y1="100" x2="680" y2="100" stroke="#7b4f8a" stroke-width="2"/>
   <!-- Phase markers -->
-  <circle cx="80"  cy="100" r="6" fill="currentColor" opacity="0.6"/>
-  <circle cx="240" cy="100" r="6" fill="currentColor" opacity="0.6"/>
-  <circle cx="420" cy="100" r="6" fill="currentColor" opacity="0.6"/>
-  <circle cx="640" cy="100" r="6" fill="currentColor" opacity="0.6"/>
+  <circle cx="80"  cy="100" r="6" fill="#ede5f2" opacity="0.6"/>
+  <circle cx="240" cy="100" r="6" fill="#ede5f2" opacity="0.6"/>
+  <circle cx="420" cy="100" r="6" fill="#ede5f2" opacity="0.6"/>
+  <circle cx="640" cy="100" r="6" fill="#ede5f2" opacity="0.6"/>
   <!-- Phase labels -->
-  <text x="80"  y="88" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.8">Mount</text>
-  <text x="240" y="88" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.8">Async load</text>
-  <text x="420" y="88" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.8">User typing</text>
-  <text x="640" y="88" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.8">Unmount</text>
+  <text x="80"  y="88" text-anchor="middle" font-size="12" fill="#1e1a24">Mount</text>
+  <text x="240" y="88" text-anchor="middle" font-size="12" fill="#1e1a24">Async load</text>
+  <text x="420" y="88" text-anchor="middle" font-size="12" fill="#1e1a24">User typing</text>
+  <text x="640" y="88" text-anchor="middle" font-size="12" fill="#1e1a24">Unmount</text>
   <!-- Failure 1: Snapshot desync -->
-  <rect x="160" y="118" width="160" height="54" rx="6" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.5"/>
-  <text x="240" y="138" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">Snapshot desync</text>
-  <text x="240" y="153" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.75">Async value arrives after</text>
-  <text x="240" y="166" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.75">WeakMap was populated</text>
+  <rect x="160" y="118" width="160" height="54" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="240" y="138" text-anchor="middle" font-size="11" font-weight="600" fill="#1e1a24">Snapshot desync</text>
+  <text x="240" y="153" text-anchor="middle" font-size="10" fill="#6b5f75">Async value arrives after</text>
+  <text x="240" y="166" text-anchor="middle" font-size="10" fill="#6b5f75">WeakMap was populated</text>
   <!-- Failure 2: Race condition -->
-  <rect x="340" y="118" width="160" height="54" rx="6" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.5"/>
-  <text x="420" y="138" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">Validation race</text>
-  <text x="420" y="153" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.75">Keystroke N+1 resolves</text>
-  <text x="420" y="166" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.75">before keystroke N</text>
+  <rect x="340" y="118" width="160" height="54" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="420" y="138" text-anchor="middle" font-size="11" font-weight="600" fill="#1e1a24">Validation race</text>
+  <text x="420" y="153" text-anchor="middle" font-size="10" fill="#6b5f75">Keystroke N+1 resolves</text>
+  <text x="420" y="166" text-anchor="middle" font-size="10" fill="#6b5f75">before keystroke N</text>
   <!-- Failure 3: Memory leak -->
-  <rect x="560" y="118" width="130" height="54" rx="6" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.5"/>
-  <text x="625" y="138" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">Memory leak</text>
-  <text x="625" y="153" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.75">Controllers + listeners</text>
-  <text x="625" y="166" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.75">not torn down</text>
+  <rect x="560" y="118" width="130" height="54" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="625" y="138" text-anchor="middle" font-size="11" font-weight="600" fill="#1e1a24">Memory leak</text>
+  <text x="625" y="153" text-anchor="middle" font-size="10" fill="#6b5f75">Controllers + listeners</text>
+  <text x="625" y="166" text-anchor="middle" font-size="10" fill="#6b5f75">not torn down</text>
   <!-- Arrows pointing up to timeline -->
-  <line x1="240" y1="118" x2="240" y2="106" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="420" y1="118" x2="420" y2="106" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="625" y1="118" x2="640" y2="106" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="240" y1="118" x2="240" y2="106" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="420" y1="118" x2="420" y2="106" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="625" y1="118" x2="640" y2="106" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
   <defs>
     <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L6,3 z" fill="currentColor" opacity="0.5"/>
+      <path d="M0,0 L0,6 L6,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- Fix labels -->
-  <text x="240" y="205" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6">Fix: two-phase gate</text>
-  <text x="240" y="218" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6">+ rAF delay</text>
-  <text x="420" y="205" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6">Fix: AbortController</text>
-  <text x="420" y="218" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6">per field, per event</text>
-  <text x="625" y="205" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6">Fix: useEffect</text>
-  <text x="625" y="218" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6">cleanup + WeakMap reset</text>
+  <text x="240" y="205" text-anchor="middle" font-size="10" fill="#6b5f75">Fix: two-phase gate</text>
+  <text x="240" y="218" text-anchor="middle" font-size="10" fill="#6b5f75">+ rAF delay</text>
+  <text x="420" y="205" text-anchor="middle" font-size="10" fill="#6b5f75">Fix: AbortController</text>
+  <text x="420" y="218" text-anchor="middle" font-size="10" fill="#6b5f75">per field, per event</text>
+  <text x="625" y="205" text-anchor="middle" font-size="10" fill="#6b5f75">Fix: useEffect</text>
+  <text x="625" y="218" text-anchor="middle" font-size="10" fill="#6b5f75">cleanup + WeakMap reset</text>
   <!-- Caption -->
-  <text x="360" y="270" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.5">Three failure windows in an uncontrolled form and where each fix belongs in the lifecycle</text>
+  <text x="360" y="270" text-anchor="middle" font-size="11" fill="#6b5f75">Three failure windows in an uncontrolled form and where each fix belongs in the lifecycle</text>
 </svg>
 
 ---
@@ -328,6 +328,47 @@ export function getValidationState(form: HTMLFormElement) {
 
 ---
 
+Read as a sequence, the whole pattern is about which writes have to be announced and which do not:
+
+<svg viewBox="0 8 668 208" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two write paths into an uncontrolled input. A keystroke updates the DOM value and fires an input event that listeners observe. A programmatic ref write updates the DOM value but fires nothing, so listeners keep the stale value unless the write dispatches an input event itself." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Two ways the value changes, only one of which announces itself</title>
+  <desc>Top path: the reader types, the browser updates the input's value property and dispatches an input event, so every listener — validation, dirty tracking and analytics — sees the change. Bottom path: code assigns to ref.current.value, the DOM value changes silently, no event is dispatched, and every listener keeps the previous value until something else happens to fire. The fix is to dispatch a bubbling input event immediately after the assignment.</desc>
+  <rect x="0" y="8" width="668" height="208" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="12" font-weight="700" fill="#2d6342" font-family="inherit">The reader types — the browser announces it for you</text>
+  <rect x="14" y="36" width="148" height="46" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="88" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">keystroke</text>
+  <text x="88" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">user types "a"</text>
+  <path d="M162,59 H184" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="184" y="36" width="148" height="46" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="258" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">DOM value updates</text>
+  <text x="258" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">the node is the store</text>
+  <path d="M332,59 H354" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="354" y="36" width="148" height="46" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="428" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">input event fires</text>
+  <text x="428" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">bubbles to the form</text>
+  <path d="M502,59 H524" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="524" y="36" width="130" height="46" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="589" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">listeners agree</text>
+  <text x="589" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">validate, dirty, log</text>
+  <text x="14" y="118" font-size="12" font-weight="700" fill="#a63d6f" font-family="inherit">Code writes the ref — nothing is announced</text>
+  <rect x="14" y="128" width="148" height="46" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="88" y="147" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">ref write</text>
+  <text x="88" y="164" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">el.value = "restored"</text>
+  <path d="M162,151 H184" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="184" y="128" width="148" height="46" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="258" y="147" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">DOM value updates</text>
+  <text x="258" y="164" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">the field looks right</text>
+  <path d="M332,151 H354" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="354" y="128" width="148" height="46" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="428" y="147" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">no event at all</text>
+  <text x="428" y="164" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">assignment is silent</text>
+  <path d="M502,151 H524" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="524" y="128" width="130" height="46" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="589" y="147" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">listeners stale</text>
+  <text x="589" y="164" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">dirty stays false</text>
+  <text x="14" y="200" font-size="10" fill="#6b5f75" font-family="inherit">Fix: after every programmatic assignment, dispatch new Event("input", { bubbles: true }) so the two paths converge.</text>
+</svg>
+
 ## Failure Modes and Edge Cases
 
 ### 1. Autofill Bypass
@@ -405,6 +446,41 @@ form.addEventListener('reset', () => {
 ```
 
 ---
+
+Autofill is the case that breaks most uncontrolled forms in production, precisely because it does not behave like either path above:
+
+<svg viewBox="0 8 660 216" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of four value sources by whether they fire an input event, whether they fire a change event, and what you must do to observe them: typing, paste, browser autofill on submit-time credential fill, and a programmatic ref assignment." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Which value sources announce themselves</title>
+  <desc>Four value sources compared. Typing fires input and change and needs nothing extra. Pasting fires input and change and needs nothing extra. Browser autofill fires input in current browsers but historically did not, so a form should also re-read values on submit and watch for the auto-filled CSS pseudo-class. A programmatic assignment to element.value fires nothing at all, so the code doing it must dispatch the event itself.</desc>
+  <rect x="0" y="8" width="660" height="216" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="640" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="640" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="640" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Value source</text>
+  <text x="176" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">input event</text>
+  <text x="286" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">change event</text>
+  <text x="410" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">What you must add</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">typing</text>
+  <text x="176" y="66" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
+  <text x="286" y="66" font-size="10" fill="#2d6342" font-family="inherit">on blur</text>
+  <text x="410" y="66" font-size="10" fill="#6b5f75" font-family="inherit">nothing</text>
+  <line x1="10" y1="80" x2="650" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">paste, drag-drop</text>
+  <text x="176" y="100" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
+  <text x="286" y="100" font-size="10" fill="#2d6342" font-family="inherit">on blur</text>
+  <text x="410" y="100" font-size="10" fill="#6b5f75" font-family="inherit">nothing</text>
+  <line x1="10" y1="114" x2="650" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">browser autofill</text>
+  <text x="176" y="134" font-size="10" fill="#b07a55" font-family="inherit">usually</text>
+  <text x="286" y="134" font-size="10" fill="#b07a55" font-family="inherit">not reliably</text>
+  <text x="410" y="134" font-size="10" fill="#6b5f75" font-family="inherit">re-read on submit; watch :autofill</text>
+  <line x1="10" y1="148" x2="650" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">el.value = "…"</text>
+  <text x="176" y="168" font-size="10" fill="#a63d6f" font-family="inherit">never</text>
+  <text x="286" y="168" font-size="10" fill="#a63d6f" font-family="inherit">never</text>
+  <text x="410" y="168" font-size="10" fill="#6b5f75" font-family="inherit">dispatch the event yourself</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Reading values from the form element at submit time — rather than from a mirror you maintain — makes rows 3 and 4 harmless.</text>
+</svg>
 
 ## Verification Checklist
 

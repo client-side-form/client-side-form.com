@@ -133,16 +133,17 @@ The diagram below shows the lifecycle transitions that every adapter implementat
 <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Form state machine: transitions between IDLE, VALIDATING, SUBMITTING, SUCCESS, and ERROR phases" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
   <title>Form lifecycle state machine</title>
   <desc>Diagram showing form state transitions: IDLE receives user input and moves to VALIDATING; VALIDATING moves to IDLE (with errors) on failure or SUBMITTING on success; SUBMITTING moves to SUCCESS or ERROR; ERROR and SUCCESS both return to IDLE on reset.</desc>
+  <rect x="0" y="0" width="640" height="340" fill="#f9f5fb"/>
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 Z" fill="currentColor"/>
+      <path d="M0,0 L0,6 L8,3 Z" fill="#7b4f8a"/>
     </marker>
     <style>
-      .fsm-box { fill: none; stroke: currentColor; stroke-width: 1.5; rx: 8; }
-      .fsm-label { font-family: system-ui, sans-serif; font-size: 13px; fill: currentColor; text-anchor: middle; dominant-baseline: middle; }
-      .fsm-sublabel { font-family: system-ui, sans-serif; font-size: 10px; fill: currentColor; text-anchor: middle; dominant-baseline: middle; opacity: 0.7; }
-      .fsm-edge { stroke: currentColor; stroke-width: 1.2; fill: none; marker-end: url(#arr); }
-      .fsm-edge-label { font-family: system-ui, sans-serif; font-size: 10px; fill: currentColor; text-anchor: middle; dominant-baseline: middle; opacity: 0.85; }
+      .fsm-box { fill: var(--svg-card, #ede5f2); stroke: var(--svg-stroke, #cbb8d9); stroke-width: 1.5; rx: 8; }
+      .fsm-label { font-family: system-ui, sans-serif; font-size: 13px; fill: var(--svg-ink, #1e1a24); text-anchor: middle; dominant-baseline: middle; }
+      .fsm-sublabel { font-family: system-ui, sans-serif; font-size: 10px; fill: var(--svg-ink-muted, #6b5f75); text-anchor: middle; dominant-baseline: middle; }
+      .fsm-edge { stroke: var(--svg-accent, #7b4f8a); stroke-width: 1.2; fill: none; marker-end: url(#arr); }
+      .fsm-edge-label { font-family: system-ui, sans-serif; font-size: 10px; fill: var(--svg-ink-muted, #6b5f75); text-anchor: middle; dominant-baseline: middle; }
     </style>
   </defs>
   <!-- IDLE -->
@@ -172,10 +173,10 @@ The diagram below shows the lifecycle transitions that every adapter implementat
   <text x="345" y="207" class="fsm-edge-label">valid + submit</text>
   <!-- SUBMITTING → SUCCESS -->
   <path d="M420,262 L460,262" class="fsm-edge"/>
-  <text x="440" y="252" class="fsm-edge-label">resolve</text>
+  <text x="440" y="232" class="fsm-edge-label">resolve</text>
   <!-- SUBMITTING → ERROR -->
   <path d="M220,262 L180,262" class="fsm-edge"/>
-  <text x="200" y="252" class="fsm-edge-label">reject</text>
+  <text x="200" y="232" class="fsm-edge-label">reject</text>
   <!-- SUCCESS → IDLE -->
   <path d="M530,240 Q530,42 380,42" class="fsm-edge"/>
   <text x="510" y="130" class="fsm-edge-label">reset</text>
@@ -392,6 +393,98 @@ The server renders:
 ```
 
 The client passes `readServerInitialValues('checkout', defaultValues)` as the `initialValues` argument to the adapter. The hydrated DOM then matches the server output exactly.
+
+## The Adapter Contract
+
+Everything above describes four different reactivity systems. What makes them tractable is that the form machine does not need to know which one it is talking to — it needs six operations, and each framework can supply them in its own idiom. Writing the contract down first is what keeps four adapters from becoming four divergent implementations:
+
+```typescript
+// The complete surface a framework adapter must provide. Anything the machine needs
+// that is NOT on this list is a sign the machine has absorbed framework detail.
+interface FormAdapter<T extends Record<string, unknown>> {
+  read(): Readonly<T>;                       // current values, cheap, no side effects
+  write(patch: Partial<T>, opts: { silent: boolean }): void;  // silent = do not re-enter
+  subscribe(onChange: (next: Readonly<T>) => void): () => void;  // returns unsubscribe
+  focus(field: keyof T): void;               // the machine decides where; the adapter knows how
+  setAria(field: keyof T, state: AriaState): void;  // invalid + describedby, per framework
+  destroy(): void;                           // release every subscription and timer
+}
+```
+
+The `silent` option on `write` is the one that earns its place. Every reactive system in this section has a write path that re-enters its own change notification — Angular's `emitEvent`, Vue's watcher re-triggering, Svelte's store subscription, React's controlled `onChange` — and every adapter needs a way to say "this write came from the machine, do not tell the machine about it." Making it part of the contract rather than an implementation detail means the loop is closed once, in the interface, instead of rediscovered in each adapter.
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The six adapter operations mapped onto each framework: read, write, subscribe, focus, setAria and destroy, with the React, Vue, Svelte and Angular idiom for each." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>One contract, four idioms</title>
+  <desc>Read: a store snapshot in React, reading the reactive object in Vue, get on the store in Svelte, and control.value in Angular. Write: a store setter, an assignment to the reactive object, store.set, and setValue with emitEvent false. Subscribe: useSyncExternalStore, watch, the store's subscribe method, and valueChanges. Focus: a ref in React and Vue, bind:this in Svelte, and a ViewChild in Angular. Set ARIA: props in React, a binding in Vue, an attribute in Svelte, and a host binding or renderer call in Angular. Destroy: an effect cleanup, onScopeDispose, onDestroy, and takeUntilDestroyed with actor stop.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Operation</text>
+  <text x="150" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">React</text>
+  <text x="300" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Vue</text>
+  <text x="420" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Svelte</text>
+  <text x="540" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Angular</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">read</text>
+  <text x="150" y="66" font-size="9.5" fill="#6b5f75" font-family="inherit">store snapshot</text>
+  <text x="300" y="66" font-size="9.5" fill="#6b5f75" font-family="inherit">reactive object</text>
+  <text x="420" y="66" font-size="9.5" fill="#6b5f75" font-family="inherit">get(store)</text>
+  <text x="540" y="66" font-size="9.5" fill="#6b5f75" font-family="inherit">control.value</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">write (silent)</text>
+  <text x="150" y="100" font-size="9.5" fill="#6b5f75" font-family="inherit">store setter</text>
+  <text x="300" y="100" font-size="9.5" fill="#6b5f75" font-family="inherit">assign + flag</text>
+  <text x="420" y="100" font-size="9.5" fill="#6b5f75" font-family="inherit">store.set</text>
+  <text x="540" y="100" font-size="9.5" fill="#6b5f75" font-family="inherit">emitEvent: false</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">subscribe</text>
+  <text x="150" y="134" font-size="9.5" fill="#6b5f75" font-family="inherit">useSyncExternalStore</text>
+  <text x="300" y="134" font-size="9.5" fill="#6b5f75" font-family="inherit">watch</text>
+  <text x="420" y="134" font-size="9.5" fill="#6b5f75" font-family="inherit">store.subscribe</text>
+  <text x="540" y="134" font-size="9.5" fill="#6b5f75" font-family="inherit">valueChanges</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">focus / setAria</text>
+  <text x="150" y="168" font-size="9.5" fill="#6b5f75" font-family="inherit">ref + props</text>
+  <text x="300" y="168" font-size="9.5" fill="#6b5f75" font-family="inherit">ref + binding</text>
+  <text x="420" y="168" font-size="9.5" fill="#6b5f75" font-family="inherit">bind:this + attr</text>
+  <text x="540" y="168" font-size="9.5" fill="#6b5f75" font-family="inherit">ViewChild + host</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">destroy</text>
+  <text x="150" y="202" font-size="9.5" fill="#6b5f75" font-family="inherit">effect cleanup</text>
+  <text x="300" y="202" font-size="9.5" fill="#6b5f75" font-family="inherit">onScopeDispose</text>
+  <text x="420" y="202" font-size="9.5" fill="#6b5f75" font-family="inherit">onDestroy</text>
+  <text x="540" y="202" font-size="9.5" fill="#6b5f75" font-family="inherit">takeUntilDestroyed</text>
+</svg>
+
+The row that varies most is `subscribe`, and it varies for a structural reason worth naming: the four frameworks disagree about *when* a change is observable, not just about how you observe it.
+
+<svg viewBox="0 8 690 216" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="When each framework's change notification runs relative to the write: React batches until the end of the event, Vue queues to a microtask, Svelte notifies synchronously, and Angular emits synchronously on valueChanges. Each row states what that means for an adapter that writes and then reads." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>When "the value changed" becomes observable</title>
+  <desc>React batches state updates until the end of the event handler, so reading immediately after a write returns the previous value and an adapter must not assume its write is visible yet. Vue queues watcher callbacks to a microtask by default, so the same applies unless the watcher is configured to flush synchronously. Svelte notifies store subscribers synchronously during the set call, so a write is visible immediately and a careless adapter can recurse. Angular emits on valueChanges synchronously during setValue, with the same recursion risk, which is what emitEvent false exists to prevent.</desc>
+  <rect x="0" y="8" width="690" height="216" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Framework</text>
+  <text x="164" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Notification runs</text>
+  <text x="348" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">What the adapter must not assume</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">React</text>
+  <text x="164" y="66" font-size="10" fill="#6b5f75" font-family="inherit">end of the event</text>
+  <text x="348" y="66" font-size="10" fill="#6b5f75" font-family="inherit">that a read after a write sees the new value</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">Vue</text>
+  <text x="164" y="100" font-size="10" fill="#6b5f75" font-family="inherit">next microtask</text>
+  <text x="348" y="100" font-size="10" fill="#6b5f75" font-family="inherit">that a watcher has run by the next line</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">Svelte</text>
+  <text x="164" y="134" font-size="10" fill="#7b4f8a" font-family="inherit">synchronously</text>
+  <text x="348" y="134" font-size="10" fill="#6b5f75" font-family="inherit">that a write cannot re-enter the writer</text>
+  <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">Angular</text>
+  <text x="164" y="168" font-size="10" fill="#7b4f8a" font-family="inherit">synchronously</text>
+  <text x="348" y="168" font-size="10" fill="#6b5f75" font-family="inherit">that emitEvent can be left at its default</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Top two rows fail by being late; bottom two fail by being immediate. An adapter written against one pair breaks on the other.</text>
+</svg>
 
 ## Error Propagation & Accessibility
 

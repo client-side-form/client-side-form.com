@@ -3,7 +3,7 @@ layout: page.njk
 title: "Password Confirmation Validation Pattern"
 description: "Validate confirmPassword against password: correct cross-field dependency, revalidation when password changes, and accessible error announcement."
 slug: password-confirmation-validation-pattern
-type: guide
+type: howto
 breadcrumb: "Password Confirmation"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -210,6 +210,37 @@ The `getFieldState("confirm").isTouched` guard is what implements the "compute a
 
 ---
 
+The rule is symmetric but the *reporting* must not be. Which field carries the error decides whether the reader can act on it:
+
+<svg viewBox="0 8 690 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three ways to report a mismatch between a password and its confirmation: on the password field, on both fields, and on the confirmation field alone. Only the third puts the error where the reader can act on it without retyping the secret." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Where the mismatch error belongs</title>
+  <desc>On the password field: the reader is told their password is wrong, which is false — it is the confirmation that does not match — and acting on it means retyping the secret they had already chosen. On both fields: two identical messages are rendered and announced, doubling the noise for a screen reader reader while adding nothing, and the error summary now lists one problem twice. On the confirmation field alone: the message sits on the field the reader must change, focus moves there, and the summary lists one problem once. That is the only arrangement where reading the message tells you what to do.</desc>
+  <rect x="0" y="8" width="690" height="214" fill="#f9f5fb"/>
+  <rect x="14" y="26" width="212" height="130" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="28" y="48" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">on the password field</text>
+  <text x="28" y="70" font-size="9.5" fill="#6b5f75" font-family="inherit">claims the password is wrong</text>
+  <text x="28" y="88" font-size="9.5" fill="#6b5f75" font-family="inherit">it is not — the copy is</text>
+  <text x="28" y="106" font-size="9.5" fill="#6b5f75" font-family="inherit">acting on it means retyping</text>
+  <text x="28" y="124" font-size="9.5" fill="#6b5f75" font-family="inherit">the secret they had chosen</text>
+  <text x="28" y="146" font-size="9.5" fill="#a63d6f" font-family="inherit">wrong field, wrong action</text>
+  <rect x="238" y="26" width="212" height="130" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
+  <text x="252" y="48" font-size="10.5" font-weight="700" fill="#b07a55" font-family="inherit">on both fields</text>
+  <text x="252" y="70" font-size="9.5" fill="#6b5f75" font-family="inherit">two identical messages</text>
+  <text x="252" y="88" font-size="9.5" fill="#6b5f75" font-family="inherit">announced twice</text>
+  <text x="252" y="106" font-size="9.5" fill="#6b5f75" font-family="inherit">summary lists one problem</text>
+  <text x="252" y="124" font-size="9.5" fill="#6b5f75" font-family="inherit">as if it were two</text>
+  <text x="252" y="146" font-size="9.5" fill="#b07a55" font-family="inherit">noise, no extra information</text>
+  <rect x="462" y="26" width="214" height="130" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="476" y="48" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">on the confirmation</text>
+  <text x="476" y="70" font-size="9.5" fill="#6b5f75" font-family="inherit">sits on the field to change</text>
+  <text x="476" y="88" font-size="9.5" fill="#6b5f75" font-family="inherit">focus moves there</text>
+  <text x="476" y="106" font-size="9.5" fill="#6b5f75" font-family="inherit">summary lists it once</text>
+  <text x="476" y="124" font-size="9.5" fill="#6b5f75" font-family="inherit">reading it says what to do</text>
+  <text x="476" y="146" font-size="9.5" fill="#2d6342" font-family="inherit">the only actionable option</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">The rule reads both fields; the issue is attached to one. Schema libraries make this explicit — the path decides the field.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Same reasoning for date ranges: the error belongs on the end date, not the start the reader already committed to.</text>
+</svg>
+
 ## Failure Modes and Edge Cases
 
 **Mismatch error survives a password edit.** The classic bug: the rule is on `confirm`, so editing `password` never re-runs it. Fix with the trigger map.
@@ -247,6 +278,37 @@ function announceIfChanged(input: HTMLInputElement, message: string | undefined)
 
 ---
 
+Timing matters as much as placement here, because a symmetric rule can fire while only half of its inputs exist:
+
+<svg viewBox="0 8 668 206" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A keystroke timeline through the confirmation field showing that a mismatch error must not be shown until the confirmation has been left once, after which every keystroke re-checks so the error clears as the reader finishes typing." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Do not report a mismatch the reader has not finished making</title>
+  <desc>The reader types the password, then moves to the confirmation and types its first character. At that point the two values differ, but reporting it would mark the field invalid on every partial entry — the reader is scolded for not having finished typing. Nothing is shown until the confirmation field is left for the first time. From then on, every keystroke re-checks, so the error clears the instant the values match rather than waiting for another blur, which is exactly the feedback a reader repairing a mismatch needs.</desc>
+  <rect x="0" y="8" width="668" height="206" fill="#f9f5fb"/>
+  <rect x="14" y="34" width="152" height="70" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="90" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">typing password</text>
+  <text x="90" y="76" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">confirmation empty</text>
+  <text x="90" y="92" text-anchor="middle" font-size="9.5" fill="#2d6342" font-family="inherit">show nothing</text>
+  <path d="M166,69 H188" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="188" y="34" width="152" height="70" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="264" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">typing confirmation</text>
+  <text x="264" y="76" font-size="9.5" text-anchor="middle" fill="#6b5f75" font-family="inherit">values differ, but</text>
+  <text x="264" y="92" text-anchor="middle" font-size="9.5" fill="#2d6342" font-family="inherit">still show nothing</text>
+  <path d="M340,69 H362" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="362" y="34" width="152" height="70" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="438" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">first blur</text>
+  <text x="438" y="76" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">now the rule may</text>
+  <text x="438" y="92" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">report a mismatch</text>
+  <path d="M514,69 H536" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="536" y="34" width="118" height="70" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="595" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">after that</text>
+  <text x="595" y="76" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">re-check every</text>
+  <text x="595" y="92" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">keystroke</text>
+  <text x="14" y="144" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">One more edge: editing the password after both are filled</text>
+  <text x="14" y="162" font-size="10" fill="#6b5f75" font-family="inherit">Changing the password re-breaks the match, so the confirmation&#39;s error must be re-evaluated even though nobody touched it.</text>
+  <text x="14" y="178" font-size="10" fill="#6b5f75" font-family="inherit">That is the dependency edge: password is an input to the confirmation&#39;s rule, so a write to it invalidates that rule.</text>
+  <text x="14" y="200" font-size="10" fill="#6b5f75" font-family="inherit">Announce the re-broken match politely — the reader is looking at the password field, not the confirmation.</text>
+</svg>
+
 ## Verification Checklist
 
 - [ ] Equality rule targets path: ["confirm"], not the form root
@@ -259,6 +321,36 @@ function announceIfChanged(input: HTMLInputElement, message: string | undefined)
 - [ ] Keyboard-only submission surfaces and clears the error correctly
 
 ---
+
+## What the pattern costs a password manager
+
+A confirmation field interacts with autofill in ways that are easy to break, and readers who use a manager are exactly the readers whose passwords you least want to disrupt.
+
+<svg viewBox="0 8 690 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three autofill behaviours a confirmation field must survive: both fields filled in one action, the confirmation filled before the password, and a paste that fires no keystroke events. Each row states what the validation must do." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Three ways a password manager fills these two fields</title>
+  <desc>Both fields filled in one action: the manager writes both values in the same tick, so a rule that only runs on blur never runs; validation must also run on the input events the fill dispatches. Confirmation filled first: some managers fill in DOM order and others in their own, so the rule must not assume the password is present when the confirmation changes. A paste with no keystrokes: pasting fires input but not keydown, so any logic hung off keydown — a common way to implement a debounce — never runs, and the field appears unvalidated.</desc>
+  <rect x="0" y="8" width="690" height="210" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="136" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">What the manager does</text>
+  <text x="270" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Why it breaks a naive rule</text>
+  <text x="500" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">What to do</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">fills both at once</text>
+  <text x="270" y="66" font-size="10" fill="#6b5f75" font-family="inherit">no blur ever happens</text>
+  <text x="500" y="66" font-size="10" fill="#2d6342" font-family="inherit">validate on input too</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">fills confirmation first</text>
+  <text x="270" y="100" font-size="10" fill="#6b5f75" font-family="inherit">password is still empty</text>
+  <text x="500" y="100" font-size="10" fill="#2d6342" font-family="inherit">skip the rule, do not fail it</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">pastes with no keystrokes</text>
+  <text x="270" y="134" font-size="10" fill="#6b5f75" font-family="inherit">keydown never fires</text>
+  <text x="500" y="134" font-size="10" fill="#2d6342" font-family="inherit">never hang logic off keydown</text>
+  <text x="14" y="176" font-size="10" fill="#6b5f75" font-family="inherit">Row two is the one that produces angry reports: the form declares a mismatch against an empty password the reader never saw.</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">"One input is empty" is not a mismatch — it is an incomplete comparison, and the rule should return no issue at all.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Keep autocomplete="new-password" on both fields so the manager offers to generate and fill rather than guessing.</text>
+</svg>
 
 ## Frequently Asked Questions
 

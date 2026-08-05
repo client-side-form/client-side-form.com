@@ -3,7 +3,7 @@ layout: page.njk
 title: "Syncing Angular FormControl with a State Machine"
 description: "Bridge Angular valueChanges and statusChanges into an explicit state machine with no feedback loops, using emitEvent:false, distinctUntilChanged, and teardown."
 slug: syncing-angular-formcontrol-with-a-state-machine
-type: guide
+type: howto
 breadcrumb: "Syncing FormControl with a State Machine"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -192,6 +192,42 @@ function normalize<T>(value: T): T {
 
 5. **Complete on destroy.** `takeUntilDestroyed(destroyRef)` completes the merged subscription when the component is torn down, releasing the reducer closure. No `destroy$` Subject, no `ngOnDestroy` — the same teardown discipline the parent adapter uses. This machine-driven bridge is the low-level counterpart to the schema-driven validation in [asynchronous validation strategies](https://www.client-side-form.com/validation-logic-schema-integration/asynchronous-validation-strategies/), where `switchMap` plays the cancellation role `emitEvent:false` plays for loop-breaking.
 
+The loop this pattern exists to break is short enough to draw, and seeing it drawn makes the guard obvious:
+
+<svg viewBox="0 8 660 208" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A four-node cycle between the machine and the control: the machine sends its context to the control, the control emits on valueChanges, the adapter dispatches an event to the machine, and the machine assigns context and sends again. Two places can cut the cycle: emitEvent false on the write, and an equality guard before the dispatch." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The echo cycle, and the two places to cut it</title>
+  <desc>Four nodes in a cycle. The machine's context is written into the control. The control emits the new value on valueChanges. The adapter turns that emission into a machine event. The machine assigns new context and writes it into the control again, closing the cycle. Cut one, on the write: pass emitEvent false so the control does not emit for writes that came from the machine. Cut two, before the dispatch: compare the incoming value with the machine's current context and drop the event if they are equal. Either cut alone stops the loop; using both makes the adapter robust to a template that also writes the control.</desc>
+  <rect x="0" y="8" width="660" height="208" fill="#f9f5fb"/>
+  <rect x="140" y="26" width="170" height="54" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="225" y="48" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">machine context</text>
+  <text x="225" y="65" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">the source of truth</text>
+  <path d="M310,53 H392" stroke="#7b4f8a" stroke-width="1.4"/>
+  <text x="351" y="45" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">setValue</text>
+  <rect x="392" y="26" width="170" height="54" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="477" y="48" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">FormControl</text>
+  <text x="477" y="65" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">holds the value</text>
+  <path d="M477,80 V116" stroke="#7b4f8a" stroke-width="1.4"/>
+  <text x="487" y="102" font-size="9.5" fill="#6b5f75" font-family="inherit">valueChanges</text>
+  <rect x="392" y="116" width="170" height="54" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="477" y="138" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">adapter subscription</text>
+  <text x="477" y="155" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">turns it into an event</text>
+  <path d="M392,143 H310" stroke="#7b4f8a" stroke-width="1.4"/>
+  <text x="351" y="135" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">send</text>
+  <path d="M225,116 V80" stroke="#7b4f8a" stroke-width="1.4"/>
+  <text x="150" y="102" font-size="9.5" fill="#6b5f75" font-family="inherit">assign</text>
+  <rect x="140" y="116" width="170" height="54" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="225" y="138" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">transition</text>
+  <text x="225" y="155" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">context is replaced</text>
+  <rect x="580" y="26" width="70" height="54" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="615" y="48" text-anchor="middle" font-size="9.5" fill="#2d6342" font-family="inherit">cut 1</text>
+  <text x="615" y="64" text-anchor="middle" font-size="9" fill="#6b5f75" font-family="inherit">emitEvent</text>
+  <rect x="580" y="116" width="70" height="54" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="615" y="138" text-anchor="middle" font-size="9.5" fill="#2d6342" font-family="inherit">cut 2</text>
+  <text x="615" y="154" text-anchor="middle" font-size="9" fill="#6b5f75" font-family="inherit">equality</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">Cut 1 stops writes the machine caused from echoing back. Cut 2 stops any echo, including one from a binding you do not own.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Keeping both is cheap: the second is one comparison, and it turns a hang into a no-op if the first is ever missed.</text>
+</svg>
+
 ## Failure Modes and Edge Cases
 
 ### 1. Forgetting emitEvent:false on one write path
@@ -226,6 +262,37 @@ control.updateValueAndValidity({ emitEvent: false }); // recompute status silent
 
 Rapid programmatic updates in the same tick can coalesce, and `scan` sees only the final value. If you need every intermediate state, debounce upstream rather than relying on per-tick delivery.
 
+Teardown is the other half. An Angular adapter holds three subscriptions and an actor, and every one of them outlives the component unless it is explicitly ended:
+
+<svg viewBox="0 8 664 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four things an Angular form adapter must release on destroy: the valueChanges subscription, the statusChanges subscription, the machine actor, and any pending async validator request. Each row names what leaks if it is missed." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Four things to release in ngOnDestroy</title>
+  <desc>The valueChanges subscription: if it is not unsubscribed, the closure keeps the component and its machine alive and continues dispatching events after the view is gone. The statusChanges subscription: the same leak, plus validation state written into a destroyed machine. The machine actor: an XState actor keeps its own timers and invoked services running until it is stopped. Pending async validator requests: an in-flight HTTP call resolves into a destroyed context unless its AbortController is aborted or its takeUntil fires.</desc>
+  <rect x="0" y="8" width="664" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="644" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="644" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="644" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Release this</text>
+  <text x="234" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">How</text>
+  <text x="408" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">If you forget</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">valueChanges subscription</text>
+  <text x="234" y="66" font-size="10" fill="#6b5f75" font-family="inherit">takeUntilDestroyed()</text>
+  <text x="408" y="66" font-size="10" fill="#a63d6f" font-family="inherit">events after the view is gone</text>
+  <line x1="10" y1="80" x2="654" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">statusChanges subscription</text>
+  <text x="234" y="100" font-size="10" fill="#6b5f75" font-family="inherit">takeUntilDestroyed()</text>
+  <text x="408" y="100" font-size="10" fill="#a63d6f" font-family="inherit">writes into a dead machine</text>
+  <line x1="10" y1="114" x2="654" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">the machine actor</text>
+  <text x="234" y="134" font-size="10" fill="#6b5f75" font-family="inherit">actor.stop()</text>
+  <text x="408" y="134" font-size="10" fill="#a63d6f" font-family="inherit">timers and services keep running</text>
+  <line x1="10" y1="148" x2="654" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">pending async validation</text>
+  <text x="234" y="168" font-size="10" fill="#6b5f75" font-family="inherit">abort the controller</text>
+  <text x="408" y="168" font-size="10" fill="#a63d6f" font-family="inherit">a response with nowhere to go</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Test it: destroy the host component mid-request and assert no error is logged and no dispatch reaches the machine afterwards.</text>
+  <text x="14" y="226" font-size="10" fill="#6b5f75" font-family="inherit">Route changes, not unit tests, are where these leaks show up — a form the reader visits ten times leaves ten actors running.</text>
+</svg>
+
 ## Verification Checklist
 
 - [ ] A programmatic setValue in the reducer does not re-enter the subscription (no loop)
@@ -235,6 +302,39 @@ Rapid programmatic updates in the same tick can coalesce, and `scan` sees only t
 - [ ] updateValueAndValidity runs after a silent write when normalization affects validity
 - [ ] The subscription completes on component destroy (verify no leak across route changes)
 - [ ] The rendered machine state drives aria-invalid and error text only when state === 'INVALID'
+
+## When the machine and the control disagree
+
+Two owners of one value will eventually disagree, usually after a reset or an external patch. The rule that keeps recovery predictable is that the machine wins and the control is re-synchronised from it — never the other way round.
+
+<svg viewBox="0 8 662 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Recovery when the control's value and the machine's context diverge. Detect the divergence on a status emission, then re-write the control from the machine context with events suppressed, then re-run validation once, then announce nothing because the reader caused no change." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Resynchronising after a divergence</title>
+  <desc>Step one: divergence is detected when a status emission arrives whose value does not match the machine's context — usually after an external patchValue or a reset called from outside the adapter. Step two: the control is re-written from the machine's context with emitEvent false, so the correction itself does not enter the cycle. Step three: validation is re-run once against the corrected value, because the previous run judged a value that is no longer present. Step four: nothing is announced, because from the reader's point of view nothing changed — announcing here would report a change they did not make.</desc>
+  <rect x="0" y="8" width="662" height="200" fill="#f9f5fb"/>
+  <rect x="14" y="30" width="150" height="72" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="89" y="52" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">1 · detect</text>
+  <text x="89" y="70" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">control value ≠</text>
+  <text x="89" y="84" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">machine context</text>
+  <path d="M164,66 H186" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="186" y="30" width="150" height="72" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="261" y="52" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">2 · re-write</text>
+  <text x="261" y="70" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">from context, with</text>
+  <text x="261" y="84" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">emitEvent: false</text>
+  <path d="M336,66 H358" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="358" y="30" width="150" height="72" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="433" y="52" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">3 · re-validate</text>
+  <text x="433" y="70" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">once, against the</text>
+  <text x="433" y="84" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">corrected value</text>
+  <path d="M508,66 H530" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="530" y="30" width="118" height="72" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="589" y="52" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">4 · stay quiet</text>
+  <text x="589" y="70" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">no announcement</text>
+  <text x="589" y="84" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">— nobody changed</text>
+  <text x="14" y="136" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Why the machine wins rather than the control</text>
+  <text x="14" y="154" font-size="10" fill="#6b5f75" font-family="inherit">The control holds a value; the machine holds the value plus why it is in that state. Taking the control's value discards</text>
+  <text x="14" y="170" font-size="10" fill="#6b5f75" font-family="inherit">the reason, so the next transition is computed from a context that no longer matches what produced it.</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">Log every divergence in development: a form that resynchronises regularly has a second writer nobody documented.</text>
+</svg>
 
 ## FAQ
 

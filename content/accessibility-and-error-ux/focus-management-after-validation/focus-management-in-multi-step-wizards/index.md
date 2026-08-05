@@ -3,7 +3,7 @@ layout: page.njk
 title: "Focus Management in Multi-Step Form Wizards"
 description: "Move focus to the step heading on navigation, trap focus within a step, restore focus on Back, and announce step X of N — the full a11y contract for wizard flows."
 slug: focus-management-in-multi-step-wizards
-type: guide
+type: howto
 breadcrumb: "Multi-Step Wizard Focus"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -88,32 +88,32 @@ Each transition in a wizard is a mini page navigation, and SPAs get no free focu
 - **Restorable focus.** Forward navigation records the trigger element; Back restores focus to the corresponding trigger on the previous step, not the top of the page.
 - **Conditional trap.** If the wizard is a modal dialog, focus is trapped within the step and the rest of the page is `inert`. If it is inline, focus flows normally and is *not* trapped.
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 280" role="img" aria-label="Wizard focus flow moving forward to a step heading and backward restoring focus to the recorded trigger" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="34 84 652 140" role="img" aria-label="Wizard focus flow moving forward to a step heading and backward restoring focus to the recorded trigger" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>Wizard focus transitions across steps</title>
   <desc>Forward navigation focuses the next step's heading and pushes the trigger element onto a focus stack; Back navigation pops the stack and restores focus to the recorded trigger element.</desc>
-  <rect width="720" height="280" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
-  <rect x="50" y="100" width="150" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="125" y="128" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">STEP 1</text>
-  <text x="125" y="146" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">heading focus</text>
-  <text x="125" y="160" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">on enter</text>
-  <rect x="285" y="100" width="150" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="360" y="128" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">STEP 2</text>
-  <text x="360" y="146" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">announce</text>
-  <text x="360" y="160" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">2 of N</text>
-  <rect x="520" y="100" width="150" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="595" y="128" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">STEP 3</text>
-  <text x="595" y="146" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">trap if modal</text>
-  <path d="M200 120 L285 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-wizard)"/>
-  <text x="242" y="112" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">Next</text>
-  <path d="M435 120 L520 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-wizard)"/>
-  <text x="477" y="112" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">Next</text>
-  <path d="M285 152 C240 195 205 195 200 158" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" stroke-dasharray="5 3" marker-end="url(#arr-wizard)"/>
-  <text x="242" y="205" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">Back → restore trigger</text>
-  <path d="M520 152 C475 195 440 195 435 158" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" stroke-dasharray="5 3" marker-end="url(#arr-wizard)"/>
-  <text x="477" y="205" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">Back → pop stack</text>
+  <rect x="34" y="84" width="652" height="140" fill="#f9f5fb"/>
+  <rect x="50" y="100" width="150" height="70" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="125" y="128" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">STEP 1</text>
+  <text x="125" y="146" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">heading focus</text>
+  <text x="125" y="160" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">on enter</text>
+  <rect x="285" y="100" width="150" height="70" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="360" y="128" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">STEP 2</text>
+  <text x="360" y="146" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">announce</text>
+  <text x="360" y="160" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">2 of N</text>
+  <rect x="520" y="100" width="150" height="70" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="595" y="128" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">STEP 3</text>
+  <text x="595" y="146" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">trap if modal</text>
+  <path d="M200 120 L285 120" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-wizard)"/>
+  <text x="242" y="112" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">Next</text>
+  <path d="M435 120 L520 120" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-wizard)"/>
+  <text x="477" y="112" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">Next</text>
+  <path d="M285 152 C240 195 205 195 200 158" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-wizard)"/>
+  <text x="242" y="205" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">Back → restore trigger</text>
+  <path d="M520 152 C475 195 440 195 435 158" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-wizard)"/>
+  <text x="477" y="205" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">Back → pop stack</text>
   <defs>
     <marker id="arr-wizard" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
 </svg>
@@ -256,6 +256,39 @@ class WizardFocusController {
 
 ---
 
+Every transition in a wizard has exactly one correct focus target, and writing them down as a table is usually enough to find the one your implementation is missing:
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Table of wizard transitions and their focus targets. Moving forward focuses the new step heading. Moving back focuses the previous step heading, not the control that was clicked. A blocked forward move focuses the first invalid field. A successful final submit focuses the confirmation heading. A failed final submit focuses the error summary." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>One focus target per wizard transition</title>
+  <desc>Five transitions with their focus target and what the reader hears. Next, allowed: focus the new step heading, which announces step two of four and its title. Back: focus the previous step heading, not the back button, so the reader is oriented rather than parked on a control. Next, blocked by validation: focus the first invalid field so the fix is one keystroke away. Final submit that succeeds: focus the confirmation heading. Final submit that fails: focus the error summary listing every problem.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Transition</text>
+  <text x="212" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Focus lands on</text>
+  <text x="420" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">What the reader hears</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">Next — validation passed</text>
+  <text x="212" y="66" font-size="10" fill="#6b5f75" font-family="inherit">new step heading</text>
+  <text x="420" y="66" font-size="10" fill="#2d6342" font-family="inherit">"Step 2 of 4, Address"</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">Back</text>
+  <text x="212" y="100" font-size="10" fill="#6b5f75" font-family="inherit">previous step heading</text>
+  <text x="420" y="100" font-size="10" fill="#2d6342" font-family="inherit">"Step 1 of 4, Your details"</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">Next — blocked</text>
+  <text x="212" y="134" font-size="10" fill="#6b5f75" font-family="inherit">first invalid field</text>
+  <text x="420" y="134" font-size="10" fill="#2d6342" font-family="inherit">field name, then why it failed</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">Submit — accepted</text>
+  <text x="212" y="168" font-size="10" fill="#6b5f75" font-family="inherit">confirmation heading</text>
+  <text x="420" y="168" font-size="10" fill="#2d6342" font-family="inherit">"Application submitted"</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">Submit — rejected</text>
+  <text x="212" y="202" font-size="10" fill="#6b5f75" font-family="inherit">error summary block</text>
+  <text x="420" y="202" font-size="10" fill="#2d6342" font-family="inherit">"3 problems, starting with…"</text>
+</svg>
+
 ## Failure modes and edge cases
 
 ### Focusing before the step renders
@@ -290,6 +323,41 @@ Some screen readers drop a live-region update that lands in the same tick as a f
 Installing a new trap without removing the old one stacks keydown listeners, and after several steps Tab behaves erratically. `trapFocus` removes the previous listener before adding a new one, and `destroy` removes the last one on teardown — the same discipline any [keyboard navigation pattern](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/) requires.
 
 ---
+
+Read as a lifecycle rather than a table, the same rules become four clauses that fire in a fixed order on every step change:
+
+<svg viewBox="0 8 668 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The four clauses of a step change in order: tear down the outgoing step's listeners and timers, render the incoming step, move focus to its heading, then announce the new position. Each clause names the failure it prevents." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The four clauses of a step change, in order</title>
+  <desc>Four stages left to right. Teardown: remove the outgoing step's key listeners, abort its pending requests and clear its timers, which prevents listener leaks across steps. Render: mount the incoming step and let the browser paint, which prevents focusing an element that does not exist yet. Focus: move focus to the step heading, which has tabindex minus one, preventing focus falling back to the body. Announce: update the live region with the new step position, preventing a silent transition.</desc>
+  <rect x="0" y="8" width="668" height="190" fill="#f9f5fb"/>
+  <text x="14" y="24" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">Every step change runs these four, always in this order</text>
+  <rect x="14" y="34" width="150" height="82" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="89" y="56" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">1 · tear down</text>
+  <text x="89" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">listeners, timers,</text>
+  <text x="89" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">pending requests</text>
+  <text x="89" y="106" text-anchor="middle" font-size="9" fill="#a63d6f" font-family="inherit">stops leaks</text>
+  <path d="M164,75 H186" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="186" y="34" width="150" height="82" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="261" y="56" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">2 · render</text>
+  <text x="261" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">mount the step and</text>
+  <text x="261" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">let it paint</text>
+  <text x="261" y="106" text-anchor="middle" font-size="9" fill="#a63d6f" font-family="inherit">target must exist</text>
+  <path d="M336,75 H358" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="358" y="34" width="150" height="82" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="433" y="56" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">3 · focus</text>
+  <text x="433" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">step heading with</text>
+  <text x="433" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">tabindex="-1"</text>
+  <text x="433" y="106" text-anchor="middle" font-size="9" fill="#a63d6f" font-family="inherit">never falls to body</text>
+  <path d="M508,75 H530" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="530" y="34" width="124" height="82" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="592" y="56" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">4 · announce</text>
+  <text x="592" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">live region gets</text>
+  <text x="592" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">the new position</text>
+  <text x="592" y="106" text-anchor="middle" font-size="9" fill="#a63d6f" font-family="inherit">no silent jumps</text>
+  <text x="14" y="146" font-size="10" fill="#6b5f75" font-family="inherit">Swap 2 and 3 and focus() runs against a node that is not in the document yet — it silently no-ops and focus falls to &lt;body&gt;.</text>
+  <text x="14" y="162" font-size="10" fill="#6b5f75" font-family="inherit">Swap 3 and 4 and the focus move can cut off the announcement mid-sentence in several screen readers.</text>
+  <text x="14" y="178" font-size="10" fill="#6b5f75" font-family="inherit">Skip 1 and the outgoing step keeps handling Escape and arrow keys from behind the step you are now on.</text>
+</svg>
 
 ## Verification checklist
 

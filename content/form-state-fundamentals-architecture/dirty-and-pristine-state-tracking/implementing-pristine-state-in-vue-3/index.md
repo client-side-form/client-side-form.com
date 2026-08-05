@@ -3,7 +3,7 @@ layout: page.njk
 title: "Implementing Pristine State in Vue 3"
 description: "A production-focused guide to tracking untouched form fields in Vue 3 using the Composition API: immutable baselines, computed comparisons, async hydration, and per-field granularity."
 slug: implementing-pristine-state-in-vue-3
-type: guide
+type: howto
 breadcrumb: "Implementing Pristine State in Vue 3"
 datePublished: "2024-11-10"
 dateModified: "2026-06-23"
@@ -84,47 +84,48 @@ This page builds on [dirty and pristine state tracking](https://www.client-side-
 
 The core challenge is that Vue wraps every `reactive()` object in a `Proxy`. A comparison like `baseline === current` will always return `false` even when both contain identical data, because you're comparing two different proxy objects, not their underlying values. The solution is to keep the baseline as a plain-value clone and compare with deep equality.
 
-<svg viewBox="0 0 720 260" role="img" aria-label="Pristine state lifecycle in Vue 3" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:2rem auto;" >
+<svg viewBox="4 36 636 233" role="img" aria-label="Pristine state lifecycle in Vue 3" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:2rem auto;" >
   <title>Pristine state lifecycle in Vue 3</title>
   <desc>Shows the flow from initial value through structuredClone into baseline ref and current ref, then computed isPristine derived from deep equality. updateBaseline replaces both refs atomically on async hydration or successful submit.</desc>
+  <rect x="4" y="36" width="636" height="233" fill="#f9f5fb"/>
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- Initial value box -->
-  <rect x="20" y="90" width="140" height="48" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="90" y="109" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.9" font-family="monospace">initialValue</text>
-  <text x="90" y="127" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.6">(plain object)</text>
+  <rect x="20" y="90" width="140" height="48" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="90" y="109" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="monospace">initialValue</text>
+  <text x="90" y="127" text-anchor="middle" font-size="11" fill="#6b5f75">(plain object)</text>
   <!-- structuredClone label on arrow to baseline -->
-  <line x1="162" y1="104" x2="240" y2="80" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="158" y="66" font-size="10" fill="currentColor" opacity="0.7" font-family="monospace">structuredClone</text>
+  <line x1="162" y1="104" x2="240" y2="80" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="158" y="66" font-size="10" fill="#6b5f75" font-family="monospace">structuredClone</text>
   <!-- structuredClone label on arrow to current -->
-  <line x1="162" y1="116" x2="240" y2="140" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="158" y="176" font-size="10" fill="currentColor" opacity="0.7" font-family="monospace">structuredClone</text>
+  <line x1="162" y1="116" x2="240" y2="140" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="158" y="176" font-size="10" fill="#6b5f75" font-family="monospace">structuredClone</text>
   <!-- baseline ref box -->
-  <rect x="242" y="52" width="140" height="48" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="1.5"/>
-  <text x="312" y="71" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.9" font-family="monospace">baseline</text>
-  <text x="312" y="89" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.6">shallowRef (plain)</text>
+  <rect x="242" y="52" width="140" height="48" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="312" y="71" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="monospace">baseline</text>
+  <text x="312" y="89" text-anchor="middle" font-size="11" fill="#6b5f75">shallowRef (plain)</text>
   <!-- current ref box -->
-  <rect x="242" y="118" width="140" height="48" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="1.5"/>
-  <text x="312" y="137" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.9" font-family="monospace">current</text>
-  <text x="312" y="155" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.6">ref (v-model target)</text>
+  <rect x="242" y="118" width="140" height="48" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="312" y="137" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="monospace">current</text>
+  <text x="312" y="155" text-anchor="middle" font-size="11" fill="#6b5f75">ref (v-model target)</text>
   <!-- arrows into computed -->
-  <line x1="384" y1="76" x2="462" y2="110" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="384" y1="142" x2="462" y2="118" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="384" y1="76" x2="462" y2="110" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="384" y1="142" x2="462" y2="118" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
   <!-- computed box -->
-  <rect x="464" y="90" width="160" height="48" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="2"/>
-  <text x="544" y="109" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.95" font-family="monospace">isPristine</text>
-  <text x="544" y="127" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.6">computed (isEqual)</text>
+  <rect x="464" y="90" width="160" height="48" rx="6" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="544" y="109" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="monospace">isPristine</text>
+  <text x="544" y="127" text-anchor="middle" font-size="11" fill="#6b5f75">computed (isEqual)</text>
   <!-- updateBaseline annotation -->
-  <rect x="242" y="210" width="140" height="36" rx="5" fill="none" stroke="currentColor" stroke-opacity="0.3" stroke-width="1.2" stroke-dasharray="4 3"/>
-  <text x="312" y="227" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.75" font-family="monospace">updateBaseline()</text>
-  <text x="312" y="241" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.55">replaces both atomically</text>
-  <line x1="312" y1="210" x2="312" y2="168" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-  <line x1="280" y1="210" x2="280" y2="102" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <rect x="242" y="210" width="140" height="36" rx="5" fill="none" stroke="#cbb8d9" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="312" y="227" text-anchor="middle" font-size="11" fill="#6b5f75" font-family="monospace">updateBaseline()</text>
+  <text x="312" y="241" text-anchor="middle" font-size="10" fill="#6b5f75">replaces both atomically</text>
+  <line x1="312" y1="210" x2="312" y2="168" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <path d="M242,228 H212 V76 H240" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
   <!-- legend labels -->
-  <text x="20" y="250" font-size="10" fill="currentColor" opacity="0.5">solid = data flow  |  dashed = atomic reset path</text>
+  <text x="20" y="250" font-size="10" fill="#6b5f75">solid = data flow  |  dashed = atomic reset path</text>
 </svg>
 
 ## Core Composable
@@ -271,6 +272,34 @@ async function handleSubmit() {
 
 `aria-invalid` is wired to validation state, not `isPristine`. A pristine field has not been touched yet — marking it `aria-invalid` before the user types anything would violate WCAG 2.1 success criterion 3.3.1 (Error Identification), which requires errors to be identified only after input is received.
 
+Vue's reactivity is what makes this composable short, and also what makes the two traps below possible. It helps to see which links in the graph are reactive and which deliberately are not:
+
+<svg viewBox="0 8 664 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Reactivity graph of the pristine composable. The baseline is a plain non-reactive value, the form model is reactive, and a computed dirty map depends only on the model. Because the baseline is outside the graph, replacing it does not re-run the computed until the model changes too, which is why syncBaseline must touch both." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>What is reactive here, and what deliberately is not</title>
+  <desc>The baseline snapshot is held outside Vue's reactivity graph so that writing to it schedules no work. The form model is reactive and every input writes into it. A computed dirty map reads the model, and reads the baseline as a plain value. Because only the model is tracked, replacing the baseline alone leaves the computed cached; syncBaseline therefore assigns the baseline first and then writes the model, which invalidates the computed exactly once.</desc>
+  <rect x="0" y="8" width="664" height="214" fill="#f9f5fb"/>
+  <rect x="14" y="30" width="180" height="66" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="104" y="54" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">baseline snapshot</text>
+  <text x="104" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">plain object, untracked</text>
+  <text x="104" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">writing it schedules nothing</text>
+  <rect x="14" y="120" width="180" height="66" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="104" y="144" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">form model</text>
+  <text x="104" y="162" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">reactive — inputs write here</text>
+  <text x="104" y="178" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">every key is tracked</text>
+  <path d="M194,63 H236 V96" fill="none" stroke="#6b5f75" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <path d="M194,153 H236 V126" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="256" y="86" width="180" height="54" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="346" y="110" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">computed dirtyMap</text>
+  <text x="346" y="127" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">invalidated by the model only</text>
+  <path d="M436,113 H472" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="472" y="86" width="176" height="54" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="560" y="110" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">isDirty, per-field flags</text>
+  <text x="560" y="127" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">what the template renders</text>
+  <text x="256" y="168" font-size="10" fill="#6b5f75" font-family="inherit">Solid line: a tracked dependency. Dashed line: read as a plain value, so</text>
+  <text x="256" y="184" font-size="10" fill="#6b5f75" font-family="inherit">changing it alone will not invalidate the computed.</text>
+  <text x="14" y="212" font-size="10" fill="#6b5f75" font-family="inherit">That asymmetry is the whole design: baseline writes are free, and the one place that changes both writes the baseline first.</text>
+</svg>
+
 ## Failure Modes and Edge Cases
 
 **Autofill bypass.** Browser autofill can populate inputs without triggering Vue's `input` or `change` events, meaning `current` stays at its initial empty values while the DOM shows populated fields. Use a `MutationObserver` on the form element, or listen to the `animationstart` CSS trick (autofill triggers a pseudo-class animation), to detect autofill and sync `current` manually.
@@ -282,6 +311,34 @@ async function handleSubmit() {
 **`watchEffect` triggering during SSR.** On Nuxt 3, `watchEffect` runs on the server. A `watchEffect` that reads `current` and performs pristine logic will execute in SSR context where the DOM does not exist. Use `computed` (which is SSR-safe and lazy) rather than `watchEffect` for pristine derivation. If you need side effects on pristine state change, use `watch` with `{ flush: 'post' }` and guard with `if (import.meta.client)`. See [handling Svelte form hydration mismatches](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/handling-svelte-form-hydration-mismatches/) for a parallel problem in another framework.
 
 **Proxy comparison in third-party equality libraries.** Some older deep-equal implementations inspect the object's `constructor` property. Vue's `Proxy` objects report their target's constructor, so this usually works — but if you switch to a library that uses `Object.is` internally for object identity, all comparisons will return `false`. Always test your equality function against `reactive({})` vs `{}` before shipping.
+
+The second trap is watcher depth. Vue gives you three options and they differ by orders of magnitude on a large form:
+
+<svg viewBox="0 8 690 206" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of watch strategies for dirty tracking: a computed over the whole model, a deep watcher on the model, and a shallow watcher plus per-field computeds. Each row lists what it observes, its cost per keystroke, and when it is the right choice." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Three ways to observe the model, and what each costs</title>
+  <desc>A computed over the whole model recomputes the entire dirty map on any change, costing work proportional to field count per keystroke, and is fine up to roughly fifty fields. A deep watcher walks every nested property on every change and additionally re-traverses on mount, costing work proportional to the full object graph, and should be avoided for dirty tracking. A shallow watcher combined with one computed per field recomputes only the edited field, costing constant work per keystroke, and is the right choice above roughly fifty fields or wherever fields hold nested objects.</desc>
+  <rect x="0" y="8" width="690" height="206" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Strategy</text>
+  <text x="220" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Work per keystroke</text>
+  <text x="392" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Choose it when</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">computed over the model</text>
+  <text x="220" y="66" font-size="10" fill="#6b5f75" font-family="inherit">one pass over every field</text>
+  <text x="392" y="66" font-size="10" fill="#2d6342" font-family="inherit">up to roughly 50 flat fields</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">watch(model, …, deep)</text>
+  <text x="220" y="100" font-size="10" fill="#a63d6f" font-family="inherit">walks the whole object graph</text>
+  <text x="392" y="100" font-size="10" fill="#a63d6f" font-family="inherit">never, for dirty tracking</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">shallow watch + per-field</text>
+  <text x="220" y="134" font-size="10" fill="#2d6342" font-family="inherit">only the edited field</text>
+  <text x="392" y="134" font-size="10" fill="#2d6342" font-family="inherit">50+ fields, or nested values</text>
+  <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#6b5f75" font-family="inherit">A deep watcher also re-traverses on mount, which is why "the form is dirty on load" bugs so often trace back to one.</text>
+  <text x="14" y="202" font-size="10" fill="#6b5f75" font-family="inherit">Measure before migrating: below 50 flat fields the middle column is noise, and the simplest option is worth keeping.</text>
+</svg>
 
 ## Verification Checklist
 

@@ -81,50 +81,51 @@ The bugs that bring production forms down rarely live in a single input handler.
 <svg viewBox="0 0 720 220" role="img" aria-label="Form state lifecycle: IDLE transitions to VALIDATING on input; VALIDATING transitions to DIRTY on success or PRISTINE on reset; DIRTY transitions to SUBMITTING on submit; SUBMITTING transitions to SUCCESS or ERROR" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:1.5rem auto;" >
   <title>Form State Lifecycle</title>
   <desc>State machine diagram showing transitions between IDLE, VALIDATING, DIRTY/PRISTINE, SUBMITTING, SUCCESS, and ERROR states in a client-side form.</desc>
+  <rect x="0" y="0" width="720" height="220" fill="#f9f5fb"/>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- Node backgrounds -->
-  <rect x="10"  y="85"  width="90" height="40" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.5"/>
-  <rect x="160" y="85"  width="110" height="40" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.5"/>
-  <rect x="330" y="30"  width="90" height="40" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5"/>
-  <rect x="330" y="145" width="90" height="40" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5"/>
-  <rect x="490" y="85"  width="100" height="40" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.5"/>
-  <rect x="610" y="30"  width="90" height="40" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <rect x="610" y="145" width="90" height="40" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
+  <rect x="10"  y="85"  width="90" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="160" y="85"  width="110" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="330" y="30"  width="90" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="330" y="145" width="90" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="490" y="85"  width="100" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="610" y="30"  width="90" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="610" y="145" width="90" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
   <!-- Node labels -->
-  <text x="55"  y="110" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">IDLE</text>
-  <text x="215" y="103" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">VALIDATING</text>
-  <text x="215" y="118" text-anchor="middle" font-size="11" fill="currentColor" font-family="inherit" opacity="0.7">(async)</text>
-  <text x="375" y="55"  text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">DIRTY</text>
-  <text x="375" y="170" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">PRISTINE</text>
-  <text x="540" y="103" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">SUBMITTING</text>
-  <text x="540" y="118" text-anchor="middle" font-size="11" fill="currentColor" font-family="inherit" opacity="0.7"></text>
-  <text x="655" y="55"  text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">SUCCESS</text>
-  <text x="655" y="170" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">ERROR</text>
+  <text x="55"  y="110" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">IDLE</text>
+  <text x="215" y="103" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">VALIDATING</text>
+  <text x="215" y="118" text-anchor="middle" font-size="11" fill="#6b5f75" font-family="inherit">(async)</text>
+  <text x="375" y="55"  text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">DIRTY</text>
+  <text x="375" y="170" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">PRISTINE</text>
+  <text x="540" y="103" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">SUBMITTING</text>
+  <text x="540" y="118" text-anchor="middle" font-size="11" fill="#6b5f75" font-family="inherit"></text>
+  <text x="655" y="55"  text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">SUCCESS</text>
+  <text x="655" y="170" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">ERROR</text>
   <!-- Arrows: IDLE → VALIDATING -->
-  <line x1="100" y1="105" x2="158" y2="105" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="129" y="98" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">input</text>
+  <line x1="100" y1="105" x2="158" y2="105" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="129" y="98" text-anchor="middle" font-size="10" fill="#6b5f75">input</text>
   <!-- VALIDATING → DIRTY -->
-  <line x1="270" y1="95" x2="328" y2="60" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="293" y="72" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">changed</text>
+  <line x1="270" y1="95" x2="328" y2="60" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="293" y="72" text-anchor="middle" font-size="10" fill="#6b5f75">changed</text>
   <!-- VALIDATING → PRISTINE -->
-  <line x1="270" y1="115" x2="328" y2="153" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="293" y="146" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">reset</text>
+  <line x1="270" y1="115" x2="328" y2="153" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="293" y="146" text-anchor="middle" font-size="10" fill="#6b5f75">reset</text>
   <!-- DIRTY → SUBMITTING -->
-  <line x1="420" y1="50" x2="488" y2="92" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="453" y="65" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">submit</text>
+  <line x1="420" y1="50" x2="488" y2="92" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="453" y="65" text-anchor="middle" font-size="10" fill="#6b5f75">submit</text>
   <!-- SUBMITTING → SUCCESS -->
-  <line x1="590" y1="95" x2="608" y2="62" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="609" y="85" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">ok</text>
+  <line x1="590" y1="95" x2="608" y2="62" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="609" y="85" text-anchor="middle" font-size="10" fill="#6b5f75">ok</text>
   <!-- SUBMITTING → ERROR -->
-  <line x1="590" y1="115" x2="608" y2="148" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="611" y="135" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">fail</text>
+  <line x1="590" y1="115" x2="608" y2="148" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="611" y="135" text-anchor="middle" font-size="10" fill="#6b5f75">fail</text>
   <!-- ERROR → VALIDATING (retry loop) -->
-  <path d="M655,185 Q655,210 450,210 Q220,210 215,127" fill="none" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
-  <text x="430" y="208" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6">retry / re-edit</text>
+  <path d="M655,185 Q655,210 450,210 Q220,210 215,127" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <text x="430" y="208" text-anchor="middle" font-size="10" fill="#6b5f75">retry / re-edit</text>
 </svg>
 
 ---
@@ -304,6 +305,111 @@ async function validateOnChange<T extends Record<string, unknown>>(
 ```
 
 Write individual validators as pure functions — a value and optional context in, a typed string or `null` out. This makes them unit-testable without a DOM or framework runtime.
+
+## Submission, Optimistic Updates and Idempotency
+
+Everything above concerns the form while the reader is still editing it. Submission is a different regime: the form stops owning the truth, the network becomes part of the state machine, and failures are no longer local. [Submission state and optimistic updates](https://www.client-side-form.com/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/) covers the machine in full; the architectural point is that a boolean is not enough to model it.
+
+A single `isSubmitting` flag collapses at least four distinct states — ready, in flight, accepted, and rejected-but-retryable — and each of them answers different questions. May the reader press the button? Is the previous value still recoverable? Does the idempotency key survive? Is the form dirty? Modelling submission as a discriminated union makes those answers explicit rather than inferred:
+
+```typescript
+// Four states, each carrying exactly the data that state needs — and nothing else.
+type SubmitState<T> =
+  | { phase: 'ready' }
+  | { phase: 'submitting'; key: string; snapshot: Readonly<T> }   // snapshot enables rollback
+  | { phase: 'succeeded'; at: number }                            // key deliberately discarded
+  | { phase: 'failed'; key: string; snapshot: Readonly<T>; errors: FieldErrorMap };
+```
+
+Notice what the type prevents. There is no `snapshot` in the `succeeded` state, so nothing can accidentally roll back a committed submission. There is a `key` in `failed` but not in `succeeded`, which encodes the rule that a retry reuses the key while a fresh edit mints a new one — the guarantee that [handling double submit and idempotency](https://www.client-side-form.com/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/handling-double-submit-and-idempotency/) depends on. The compiler enforces what a comment would otherwise have to.
+
+Optimistic rendering is a separate decision layered on top, and a narrower one than it first appears. It is only safe where a rejection is fully reversible from the client, which excludes payments, anything that sends mail, and any multi-step commit whose partial success the client cannot observe. Where it is safe, the rollback has to restore the dirty flags along with the values — a reverted form that still believes it is saved leaves the reader with a disabled button over unsaved work.
+
+<svg viewBox="0 8 668 208" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The four submission states and what each one owns. Ready owns nothing. Submitting owns the idempotency key and a frozen snapshot for rollback. Succeeded owns only a timestamp, with the key deliberately discarded. Failed owns the key, the snapshot and the mapped errors, so a retry can reuse the key." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>What each submission state is allowed to hold</title>
+  <desc>Ready holds nothing beyond the form values themselves. Submitting holds the idempotency key, so a retry after a timeout is safe, and a frozen snapshot of the values, so an optimistic render can be rolled back. Succeeded holds only a timestamp; the key and the snapshot are discarded, which makes an accidental rollback of committed work impossible to express. Failed holds the key, the snapshot and the mapped field errors, which is exactly the set a retry needs.</desc>
+  <rect x="0" y="8" width="668" height="208" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">The state carries the data — and only the data — that state can legitimately use</text>
+  <rect x="14" y="36" width="150" height="112" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="89" y="58" text-anchor="middle" font-size="11" font-weight="700" fill="#2d6342" font-family="inherit">ready</text>
+  <text x="28" y="80" font-size="9.5" fill="#6b5f75" font-family="inherit">key: none</text>
+  <text x="28" y="98" font-size="9.5" fill="#6b5f75" font-family="inherit">snapshot: none</text>
+  <text x="28" y="116" font-size="9.5" fill="#6b5f75" font-family="inherit">errors: none</text>
+  <text x="28" y="138" font-size="9.5" fill="#2d6342" font-family="inherit">button enabled</text>
+  <path d="M164,92 H186" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="186" y="36" width="150" height="112" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="261" y="58" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">submitting</text>
+  <text x="200" y="80" font-size="9.5" fill="#1e1a24" font-family="inherit">key: held</text>
+  <text x="200" y="98" font-size="9.5" fill="#1e1a24" font-family="inherit">snapshot: frozen</text>
+  <text x="200" y="116" font-size="9.5" fill="#1e1a24" font-family="inherit">errors: none yet</text>
+  <text x="200" y="138" font-size="9.5" fill="#1e1a24" font-family="inherit">button disabled</text>
+  <path d="M336,92 H358" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="358" y="36" width="150" height="112" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="433" y="58" text-anchor="middle" font-size="11" font-weight="700" fill="#2d6342" font-family="inherit">succeeded</text>
+  <text x="372" y="80" font-size="9.5" fill="#6b5f75" font-family="inherit">key: discarded</text>
+  <text x="372" y="98" font-size="9.5" fill="#6b5f75" font-family="inherit">snapshot: discarded</text>
+  <text x="372" y="116" font-size="9.5" fill="#6b5f75" font-family="inherit">timestamp: kept</text>
+  <text x="372" y="138" font-size="9.5" fill="#2d6342" font-family="inherit">rollback unexpressible</text>
+  <path d="M508,92 H530" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="530" y="36" width="124" height="112" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="592" y="58" text-anchor="middle" font-size="11" font-weight="700" fill="#a63d6f" font-family="inherit">failed</text>
+  <text x="544" y="80" font-size="9.5" fill="#6b5f75" font-family="inherit">key: retained</text>
+  <text x="544" y="98" font-size="9.5" fill="#6b5f75" font-family="inherit">snapshot: retained</text>
+  <text x="544" y="116" font-size="9.5" fill="#6b5f75" font-family="inherit">errors: mapped</text>
+  <text x="544" y="138" font-size="9.5" fill="#6b5f75" font-family="inherit">retry is safe</text>
+  <text x="14" y="180" font-size="10" fill="#6b5f75" font-family="inherit">A boolean cannot express any of this: "not submitting" is three of these four states, and they disagree about every question above.</text>
+  <text x="14" y="196" font-size="10" fill="#6b5f75" font-family="inherit">The snapshot is frozen deliberately — a rollback that reads a mutated object restores values the reader has since changed.</text>
+  <text x="14" y="212" font-size="10" fill="#6b5f75" font-family="inherit">Reset to ready only from succeeded, or from failed once the reader edits: anything else drops the key while a request is still alive.</text>
+</svg>
+
+## Performance and Scale
+
+Form architecture is one of the few places where the naive implementation stops working at a size teams routinely reach. A form of twenty fields tolerates almost any design; the same design at a hundred and twenty fields drops a frame on every keystroke. [Performance and scale for large forms](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/) covers the measurements; the architectural principle is that the cost is in the *fan-out*, not in the work itself.
+
+Validating one field costs the same regardless of form size. Rendering after that validation costs whatever the subscription topology says it costs. A single state object at the form root means every field is a subscriber, so one keystroke schedules work proportional to field count — and none of that work changes a single pixel outside the edited field. This is why [rendering 100-plus field forms without jank](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/rendering-100-plus-field-forms-without-jank/) starts with subscription isolation rather than with virtualisation: virtualising a form whose every field re-renders simply moves the cost.
+
+Three levers exist, and they should be pulled in this order. First, narrow the subscription so a field re-renders only when its own slice changes. Second, place [memoization boundaries](https://www.client-side-form.com/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/memoization-boundaries-for-form-fields/) around the widest repeated subtree — the field row — and nowhere else, because each boundary costs a comparison. Third, and only if the profile still shows layout dominating, reduce what is in the document at all.
+
+<svg viewBox="0 8 660 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two subscription topologies for the same sixty-field form. A single state object at the root makes every field a subscriber, so one keystroke re-renders sixty components. Per-field slices make each field subscribe to its own key, so one keystroke re-renders one component while the other fifty-nine are compared and skipped." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The fan-out is the cost, not the work</title>
+  <desc>Left: one state object at the form root, with sixty fields all subscribing to it. Any write produces a new object reference, so all sixty components re-render even though fifty-nine of their values are unchanged. Right: one slice per field, with each field subscribing only to its own key. A write to the email slice notifies all sixty subscribers, but fifty-nine compare equal and are skipped, so exactly one component re-renders. Both topologies do the same amount of validation work; only the render fan-out differs.</desc>
+  <rect x="0" y="8" width="660" height="214" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#a63d6f" font-family="inherit">One object, sixty subscribers</text>
+  <rect x="14" y="36" width="292" height="46" rx="8" fill="#e2d6ec" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="160" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">values: { …60 keys }</text>
+  <text x="160" y="72" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">new reference on every write</text>
+  <path d="M60,82 V112" stroke="#a63d6f" stroke-width="1.4"/>
+  <path d="M160,82 V112" stroke="#a63d6f" stroke-width="1.4"/>
+  <path d="M260,82 V112" stroke="#a63d6f" stroke-width="1.4"/>
+  <rect x="14" y="112" width="88" height="44" rx="6" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="58" y="132" text-anchor="middle" font-size="9.5" fill="#a63d6f" font-family="inherit">field 1</text>
+  <text x="58" y="147" text-anchor="middle" font-size="9" fill="#6b5f75" font-family="inherit">re-renders</text>
+  <rect x="116" y="112" width="88" height="44" rx="6" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="160" y="132" text-anchor="middle" font-size="9.5" fill="#a63d6f" font-family="inherit">field 2</text>
+  <text x="160" y="147" text-anchor="middle" font-size="9" fill="#6b5f75" font-family="inherit">re-renders</text>
+  <rect x="218" y="112" width="88" height="44" rx="6" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="262" y="132" text-anchor="middle" font-size="9.5" fill="#a63d6f" font-family="inherit">…field 60</text>
+  <text x="262" y="147" text-anchor="middle" font-size="9" fill="#6b5f75" font-family="inherit">re-renders</text>
+  <text x="14" y="180" font-size="10" fill="#a63d6f" font-family="inherit">60 renders per keystroke</text>
+  <text x="352" y="26" font-size="11.5" font-weight="700" fill="#2d6342" font-family="inherit">Sixty slices, one subscriber each</text>
+  <rect x="352" y="36" width="294" height="46" rx="8" fill="#e2d6ec" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="499" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">store.get(name) → cached slice</text>
+  <text x="499" y="72" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">stable reference unless that key changed</text>
+  <path d="M398,82 V112" stroke="#6b5f75" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <path d="M499,82 V112" stroke="#2d6342" stroke-width="1.4"/>
+  <path d="M600,82 V112" stroke="#6b5f75" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <rect x="352" y="112" width="90" height="44" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="397" y="132" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">field 1</text>
+  <text x="397" y="147" text-anchor="middle" font-size="9" fill="#6b5f75" font-family="inherit">skipped</text>
+  <rect x="454" y="112" width="90" height="44" rx="6" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="499" y="132" text-anchor="middle" font-size="9.5" fill="#2d6342" font-family="inherit">email</text>
+  <text x="499" y="147" text-anchor="middle" font-size="9" fill="#6b5f75" font-family="inherit">re-renders</text>
+  <rect x="556" y="112" width="90" height="44" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="601" y="132" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">…field 60</text>
+  <text x="601" y="147" text-anchor="middle" font-size="9" fill="#6b5f75" font-family="inherit">skipped</text>
+  <text x="352" y="180" font-size="10" fill="#2d6342" font-family="inherit">1 render, 59 pointer comparisons</text>
+  <text x="14" y="210" font-size="10" fill="#6b5f75" font-family="inherit">Identical validation cost on both sides. The difference is entirely in how many components were asked to produce output.</text>
+</svg>
 
 ## Error Propagation and Accessibility
 

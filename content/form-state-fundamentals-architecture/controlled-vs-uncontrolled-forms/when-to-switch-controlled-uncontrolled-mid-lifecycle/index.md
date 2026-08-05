@@ -3,7 +3,7 @@ layout: page.njk
 title: "Controlled vs Uncontrolled: When to Switch Mid-Lifecycle"
 description: "Fix React's changing-an-uncontrolled-input-to-controlled warning — defaultValue vs value, the key-remount escape hatch, and preserving field value and focus during a safe mode switch."
 slug: "when-to-switch-controlled-uncontrolled-mid-lifecycle"
-type: guide
+type: howto
 breadcrumb: "Switching Mid-Lifecycle"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -181,6 +181,36 @@ export function SwitchableField({ name }: { name: string }) {
 
 5. **Let each mode own its value afterward.** In uncontrolled mode the DOM holds the value and you read it via the ref at submit time; in controlled mode React holds it in `controlledValue`. Do not mix `defaultValue` and `value` on the same element in either branch.
 
+The accidental switch almost never looks like a switch in the code. It looks like a value that is briefly `undefined`:
+
+<svg viewBox="0 8 668 202" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three renders of the same input. On the first render the value prop is an empty string and the input is controlled. On the second render the value prop is undefined because the server object has not loaded, so React treats the input as uncontrolled and logs a warning. On the third render the value prop is a string again and the input flips back to controlled, discarding anything typed in between." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>How an input becomes uncontrolled without anyone deciding to</title>
+  <desc>Render one: value is an empty string, React owns the value, the input is controlled and behaves normally. Render two: the server object is still loading so profile.email evaluates to undefined, React sees a value prop of undefined, hands ownership back to the DOM and logs the controlled-to-uncontrolled warning. Render three: the data arrives, value is a string again, React reclaims ownership, and any characters the reader typed during render two are silently overwritten.</desc>
+  <rect x="0" y="8" width="668" height="202" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">value={profile?.email} across three renders</text>
+  <rect x="14" y="36" width="206" height="96" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="28" y="58" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">render 1 — mount</text>
+  <text x="28" y="78" font-size="9.5" fill="#6b5f75" font-family="inherit">profile = { email: "" }</text>
+  <text x="28" y="94" font-size="9.5" fill="#6b5f75" font-family="inherit">value = ""</text>
+  <text x="28" y="114" font-size="10" fill="#2d6342" font-family="inherit">controlled — React owns it</text>
+  <path d="M220,84 H240" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="240" y="36" width="206" height="96" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="254" y="58" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">render 2 — refetch</text>
+  <text x="254" y="78" font-size="9.5" fill="#6b5f75" font-family="inherit">profile = undefined</text>
+  <text x="254" y="94" font-size="9.5" fill="#6b5f75" font-family="inherit">value = undefined</text>
+  <text x="254" y="114" font-size="10" fill="#a63d6f" font-family="inherit">uncontrolled — DOM owns it</text>
+  <path d="M446,84 H466" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="466" y="36" width="188" height="96" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="480" y="58" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">render 3 — resolved</text>
+  <text x="480" y="78" font-size="9.5" fill="#6b5f75" font-family="inherit">value = "ada@…"</text>
+  <text x="480" y="94" font-size="9.5" fill="#6b5f75" font-family="inherit">controlled again</text>
+  <text x="480" y="114" font-size="10" fill="#a63d6f" font-family="inherit">typed characters lost</text>
+  <text x="14" y="158" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">The one-line guard</text>
+  <text x="14" y="176" font-size="10" fill="#6b5f75" font-family="inherit">value={profile?.email ?? ""} — coalesce at the boundary so the prop is never undefined, not even for one render.</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">null has the same effect as undefined here; only a string (or number) keeps the input controlled.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">The warning is logged once per input, so a form of forty fields hides it in a wall of identical lines.</text>
+</svg>
+
 ## Failure Modes and Edge Cases
 
 ### 1. Passing both defaultValue and value
@@ -214,6 +244,31 @@ useLayoutEffect(() => { stale?.focus(); }, [mode]);
 
 Remounting and re-seeding can trip a dirty-tracker if the carried value flows through the user-mutation path. Route the seeded value through the programmatic hydrate path, not `onChange`, so the switch itself does not flip the field to dirty.
 
+When the switch is genuinely intended — a "start over" that must discard every scrap of local state — the safe mechanism is remounting, not mutating:
+
+<svg viewBox="0 8 660 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of clearing a form by resetting state versus remounting it with a new key. Resetting leaves refs, uncontrolled DOM values, timers and validation caches from the previous session in place. Changing the key unmounts the subtree and mounts a fresh one, so every one of those is recreated." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Reset the state, or remount the subtree</title>
+  <desc>Left column, calling a reset function: the state object is replaced but the same component instance survives, so refs still hold old nodes, uncontrolled inputs keep their DOM values, pending debounce timers keep running and the validation cache still holds results keyed by the previous values. Right column, changing the key prop: React unmounts the whole subtree and mounts a new one, so refs are null again, inputs render with their defaultValue, effect cleanups have cancelled the timers and the cache is gone with the instance.</desc>
+  <rect x="0" y="8" width="660" height="214" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#b07a55" font-family="inherit">reset() — same instance survives</text>
+  <rect x="14" y="36" width="304" height="150" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
+  <text x="28" y="58" font-size="10" fill="#2d6342" font-family="inherit">state object — replaced</text>
+  <text x="28" y="80" font-size="10" fill="#a63d6f" font-family="inherit">refs — still point at the old nodes</text>
+  <text x="28" y="102" font-size="10" fill="#a63d6f" font-family="inherit">uncontrolled inputs — keep DOM values</text>
+  <text x="28" y="124" font-size="10" fill="#a63d6f" font-family="inherit">debounce timers — still pending</text>
+  <text x="28" y="146" font-size="10" fill="#a63d6f" font-family="inherit">validation cache — keyed by old values</text>
+  <text x="28" y="170" font-size="9.5" fill="#6b5f75" font-family="inherit">four things to remember to clear by hand</text>
+  <text x="346" y="26" font-size="11.5" font-weight="700" fill="#2d6342" font-family="inherit">key={sessionId} — fresh instance</text>
+  <rect x="346" y="36" width="300" height="150" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="360" y="58" font-size="10" fill="#2d6342" font-family="inherit">state object — new</text>
+  <text x="360" y="80" font-size="10" fill="#2d6342" font-family="inherit">refs — null until re-attached</text>
+  <text x="360" y="102" font-size="10" fill="#2d6342" font-family="inherit">uncontrolled inputs — defaultValue again</text>
+  <text x="360" y="124" font-size="10" fill="#2d6342" font-family="inherit">debounce timers — cleaned up on unmount</text>
+  <text x="360" y="146" font-size="10" fill="#2d6342" font-family="inherit">validation cache — gone with the instance</text>
+  <text x="360" y="170" font-size="9.5" fill="#6b5f75" font-family="inherit">nothing to remember: the platform does it</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Use a key that is stable for the life of one editing session — a draft id or submission counter — never Math.random() on each render.</text>
+</svg>
+
 ## Verification Checklist
 
 - [ ] No "changing an uncontrolled input to be controlled" (or the reverse) warning appears in the console across the field's whole lifecycle
@@ -224,6 +279,39 @@ Remounting and re-seeding can trip a dirty-tracker if the carried value flows th
 - [ ] The caret returns to its captured position, not to the start or end
 - [ ] The switch does not mark a previously-pristine field dirty
 - [ ] useLayoutEffect (not useEffect) restores focus, so restoration happens before paint
+
+## How `value` and `defaultValue` differ under the hood
+
+Half the confusion around switching comes from treating these two props as interchangeable spellings. They are not: one is a continuous claim, the other is a one-time seed, and React reads them at completely different moments.
+
+<svg viewBox="0 8 690 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of the value and defaultValue props: when React reads each, what happens when the prop changes later, what happens when the reader types, and which ownership model each implies." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>value is a claim; defaultValue is a seed</title>
+  <desc>The value prop is read on every render and React writes it back to the DOM node, so a later change to the prop is applied to the field and typing is only visible if the handler feeds the value back; this is the controlled model. The defaultValue prop is read once, when the node is created, so later changes are ignored entirely and typing updates the DOM directly with no re-render; this is the uncontrolled model. Passing both is not an error but the value prop wins and defaultValue is silently ignored, which is a common source of "my default is not appearing" reports.</desc>
+  <rect x="0" y="8" width="690" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Question</text>
+  <text x="250" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">value</text>
+  <text x="460" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">defaultValue</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">When is the prop read?</text>
+  <text x="250" y="66" font-size="10" fill="#6b5f75" font-family="inherit">every render</text>
+  <text x="460" y="66" font-size="10" fill="#6b5f75" font-family="inherit">once, at node creation</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">Prop changes later?</text>
+  <text x="250" y="100" font-size="10" fill="#6b5f75" font-family="inherit">written to the field</text>
+  <text x="460" y="100" font-size="10" fill="#a63d6f" font-family="inherit">ignored completely</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">Reader types?</text>
+  <text x="250" y="134" font-size="10" fill="#6b5f75" font-family="inherit">visible only via onChange</text>
+  <text x="460" y="134" font-size="10" fill="#6b5f75" font-family="inherit">visible immediately, no render</text>
+  <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">Both passed at once?</text>
+  <text x="250" y="168" font-size="10" fill="#7b4f8a" font-family="inherit">wins</text>
+  <text x="460" y="168" font-size="10" fill="#a63d6f" font-family="inherit">silently ignored</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">The last row explains most "my default never shows up" reports: a value prop that is an empty string is still a value prop.</text>
+  <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">To seed an uncontrolled field from data that loads late, remount it with a key rather than switching which prop you pass.</text>
+</svg>
 
 ## Frequently Asked Questions
 

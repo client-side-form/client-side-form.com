@@ -84,46 +84,47 @@ This page covers the deterministic handshake that eliminates that window. The pa
 
 The transition from server paint to stable interactive state passes through four explicit phases. Skipping or collapsing any two of them is the most common source of production hydration bugs.
 
-<svg viewBox="0 0 740 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SSR form hydration state machine: SERVER_RENDERED to PARSING to RECONCILING to HYDRATED, with a FALLBACK path from RECONCILING on checksum mismatch" style="width:100%;max-width:740px;display:block;margin:2rem auto;">
+<svg viewBox="-6 54 672 155" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SSR form hydration state machine: SERVER_RENDERED to PARSING to RECONCILING to HYDRATED, with a FALLBACK path from RECONCILING on checksum mismatch" style="width:100%;max-width:740px;display:block;margin:2rem auto;">
   <title>SSR Form Hydration State Machine</title>
   <desc>Four-phase state machine showing the path from server-rendered HTML through payload parsing and state reconciliation to a fully hydrated interactive form, with a fallback path triggered by checksum mismatch.</desc>
+  <rect x="-6" y="54" width="672" height="155" fill="#f9f5fb"/>
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
-      <path d="M0,0 L8,3.5 L0,7 Z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- State boxes -->
   <!-- SERVER_RENDERED -->
-  <rect x="10" y="70" width="140" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="80" y="97" text-anchor="middle" font-size="11" font-family="inherit" fill="currentColor" font-weight="600">SERVER_RENDERED</text>
-  <text x="80" y="113" text-anchor="middle" font-size="10" font-family="inherit" fill="currentColor" opacity="0.7">DOM + data-* attrs</text>
+  <rect x="10" y="70" width="140" height="60" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="80" y="97" text-anchor="middle" font-size="11" font-family="inherit" fill="#1e1a24" font-weight="600">SERVER_RENDERED</text>
+  <text x="80" y="113" text-anchor="middle" font-size="10" font-family="inherit" fill="#6b5f75">DOM + data-* attrs</text>
   <!-- PARSING -->
-  <rect x="190" y="70" width="120" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="250" y="97" text-anchor="middle" font-size="11" font-family="inherit" fill="currentColor" font-weight="600">PARSING</text>
-  <text x="250" y="113" text-anchor="middle" font-size="10" font-family="inherit" fill="currentColor" opacity="0.7">JSON + checksum</text>
+  <rect x="190" y="70" width="120" height="60" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="250" y="97" text-anchor="middle" font-size="11" font-family="inherit" fill="#1e1a24" font-weight="600">PARSING</text>
+  <text x="250" y="113" text-anchor="middle" font-size="10" font-family="inherit" fill="#6b5f75">JSON + checksum</text>
   <!-- RECONCILING -->
-  <rect x="350" y="70" width="130" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="415" y="97" text-anchor="middle" font-size="11" font-family="inherit" fill="currentColor" font-weight="600">RECONCILING</text>
-  <text x="415" y="113" text-anchor="middle" font-size="10" font-family="inherit" fill="currentColor" opacity="0.7">merge → store</text>
+  <rect x="350" y="70" width="130" height="60" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="415" y="97" text-anchor="middle" font-size="11" font-family="inherit" fill="#1e1a24" font-weight="600">RECONCILING</text>
+  <text x="415" y="113" text-anchor="middle" font-size="10" font-family="inherit" fill="#6b5f75">merge → store</text>
   <!-- HYDRATED -->
-  <rect x="530" y="70" width="120" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
-  <text x="590" y="97" text-anchor="middle" font-size="11" font-family="inherit" fill="currentColor" font-weight="600">HYDRATED</text>
-  <text x="590" y="113" text-anchor="middle" font-size="10" font-family="inherit" fill="currentColor" opacity="0.7">validation live</text>
+  <rect x="530" y="70" width="120" height="60" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="590" y="97" text-anchor="middle" font-size="11" font-family="inherit" fill="#1e1a24" font-weight="600">HYDRATED</text>
+  <text x="590" y="113" text-anchor="middle" font-size="10" font-family="inherit" fill="#6b5f75">validation live</text>
   <!-- FALLBACK box -->
-  <rect x="350" y="155" width="130" height="38" rx="8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.6"/>
-  <text x="415" y="172" text-anchor="middle" font-size="10" font-family="inherit" fill="currentColor" font-weight="600">FALLBACK</text>
-  <text x="415" y="186" text-anchor="middle" font-size="10" font-family="inherit" fill="currentColor" opacity="0.7">SSR values only</text>
+  <rect x="350" y="155" width="130" height="38" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.2" stroke-dasharray="5,3"/>
+  <text x="415" y="172" text-anchor="middle" font-size="10" font-family="inherit" fill="#1e1a24" font-weight="600">FALLBACK</text>
+  <text x="415" y="186" text-anchor="middle" font-size="10" font-family="inherit" fill="#6b5f75">SSR values only</text>
   <!-- Arrows -->
-  <line x1="150" y1="100" x2="188" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/>
-  <line x1="310" y1="100" x2="348" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/>
-  <line x1="480" y1="100" x2="528" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/>
+  <line x1="150" y1="100" x2="188" y2="100" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="310" y1="100" x2="348" y2="100" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="480" y1="100" x2="528" y2="100" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
   <!-- Fallback arrow from RECONCILING down -->
-  <line x1="415" y1="130" x2="415" y2="153" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr)" opacity="0.6"/>
+  <line x1="415" y1="130" x2="415" y2="153" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr)"/>
   <!-- Labels -->
-  <text x="169" y="93" text-anchor="middle" font-size="9" font-family="inherit" fill="currentColor" opacity="0.6">mount</text>
-  <text x="329" y="93" text-anchor="middle" font-size="9" font-family="inherit" fill="currentColor" opacity="0.6">verify</text>
-  <text x="504" y="93" text-anchor="middle" font-size="9" font-family="inherit" fill="currentColor" opacity="0.6">rAF</text>
-  <text x="443" y="147" text-anchor="start" font-size="9" font-family="inherit" fill="currentColor" opacity="0.6">mismatch</text>
+  <text x="169" y="93" text-anchor="middle" font-size="9" font-family="inherit" fill="#6b5f75">mount</text>
+  <text x="329" y="93" text-anchor="middle" font-size="9" font-family="inherit" fill="#6b5f75">verify</text>
+  <text x="504" y="93" text-anchor="middle" font-size="9" font-family="inherit" fill="#6b5f75">rAF</text>
+  <text x="443" y="147" text-anchor="start" font-size="9" font-family="inherit" fill="#6b5f75">mismatch</text>
 </svg>
 
 | Phase | Trigger | What must happen |
@@ -299,6 +300,41 @@ For Vue, the equivalent guard is a `watchEffect` with an early return on `!isHyd
 
 ---
 
+### What actually differs between the two renders
+
+A hydration mismatch is never mysterious once you list the inputs that are not the same on both sides. Almost every real case is one of these five:
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five inputs that differ between the server and client render of a form: the clock, generated ids, locale and time zone, feature flags read from storage, and values restored from a draft. Each row gives the symptom it produces and the fix." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The five inputs that differ across the hydration boundary</title>
+  <desc>The clock: a default value computed from the current time differs by milliseconds between the two renders, producing a changed value attribute; pass the timestamp down from the server instead of reading it twice. Generated ids: a random or counter-based id for aria-describedby differs, producing changed attributes on every field; use a deterministic id derived from the field name, or the framework's stable id hook. Locale and time zone: a date or currency formatted on the server in UTC renders differently in the reader's zone; format on the client after mount, or send the formatted string. Feature flags from local storage: unavailable on the server, so a conditionally rendered field appears only after hydration; render the server's default and swap after mount. Draft values from storage: the same problem, and the same fix.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">What differs</text>
+  <text x="188" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Symptom</text>
+  <text x="404" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Fix</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">the clock</text>
+  <text x="188" y="66" font-size="10" fill="#6b5f75" font-family="inherit">value attribute changed</text>
+  <text x="404" y="66" font-size="10" fill="#2d6342" font-family="inherit">pass the timestamp down as a prop</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">generated ids</text>
+  <text x="188" y="100" font-size="10" fill="#6b5f75" font-family="inherit">describedby changed</text>
+  <text x="404" y="100" font-size="10" fill="#2d6342" font-family="inherit">derive ids from the field name</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">locale and time zone</text>
+  <text x="188" y="134" font-size="10" fill="#6b5f75" font-family="inherit">text content changed</text>
+  <text x="404" y="134" font-size="10" fill="#2d6342" font-family="inherit">format after mount, or send the string</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">flags in local storage</text>
+  <text x="188" y="168" font-size="10" fill="#6b5f75" font-family="inherit">extra or missing field</text>
+  <text x="404" y="168" font-size="10" fill="#2d6342" font-family="inherit">render the default, swap after mount</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">restored draft values</text>
+  <text x="188" y="202" font-size="10" fill="#6b5f75" font-family="inherit">every value changed</text>
+  <text x="404" y="202" font-size="10" fill="#2d6342" font-family="inherit">restore in an effect, never in render</text>
+</svg>
+
 ## Edge Cases and Failure Modes
 
 ### Concurrent renders during reconciliation (React 18+)
@@ -396,6 +432,37 @@ await expect(page.locator('input[name="email"]')).toHaveAttribute('aria-invalid'
 ```
 
 ---
+
+All five fixes are the same move in different clothes: render what the server rendered, then correct it once you are allowed to.
+
+<svg viewBox="0 8 664 206" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The two-pass strategy: the first client render reproduces the server output exactly so the checksum passes, and a second render after mount applies everything that could only be known on the client. A note explains that the correction must happen in an effect, not during render." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Render what the server rendered, then correct once</title>
+  <desc>Pass one, on the server: the form is rendered from data the server has, and every client-only input is left at its server default. Pass two, the first client render: exactly the same output is produced, which is what allows the checksum to pass. Pass three, after mount: an effect reads local storage, the clock and the locale, and applies the corrections in a single update. Pass four: the reader sees the corrected form, one frame later than the server output, with no warning logged. The note underneath stresses that doing the correction during render rather than in an effect reintroduces the mismatch, because render runs on both sides.</desc>
+  <rect x="0" y="8" width="664" height="206" fill="#f9f5fb"/>
+  <rect x="14" y="30" width="150" height="70" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="89" y="52" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">1 · server render</text>
+  <text x="89" y="70" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">server defaults for</text>
+  <text x="89" y="84" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">client-only inputs</text>
+  <path d="M164,65 H186" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="186" y="30" width="150" height="70" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="261" y="52" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">2 · first client pass</text>
+  <text x="261" y="70" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">byte-identical output</text>
+  <text x="261" y="84" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">checksum passes</text>
+  <path d="M336,65 H358" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="358" y="30" width="150" height="70" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="433" y="52" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">3 · effect runs</text>
+  <text x="433" y="70" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">storage, clock, locale</text>
+  <text x="433" y="84" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">applied in one update</text>
+  <path d="M508,65 H530" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="530" y="30" width="118" height="70" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="589" y="52" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">4 · corrected</text>
+  <text x="589" y="70" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">one frame later</text>
+  <text x="589" y="84" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">no warning</text>
+  <text x="14" y="134" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">The mistake that survives every refactor</text>
+  <text x="14" y="152" font-size="10" fill="#6b5f75" font-family="inherit">Reading storage during render instead of in an effect. Render runs on both sides of the boundary; effects do not.</text>
+  <text x="14" y="168" font-size="10" fill="#6b5f75" font-family="inherit">A typeof window check inside render has the same problem: it makes the two passes differ, which is the definition of the bug.</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">If the corrected state changes layout, reserve the space in pass one so the correction does not shift content under the reader.</text>
+</svg>
 
 ## Accessibility Sync Points
 

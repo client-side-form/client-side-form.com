@@ -101,48 +101,49 @@ The machine has four states. `idle` is the resting state; `submitting` is the si
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" role="img" aria-label="Submit lifecycle state machine diagram" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>Submit Lifecycle State Machine</title>
   <desc>States IDLE, SUBMITTING, SUCCESS, and ERROR. submit() moves IDLE to SUBMITTING after taking a rollback snapshot and applying the optimistic update. A resolved request moves SUBMITTING to SUCCESS which commits and resets the baseline back to IDLE. A rejected request moves SUBMITTING to ERROR which rolls back the snapshot; ERROR retries into SUBMITTING with the same idempotency key, or returns to IDLE when the user edits a field.</desc>
+  <rect x="0" y="0" width="760" height="360" fill="#f9f5fb"/>
   <defs>
     <marker id="arr-submission" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- Frame -->
-  <rect x="1" y="1" width="758" height="358" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+  <rect x="1" y="1" width="758" height="358" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
   <!-- IDLE -->
-  <rect x="40" y="150" width="140" height="58" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="110" y="174" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">IDLE</text>
-  <text x="110" y="192" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.78">no request</text>
+  <rect x="40" y="150" width="140" height="58" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="110" y="174" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">IDLE</text>
+  <text x="110" y="192" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">no request</text>
   <!-- SUBMITTING -->
-  <rect x="310" y="150" width="140" height="58" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="380" y="174" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">SUBMITTING</text>
-  <text x="380" y="192" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.78">in flight (locked)</text>
+  <rect x="310" y="150" width="140" height="58" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="380" y="174" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">SUBMITTING</text>
+  <text x="380" y="192" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">in flight (locked)</text>
   <!-- SUCCESS -->
-  <rect x="580" y="52" width="140" height="58" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="650" y="76" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">SUCCESS</text>
-  <text x="650" y="94" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.78">commit + reset</text>
+  <rect x="580" y="52" width="140" height="58" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="650" y="76" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">SUCCESS</text>
+  <text x="650" y="94" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">commit + reset</text>
   <!-- ERROR -->
-  <rect x="580" y="248" width="140" height="58" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="650" y="272" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">ERROR</text>
-  <text x="650" y="290" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.78">rollback + map</text>
+  <rect x="580" y="248" width="140" height="58" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="650" y="272" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">ERROR</text>
+  <text x="650" y="290" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">rollback + map</text>
   <!-- IDLE -> SUBMITTING -->
-  <path d="M180 179 L302 179" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-submission)"/>
-  <text x="241" y="169" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.78">submit()</text>
-  <text x="241" y="200" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.78">snapshot + optimistic apply</text>
+  <path d="M180 179 L302 179" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-submission)"/>
+  <text x="241" y="169" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">submit()</text>
+  <text x="241" y="200" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">snapshot + optimistic apply</text>
   <!-- SUBMITTING -> SUCCESS -->
-  <path d="M451 166 C512 138 542 104 573 92" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-submission)"/>
-  <text x="530" y="128" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.78">2xx resolve</text>
+  <path d="M451 166 C512 138 542 104 573 92" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-submission)"/>
+  <text x="530" y="128" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">2xx resolve</text>
   <!-- SUBMITTING -> ERROR -->
-  <path d="M451 192 C512 220 542 254 573 266" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-submission)"/>
-  <text x="528" y="244" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.78">reject / 4xx / 5xx</text>
+  <path d="M451 192 C512 220 542 254 573 266" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-submission)"/>
+  <text x="528" y="244" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">reject / 4xx / 5xx</text>
   <!-- ERROR -> SUBMITTING (retry) -->
-  <path d="M582 292 C438 336 372 262 375 216" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" stroke-dasharray="5 3" marker-end="url(#arr-submission)"/>
-  <text x="470" y="326" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.78">retry (same idempotency key)</text>
+  <path d="M582 292 C438 336 372 262 375 216" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-submission)"/>
+  <text x="470" y="326" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">retry (same idempotency key)</text>
   <!-- SUCCESS -> IDLE (reset) -->
-  <path d="M598 60 C388 6 208 30 122 143" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" stroke-dasharray="5 3" marker-end="url(#arr-submission)"/>
-  <text x="360" y="24" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.78">commit new baseline → reset</text>
+  <path d="M598 60 C388 6 208 30 122 143" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-submission)"/>
+  <text x="360" y="24" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">commit new baseline → reset</text>
   <!-- ERROR -> IDLE (user edits) -->
-  <path d="M596 300 C300 356 150 300 118 214" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" stroke-dasharray="2 4" marker-end="url(#arr-submission)"/>
-  <text x="300" y="344" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.78">user edits a field → clear</text>
+  <path d="M596 300 C300 356 150 300 118 214" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="2 4" marker-end="url(#arr-submission)"/>
+  <text x="300" y="344" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">user edits a field → clear</text>
 </svg>
 
 | Trigger | From state | To state | Side-effect |
@@ -372,6 +373,41 @@ The rules that keep this robust: never retry a 4xx (it is deterministic), always
 
 ---
 
+### What an optimistic update actually promises
+
+An optimistic update is a bet that the server will agree with you. The bet is only safe for operations whose failure you can fully undo, which rules out more of a form than teams usually expect:
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Table of operations and whether an optimistic update is safe: renaming a record is safe because the rollback is a local value swap, toggling a preference is safe, submitting a payment is not because the failure is not locally reversible, uploading a file is partially safe, and a multi-step wizard submit is not because a partial server commit cannot be undone from the client." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>When you may show the result before the server has agreed</title>
+  <desc>Renaming a record: safe, because the rollback is putting the old string back and nothing outside the client has changed. Toggling a preference: safe, for the same reason. Submitting a payment: not safe, because the failure modes include a charge that did succeed but whose response was lost, which the client cannot undo. Uploading a file: partly safe — the row may be shown optimistically, but the progress and the final identifier must come from the server. A multi-step wizard submit: not safe, because the server may have committed some steps and not others, and the client has no way to know which.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Operation</text>
+  <text x="196" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Optimistic?</text>
+  <text x="316" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Because the rollback is</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">rename a record</text>
+  <text x="196" y="66" font-size="10" fill="#2d6342" font-family="inherit">safe</text>
+  <text x="316" y="66" font-size="10" fill="#6b5f75" font-family="inherit">put the old string back; nothing left the client</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">toggle a preference</text>
+  <text x="196" y="100" font-size="10" fill="#2d6342" font-family="inherit">safe</text>
+  <text x="316" y="100" font-size="10" fill="#6b5f75" font-family="inherit">flip the boolean back and re-announce</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">upload a file</text>
+  <text x="196" y="134" font-size="10" fill="#b07a55" font-family="inherit">partly</text>
+  <text x="316" y="134" font-size="10" fill="#6b5f75" font-family="inherit">show the row, but take the id from the response</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">submit a payment</text>
+  <text x="196" y="168" font-size="10" fill="#a63d6f" font-family="inherit">never</text>
+  <text x="316" y="168" font-size="10" fill="#6b5f75" font-family="inherit">impossible — a lost response may still have charged</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">multi-step wizard submit</text>
+  <text x="196" y="202" font-size="10" fill="#a63d6f" font-family="inherit">never</text>
+  <text x="316" y="202" font-size="10" fill="#6b5f75" font-family="inherit">partial — the client cannot know which steps stuck</text>
+</svg>
+
 ## Integration Guidance
 
 The submit controller sits at the top of the form's data flow, above validation and below the network:
@@ -430,6 +466,44 @@ An auto-retry schedules a `setTimeout`, then the user cancels. Without tying the
 | Stale response overwrites a newer edit | Compare response timing against submit order in the network panel | Abort the previous controller on supersede and gate `set()` behind `signal.aborted` |
 
 ---
+
+When the bet loses, the rollback has more to undo than the value. Everything the optimistic render touched has to be reversed in the opposite order it was applied:
+
+<svg viewBox="0 8 664 224" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rollback sequence after a failed optimistic update: restore the previous value, restore the previous dirty flags, re-enable the controls, render the server error against the right field, and announce the failure. A note warns that restoring the value without restoring the dirty flags leaves the save button disabled over unsaved changes." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Rolling back is five steps, not one</title>
+  <desc>Step one: put the previous value back from the snapshot taken before the optimistic write. Step two: restore the dirty flags that were cleared when the update was applied, otherwise the form claims to be saved while holding unsaved changes. Step three: re-enable the controls that were disabled during the request. Step four: attach the server's error to the field it names, using the error mapping layer rather than a toast. Step five: announce the failure in a live region, because a reverted value is a silent change for anyone not watching that part of the screen.</desc>
+  <rect x="0" y="8" width="664" height="224" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">After a rejected optimistic write, in this order</text>
+  <rect x="14" y="36" width="122" height="76" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="75" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">1 · value</text>
+  <text x="75" y="76" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">from the pre-write</text>
+  <text x="75" y="90" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">snapshot</text>
+  <path d="M136,74 H154" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="154" y="36" width="122" height="76" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="215" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">2 · dirty flags</text>
+  <text x="215" y="76" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">the edits are still</text>
+  <text x="215" y="90" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">unsaved</text>
+  <path d="M276,74 H294" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="294" y="36" width="122" height="76" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="355" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">3 · controls</text>
+  <text x="355" y="76" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">re-enable what</text>
+  <text x="355" y="90" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">submit disabled</text>
+  <path d="M416,74 H434" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="434" y="36" width="122" height="76" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="495" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">4 · the error</text>
+  <text x="495" y="76" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">mapped to its</text>
+  <text x="495" y="90" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">field, not a toast</text>
+  <path d="M556,74 H574" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="574" y="36" width="76" height="76" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="612" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">5 · say so</text>
+  <text x="612" y="76" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">live region</text>
+  <text x="612" y="90" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">announces</text>
+  <rect x="14" y="132" width="636" height="52" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="28" y="154" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">Skipping step 2 is the bug that reaches production</text>
+  <text x="28" y="172" font-size="9.5" fill="#6b5f75" font-family="inherit">The value is back, but the form still believes it is saved: the save button stays disabled and the reader cannot retry.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Take the snapshot as one frozen object before the write, and restore it as one object — never field by field as the failures arrive.</text>
+  <text x="14" y="224" font-size="10" fill="#6b5f75" font-family="inherit">A reverted value with no announcement is indistinguishable from the reader's own typing being lost.</text>
+</svg>
 
 ## Testing and QA Hooks
 

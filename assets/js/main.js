@@ -1,5 +1,53 @@
 // main.js — site-wide interactions
 
+// 0. Theme toggle
+// The <head> script has already stamped data-theme on <html>, so this only has to
+// keep the control's pressed state honest, flip the attribute on click, persist the
+// choice, and keep following the OS until the reader makes one.
+(function () {
+  const root = document.documentElement;
+  const btn = document.querySelector('[data-theme-toggle]');
+  const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+  const current = () =>
+    root.getAttribute('data-theme') || (media && media.matches ? 'dark' : 'light');
+
+  function sync() {
+    if (!btn) return;
+    const dark = current() === 'dark';
+    btn.setAttribute('aria-pressed', String(dark));
+    const label = dark ? 'Switch to light theme' : 'Switch to dark theme';
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('title', label);
+  }
+
+  function apply(theme) {
+    root.setAttribute('data-theme', theme);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#14101d' : '#1a1a3e');
+    sync();
+  }
+
+  if (btn) {
+    btn.addEventListener('click', () => {
+      const next = current() === 'dark' ? 'light' : 'dark';
+      apply(next);
+      try { localStorage.setItem('theme', next); } catch (e) { /* storage unavailable */ }
+    });
+  }
+
+  // Keep following the OS preference until the reader has stored an explicit choice.
+  if (media && media.addEventListener) {
+    media.addEventListener('change', (e) => {
+      let stored = null;
+      try { stored = localStorage.getItem('theme'); } catch (err) { /* ignore */ }
+      if (stored !== 'light' && stored !== 'dark') apply(e.matches ? 'dark' : 'light');
+    });
+  }
+
+  sync();
+})();
+
 // 1. Mobile navigation toggle
 (function () {
   const toggle = document.querySelector('.nav-toggle');
@@ -237,7 +285,98 @@
   else document.addEventListener('DOMContentLoaded', markScrollable);
 })();
 
-// 5. Service Worker registration
+// 5. Diagram figures — download + full-screen controls
+//
+// Progressive enhancement: every hand-authored diagram is complete without JS. When JS
+// runs we wrap it in a <figure> and attach two controls. The download serialises a clone
+// with the CURRENTLY COMPUTED fill/stroke baked in, so an exported .svg matches the theme
+// the reader is looking at (the live diagram gets its dark colours from CSS variables,
+// which would not survive outside the page).
+(function () {
+  const diagrams = document.querySelectorAll('.article-body svg[role="img"]');
+  if (!diagrams.length) return;
+
+  const PAINT = ['fill', 'stroke', 'stop-color', 'color'];
+
+  function inlinePaint(source, clone) {
+    const src = source.querySelectorAll('*');
+    const dst = clone.querySelectorAll('*');
+    for (let i = 0; i < src.length && i < dst.length; i++) {
+      const cs = getComputedStyle(src[i]);
+      PAINT.forEach((prop) => {
+        const v = cs.getPropertyValue(prop);
+        if (v && v !== 'none' && !v.startsWith('var(')) dst[i].setAttribute(prop, v.trim());
+      });
+    }
+  }
+
+  function download(svg, name) {
+    const clone = svg.cloneNode(true);
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    inlinePaint(svg, clone);
+    // Paint the canvas explicitly — an exported file has no page behind it.
+    const bg = getComputedStyle(document.body).backgroundColor;
+    const box = (svg.getAttribute('viewBox') || '0 0 100 100').split(/[\s,]+/);
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', box[0]); rect.setAttribute('y', box[1]);
+    rect.setAttribute('width', box[2]); rect.setAttribute('height', box[3]);
+    rect.setAttribute('fill', bg);
+    clone.insertBefore(rect, clone.firstChild);
+
+    const blob = new Blob(['<?xml version="1.0" encoding="UTF-8"?>\n' + clone.outerHTML],
+      { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name + '.svg';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function slug(text) {
+    return (text || 'diagram').toLowerCase().replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '').slice(0, 60) || 'diagram';
+  }
+
+  diagrams.forEach((svg) => {
+    if (svg.closest('figure.diagram')) return;
+    const titleEl = svg.querySelector('title');
+    const name = slug(titleEl ? titleEl.textContent : svg.getAttribute('aria-label'));
+
+    const figure = document.createElement('figure');
+    figure.className = 'diagram';
+    svg.parentNode.insertBefore(figure, svg);
+    figure.appendChild(svg);
+
+    const bar = document.createElement('div');
+    bar.className = 'diagram-tools';
+
+    const full = document.createElement('button');
+    full.type = 'button';
+    full.className = 'diagram-btn';
+    full.setAttribute('aria-label', 'View diagram full screen');
+    full.textContent = 'Full screen';
+    full.addEventListener('click', () => {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (figure.requestFullscreen) figure.requestFullscreen().catch(() => {});
+    });
+
+    const dl = document.createElement('button');
+    dl.type = 'button';
+    dl.className = 'diagram-btn';
+    dl.setAttribute('aria-label', 'Download diagram as SVG');
+    dl.textContent = 'Download SVG';
+    dl.addEventListener('click', () => download(svg, name));
+
+    bar.appendChild(full);
+    bar.appendChild(dl);
+    figure.appendChild(bar);
+  });
+})();
+
+// 6. Service Worker registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch(() => {});

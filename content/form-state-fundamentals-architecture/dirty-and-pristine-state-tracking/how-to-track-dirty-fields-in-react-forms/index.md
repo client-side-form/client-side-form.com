@@ -3,7 +3,7 @@ layout: page.njk
 title: "How to Track Dirty Fields in React Forms"
 description: "Build a type-safe useDirtyTracker hook using immutable baseline snapshots and useMemo diffing to detect field-level mutations in React without re-render overhead."
 slug: "how-to-track-dirty-fields-in-react-forms"
-type: guide
+type: howto
 breadcrumb: "How to Track Dirty Fields in React Forms"
 datePublished: "2025-03-10"
 dateModified: "2026-06-23"
@@ -104,49 +104,50 @@ The diagram below shows data flow through the hook at mount time and after async
 <svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Data flow diagram showing how useDirtyTracker captures a baseline on mount, updates it on syncBaseline, and derives the dirty map via useMemo" style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
   <title>useDirtyTracker data flow</title>
   <desc>At mount, initialValues flows into both useRef (baseline) and useState (current). On each updateField call, only useState updates, and useMemo recomputes the dirtyMap by comparing current against baseline.current. When syncBaseline is called after async data resolves, it atomically writes the new values to both the ref and useState, so dirtyMap collapses back to all-false.</desc>
+  <rect x="0" y="0" width="680" height="320" fill="#f9f5fb"/>
   <defs>
     <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <polygon points="0 0, 8 3, 0 6" fill="currentColor" opacity="0.7"/>
+      <polygon points="0 0, 8 3, 0 6" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- Background -->
-  <rect width="680" height="320" rx="12" fill="none" stroke="currentColor" stroke-width="1" opacity="0.1"/>
+  <rect width="680" height="320" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
   <!-- initialValues -->
-  <rect x="20" y="130" width="130" height="44" rx="8" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="85" y="148" text-anchor="middle" font-size="12" fill="currentColor" font-family="ui-monospace,monospace" font-weight="600">initialValues</text>
-  <text x="85" y="164" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.65">prop / empty shape</text>
+  <rect x="20" y="130" width="130" height="44" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="85" y="148" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="ui-monospace,monospace" font-weight="600">initialValues</text>
+  <text x="85" y="164" text-anchor="middle" font-size="10" fill="#6b5f75">prop / empty shape</text>
   <!-- useRef box -->
-  <rect x="215" y="60" width="140" height="56" rx="8" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="285" y="83" text-anchor="middle" font-size="12" fill="currentColor" font-family="ui-monospace,monospace" font-weight="600">useRef</text>
-  <text x="285" y="100" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.65">baseline.current</text>
+  <rect x="215" y="60" width="140" height="56" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="285" y="83" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="ui-monospace,monospace" font-weight="600">useRef</text>
+  <text x="285" y="100" text-anchor="middle" font-size="10" fill="#6b5f75">baseline.current</text>
   <!-- useState box -->
-  <rect x="215" y="196" width="140" height="56" rx="8" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="285" y="219" text-anchor="middle" font-size="12" fill="currentColor" font-family="ui-monospace,monospace" font-weight="600">useState</text>
-  <text x="285" y="236" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.65">current — triggers renders</text>
+  <rect x="215" y="196" width="140" height="56" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="285" y="219" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="ui-monospace,monospace" font-weight="600">useState</text>
+  <text x="285" y="236" text-anchor="middle" font-size="10" fill="#6b5f75">current — triggers renders</text>
   <!-- arrows: initialValues → useRef -->
-  <line x1="150" y1="142" x2="213" y2="100" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="150" y1="142" x2="213" y2="100" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrowhead)"/>
   <!-- arrows: initialValues → useState -->
-  <line x1="150" y1="158" x2="213" y2="214" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="150" y1="158" x2="213" y2="214" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrowhead)"/>
   <!-- useMemo box -->
-  <rect x="420" y="130" width="140" height="44" rx="8" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
-  <text x="490" y="148" text-anchor="middle" font-size="12" fill="currentColor" font-family="ui-monospace,monospace" font-weight="600">useMemo</text>
-  <text x="490" y="164" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.65">derived, not stored</text>
+  <rect x="420" y="130" width="140" height="44" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="490" y="148" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="ui-monospace,monospace" font-weight="600">useMemo</text>
+  <text x="490" y="164" text-anchor="middle" font-size="10" fill="#6b5f75">derived, not stored</text>
   <!-- arrows: useRef → useMemo -->
-  <line x1="355" y1="99" x2="418" y2="142" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="355" y1="99" x2="418" y2="142" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrowhead)"/>
   <!-- arrows: useState → useMemo -->
-  <line x1="355" y1="214" x2="418" y2="166" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="355" y1="214" x2="418" y2="166" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrowhead)"/>
   <!-- syncBaseline label -->
-  <rect x="215" y="270" width="140" height="36" rx="6" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.25" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="285" y="284" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.75" font-family="ui-monospace,monospace">syncBaseline(newValues)</text>
-  <text x="285" y="298" text-anchor="middle" font-size="9" fill="currentColor" opacity="0.5">writes ref + setCurrent atomically</text>
-  <!-- arrow: syncBaseline → useRef -->
-  <line x1="265" y1="270" x2="265" y2="118" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrowhead)"/>
+  <rect x="215" y="270" width="140" height="36" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="285" y="284" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="ui-monospace,monospace">syncBaseline(newValues)</text>
+  <text x="285" y="298" text-anchor="middle" font-size="9" fill="#6b5f75">writes ref + setCurrent atomically</text>
+  <!-- arrow: syncBaseline → useRef (routed around the useState card, not through it) -->
+  <path d="M215,288 H185 V88 H213" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrowhead)"/>
   <!-- arrow: syncBaseline → useState -->
-  <line x1="305" y1="270" x2="305" y2="254" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrowhead)"/>
+  <line x1="305" y1="270" x2="305" y2="254" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrowhead)"/>
   <!-- updateField label -->
-  <text x="490" y="262" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6" font-family="ui-monospace,monospace">updateField(key, value)</text>
-  <text x="490" y="276" text-anchor="middle" font-size="9" fill="currentColor" opacity="0.45">only setState, never baseline</text>
-  <line x1="490" y1="256" x2="490" y2="176" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrowhead)"/>
+  <text x="490" y="262" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="ui-monospace,monospace">updateField(key, value)</text>
+  <text x="490" y="276" text-anchor="middle" font-size="9" fill="#6b5f75">only setState, never baseline</text>
+  <line x1="490" y1="256" x2="490" y2="176" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrowhead)"/>
 </svg>
 
 The key insight: `useRef` holds the baseline and mutating it never triggers a re-render. `useMemo` reads `baseline.current` as a captured value inside its factory, so the dirty map is always fresh without being stored in state.
@@ -226,6 +227,71 @@ export function useDirtyTracker<T extends Record<string, unknown>>(
 1. **Mount with placeholder values.** Pass an empty shape (`{ email: '', password: '' }`) as `initialValues`. Both `baseline.current` and `current` start identical, so `dirtyMap` is all-false immediately — no field appears dirty before the user touches anything.
 
 2. **Async hydration resolves.** Call `syncBaseline(serverData)`. The ref update is synchronous, so when `setCurrent` fires and React schedules a render, `useMemo`'s factory already reads the updated `baseline.current`. The resulting `dirtyMap` is still all-false. Without this atomic ordering, the render between `setCurrent` and a deferred baseline update would show every field as dirty for one frame.
+
+Ordering is the whole trick, and it is easier to see as two timelines of the same fetch:
+
+<svg viewBox="0 0 672 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two timelines of the same async hydration. In the deferred-baseline order the render between setCurrent and the baseline update marks every field dirty; in the ref-first order the baseline is written synchronously so the single render already sees a matching baseline and no field is dirty." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Deferred baseline versus ref-first hydration</title>
+  <desc>Top row, deferred baseline: mount with an empty baseline and empty current; server data arrives and setCurrent runs while the baseline is still empty, so the dirty map marks every field; a later effect finally updates the baseline; the reader has already seen a frame of unsaved-changes badges. Bottom row, ref-first: mount identically; the server data is written straight to baseline.current, which is synchronous and schedules no render; setCurrent then triggers one render in which useMemo already reads the new baseline; the reader sees the saved values with no badges.</desc>
+  <rect x="0" y="0" width="672" height="300" fill="#f9f5fb"/>
+  <text x="12" y="24" font-size="12" font-weight="700" fill="#a63d6f" font-family="inherit">Deferred baseline — one render shows every field dirty</text>
+  <rect x="12" y="36" width="150" height="86" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="24" y="58" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">1 · mount</text>
+  <text x="24" y="76" font-size="9.5" fill="#6b5f75" font-family="inherit">baseline = {} (empty)</text>
+  <text x="24" y="90" font-size="9.5" fill="#6b5f75" font-family="inherit">current = {} (empty)</text>
+  <rect x="24" y="98" width="74" height="16" rx="8" fill="#f9f5fb" stroke="#2d6342" stroke-width="1"/>
+  <text x="61" y="109.5" text-anchor="middle" font-size="9" fill="#2d6342" font-family="inherit">dirty: none</text>
+  <path d="M166,74 L174,79 L166,84 Z" fill="#6b5f75"/>
+  <rect x="178" y="36" width="150" height="86" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="190" y="58" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">2 · data arrives</text>
+  <text x="190" y="76" font-size="9.5" fill="#6b5f75" font-family="inherit">setCurrent(server)</text>
+  <text x="190" y="90" font-size="9.5" fill="#6b5f75" font-family="inherit">baseline still empty</text>
+  <rect x="190" y="98" width="66" height="16" rx="8" fill="#f9f5fb" stroke="#a63d6f" stroke-width="1"/>
+  <text x="223" y="109.5" text-anchor="middle" font-size="9" fill="#a63d6f" font-family="inherit">dirty: all</text>
+  <path d="M332,74 L340,79 L332,84 Z" fill="#6b5f75"/>
+  <rect x="344" y="36" width="150" height="86" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="356" y="58" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">3 · effect fires</text>
+  <text x="356" y="76" font-size="9.5" fill="#6b5f75" font-family="inherit">baseline = server</text>
+  <text x="356" y="90" font-size="9.5" fill="#6b5f75" font-family="inherit">one render too late</text>
+  <rect x="356" y="98" width="74" height="16" rx="8" fill="#f9f5fb" stroke="#2d6342" stroke-width="1"/>
+  <text x="393" y="109.5" text-anchor="middle" font-size="9" fill="#2d6342" font-family="inherit">dirty: none</text>
+  <path d="M498,74 L506,79 L498,84 Z" fill="#6b5f75"/>
+  <rect x="510" y="36" width="150" height="86" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="522" y="58" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">4 · reader sees</text>
+  <text x="522" y="76" font-size="9.5" fill="#6b5f75" font-family="inherit">a flash of unsaved</text>
+  <text x="522" y="90" font-size="9.5" fill="#6b5f75" font-family="inherit">badges on every row</text>
+  <rect x="522" y="98" width="70" height="16" rx="8" fill="#f9f5fb" stroke="#a63d6f" stroke-width="1"/>
+  <text x="557" y="109.5" text-anchor="middle" font-size="9" fill="#a63d6f" font-family="inherit">regression</text>
+  <text x="12" y="168" font-size="12" font-weight="700" fill="#2d6342" font-family="inherit">Ref-first — same data, same fetch, no dirty frame</text>
+  <rect x="12" y="180" width="150" height="86" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="24" y="202" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">1 · mount</text>
+  <text x="24" y="220" font-size="9.5" fill="#6b5f75" font-family="inherit">baseline = {} (empty)</text>
+  <text x="24" y="234" font-size="9.5" fill="#6b5f75" font-family="inherit">current = {} (empty)</text>
+  <rect x="24" y="242" width="74" height="16" rx="8" fill="#f9f5fb" stroke="#2d6342" stroke-width="1"/>
+  <text x="61" y="253.5" text-anchor="middle" font-size="9" fill="#2d6342" font-family="inherit">dirty: none</text>
+  <path d="M166,218 L174,223 L166,228 Z" fill="#6b5f75"/>
+  <rect x="178" y="180" width="150" height="86" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="190" y="202" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">2 · data arrives</text>
+  <text x="190" y="220" font-size="9.5" fill="#6b5f75" font-family="inherit">baseline.current =</text>
+  <text x="190" y="234" font-size="9.5" fill="#6b5f75" font-family="inherit">server — no render</text>
+  <rect x="190" y="242" width="72" height="16" rx="8" fill="#f9f5fb" stroke="#7b4f8a" stroke-width="1"/>
+  <text x="226" y="253.5" text-anchor="middle" font-size="9" fill="#7b4f8a" font-family="inherit">sync write</text>
+  <path d="M332,218 L340,223 L332,228 Z" fill="#6b5f75"/>
+  <rect x="344" y="180" width="150" height="86" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="356" y="202" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">3 · setCurrent</text>
+  <text x="356" y="220" font-size="9.5" fill="#6b5f75" font-family="inherit">useMemo reads the</text>
+  <text x="356" y="234" font-size="9.5" fill="#6b5f75" font-family="inherit">new baseline</text>
+  <rect x="356" y="242" width="74" height="16" rx="8" fill="#f9f5fb" stroke="#2d6342" stroke-width="1"/>
+  <text x="393" y="253.5" text-anchor="middle" font-size="9" fill="#2d6342" font-family="inherit">dirty: none</text>
+  <path d="M498,218 L506,223 L498,228 Z" fill="#6b5f75"/>
+  <rect x="510" y="180" width="150" height="86" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="522" y="202" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">4 · reader sees</text>
+  <text x="522" y="220" font-size="9.5" fill="#6b5f75" font-family="inherit">the saved values,</text>
+  <text x="522" y="234" font-size="9.5" fill="#6b5f75" font-family="inherit">no badges anywhere</text>
+  <rect x="522" y="242" width="52" height="16" rx="8" fill="#f9f5fb" stroke="#2d6342" stroke-width="1"/>
+  <text x="548" y="253.5" text-anchor="middle" font-size="9" fill="#2d6342" font-family="inherit">clean</text>
+  <text x="12" y="288" font-size="10" fill="#6b5f75" font-family="inherit">The only difference is that the baseline write is synchronous, so it lands before React renders — not after.</text>
+</svg>
 
 3. **User edits a field.** The `onChange` handler calls `updateField('email', e.target.value)`. Only `current` changes; `baseline.current` is untouched. `useMemo` recomputes and marks `dirtyMap.email = true`.
 
@@ -310,7 +376,46 @@ export function ProfileForm() {
 
 ### 1. Object-valued fields always appear dirty
 
-`!==` compares references, not structure. If a field holds `{ x: 1 }`, two separate object literals are never `===` even when they contain the same data.
+`!==` compares references, not structure. Which comparison a field needs depends entirely on what that field holds:
+
+<svg viewBox="0 0 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison matrix of dirty-detection equality strategies: strict inequality suits primitives at constant cost and is correct; strict inequality on objects is constant cost but always reports dirty; JSON.stringify handles plain objects at a cost proportional to size but is key-order sensitive; a per-key deep equal handles nested objects at a cost proportional to size and is correct when opted into; normalising a field before comparing handles dates, files and numeric strings at constant cost and is the most reliable for typed fields." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Which equality check each field shape needs</title>
+  <desc>Five strategies compared across field shape, cost and verdict. Strict inequality: primitives, constant cost, correct. Strict inequality on object values: objects and arrays, constant cost, always reports dirty. JSON.stringify comparison: plain serialisable objects, cost proportional to value size, key-order sensitive. Per-key deep equal: nested objects, cost proportional to value size, correct but opt in per field. Normalise then compare: dates, File objects and numeric strings, constant cost after normalising, the most reliable option for typed fields.</desc>
+  <rect x="0" y="0" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="10" width="680" height="200" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="10" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="30" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="30" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Comparison</text>
+  <text x="222" y="30" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Field shape it fits</text>
+  <text x="416" y="30" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Cost per key</text>
+  <text x="540" y="30" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Verdict</text>
+  <text x="24" y="60" font-size="10" fill="#1e1a24" font-family="inherit">a !== b</text>
+  <text x="222" y="60" font-size="10" fill="#6b5f75" font-family="inherit">strings, numbers, null</text>
+  <text x="416" y="60" font-size="10" fill="#6b5f75" font-family="inherit">constant</text>
+  <text x="540" y="60" font-size="10" fill="#2d6342" font-family="inherit">correct — the default</text>
+  <line x1="10" y1="74" x2="690" y2="74" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="94" font-size="10" fill="#1e1a24" font-family="inherit">a !== b on objects</text>
+  <text x="222" y="94" font-size="10" fill="#6b5f75" font-family="inherit">objects, arrays</text>
+  <text x="416" y="94" font-size="10" fill="#6b5f75" font-family="inherit">constant</text>
+  <text x="540" y="94" font-size="10" fill="#a63d6f" font-family="inherit">always dirty</text>
+  <line x1="10" y1="108" x2="690" y2="108" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="128" font-size="10" fill="#1e1a24" font-family="inherit">JSON.stringify pair</text>
+  <text x="222" y="128" font-size="10" fill="#6b5f75" font-family="inherit">plain, serialisable</text>
+  <text x="416" y="128" font-size="10" fill="#6b5f75" font-family="inherit">size of value</text>
+  <text x="540" y="128" font-size="10" fill="#b07a55" font-family="inherit">key-order sensitive</text>
+  <line x1="10" y1="142" x2="690" y2="142" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="162" font-size="10" fill="#1e1a24" font-family="inherit">deep equal, per key</text>
+  <text x="222" y="162" font-size="10" fill="#6b5f75" font-family="inherit">nested objects</text>
+  <text x="416" y="162" font-size="10" fill="#6b5f75" font-family="inherit">size of value</text>
+  <text x="540" y="162" font-size="10" fill="#2d6342" font-family="inherit">correct — opt in only</text>
+  <line x1="10" y1="176" x2="690" y2="176" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="196" font-size="10" fill="#1e1a24" font-family="inherit">normalise, then !==</text>
+  <text x="222" y="196" font-size="10" fill="#6b5f75" font-family="inherit">Date, File, "007"</text>
+  <text x="416" y="196" font-size="10" fill="#6b5f75" font-family="inherit">constant</text>
+  <text x="540" y="196" font-size="10" fill="#2d6342" font-family="inherit">most reliable</text>
+</svg>
+
+Back to the reference trap: if a field holds `{ x: 1 }`, two separate object literals are never `===` even when they contain the same data.
 
 ```typescript
 // Fix: serialize object fields before comparing

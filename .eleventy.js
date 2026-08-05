@@ -52,6 +52,23 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "assets/icons/favicon.ico": "favicon.ico" });
   eleventyConfig.addPassthroughCopy({ "assets/robots.txt": "robots.txt" });
 
+  // markdown-it-checkbox closes the <label> at the first inline element, so a
+  // checklist item containing `code` renders as
+  //   <label for="cbx_1">text </label><code>x</code> more text
+  // — content outside the label, and an EMPTY label when the item starts with
+  // code, which leaves the checkbox with no accessible name. Pull everything
+  // between </label> and </li> back inside the label.
+  eleventyConfig.addTransform("checkboxLabelWrap", function (content) {
+    if (!this.page || !(this.page.outputPath || "").endsWith(".html")) return content;
+    return content.replace(
+      /(<input type="checkbox" id="(cbx_\d+)"[^>]*>)<label for="\2">([\s\S]*?)<\/label>([\s\S]*?)<\/li>/g,
+      (whole, input, id, inside, after) =>
+        after.trim() === ""
+          ? whole
+          : `${input}<label for="${id}">${inside}${after}</label></li>`
+    );
+  });
+
   // Filter: strip the first <h1> from rendered content (avoids duplicate with layout)
   eleventyConfig.addFilter("stripFirstH1", (content) => {
     if (typeof content !== "string") return content;

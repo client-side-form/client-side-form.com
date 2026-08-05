@@ -106,39 +106,39 @@ The solution is a dedicated announcer that owns a persistent region, chooses pol
 
 An announcer models each message as a small state machine. A request to announce enters as PENDING; after a debounce window it is committed to the region and becomes ANNOUNCED; the region then returns to IDLE ready for the next message. A superseding request while PENDING replaces the queued text rather than stacking a second announcement.
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 300" role="img" aria-label="Announcer state machine: IDLE receives an announce request and moves to PENDING; after the debounce window it commits text and moves to ANNOUNCED; it then returns to IDLE. A new request while PENDING replaces the queued text." style="max-width:100%;height:auto;display:block;margin:2rem auto;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="34 51 652 216" role="img" aria-label="Announcer state machine: IDLE receives an announce request and moves to PENDING; after the debounce window it commits text and moves to ANNOUNCED; it then returns to IDLE. A new request while PENDING replaces the queued text." style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>Live-Region Announcer State Machine</title>
   <desc>Transitions between IDLE, PENDING, and ANNOUNCED states driven by announce requests, the debounce timer firing, and the screen reader consuming the message.</desc>
-  <rect width="720" height="300" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+  <rect x="34" y="51" width="652" height="216" fill="#f9f5fb"/>
   <defs>
     <marker id="arr-live" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.75"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- IDLE -->
-  <rect x="50" y="120" width="150" height="60" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.75"/>
-  <text x="125" y="146" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">IDLE</text>
-  <text x="125" y="164" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">region empty</text>
+  <rect x="50" y="120" width="150" height="60" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="125" y="146" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">IDLE</text>
+  <text x="125" y="164" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">region empty</text>
   <!-- PENDING -->
-  <rect x="285" y="120" width="150" height="60" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.75"/>
-  <text x="360" y="146" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">PENDING</text>
-  <text x="360" y="164" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">debounce running</text>
+  <rect x="285" y="120" width="150" height="60" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="360" y="146" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">PENDING</text>
+  <text x="360" y="164" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">debounce running</text>
   <!-- ANNOUNCED -->
-  <rect x="520" y="120" width="150" height="60" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.75"/>
-  <text x="595" y="146" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">ANNOUNCED</text>
-  <text x="595" y="164" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">text committed</text>
+  <rect x="520" y="120" width="150" height="60" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="595" y="146" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">ANNOUNCED</text>
+  <text x="595" y="164" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">text committed</text>
   <!-- IDLE -> PENDING -->
-  <path d="M200 150 L283 150" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-live)"/>
-  <text x="241" y="140" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">announce(msg)</text>
+  <path d="M200 150 L283 150" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-live)"/>
+  <text x="241" y="140" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">announce(msg)</text>
   <!-- PENDING -> ANNOUNCED -->
-  <path d="M435 150 L518 150" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-live)"/>
-  <text x="476" y="140" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">timer fires</text>
+  <path d="M435 150 L518 150" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-live)"/>
+  <text x="476" y="140" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">timer fires</text>
   <!-- PENDING self-loop (supersede) -->
-  <path d="M330 120 C310 80 410 80 390 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-live)"/>
-  <text x="360" y="78" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">announce() again &#8594; replace text</text>
+  <path d="M330 120 C310 80 410 80 390 120" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-live)"/>
+  <text x="360" y="78" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">announce() again &#8594; replace text</text>
   <!-- ANNOUNCED -> IDLE -->
-  <path d="M540 180 C440 250 220 250 130 182" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-live)"/>
-  <text x="360" y="248" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">clear() / next tick &#8594; ready for next message</text>
+  <path d="M540 180 C440 250 220 250 130 182" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-live)"/>
+  <text x="360" y="248" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">clear() / next tick &#8594; ready for next message</text>
 </svg>
 
 | Trigger | From state | To state | Side-effect |
@@ -285,6 +285,44 @@ The two-step `textContent = ''` then set-on-microtask is the workaround for the 
 
 ---
 
+### Choosing the region type
+
+The four ways to declare a live region are not interchangeable, and picking the wrong one is the difference between a helpful nudge and a screen reader that talks over the user:
+
+<svg viewBox="0 8 700 216" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of four live region declarations. role=alert interrupts immediately and suits submit-time failures. aria-live=assertive also interrupts and should be reserved for data loss warnings. role=status waits for a pause and suits field-level validation. aria-live=polite also waits and suits progress and character counts." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Which live region declaration to use</title>
+  <desc>Four declarations compared on whether they interrupt speech, what they queue behind, and what they are for. role=alert interrupts immediately, drops whatever is being spoken, and is right for submit-time failure summaries. aria-live=assertive also interrupts and should be reserved for warnings about losing data. role=status waits for the current utterance to finish and is right for field-level validation results. aria-live=polite also waits and suits progress messages and character counts.</desc>
+  <rect x="0" y="8" width="700" height="216" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="194" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Declaration</text>
+  <text x="182" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Interrupts speech?</text>
+  <text x="336" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Implicit role</text>
+  <text x="470" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Reach for it when</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">role="alert"</text>
+  <text x="182" y="66" font-size="10" fill="#a63d6f" font-family="inherit">yes, at once</text>
+  <text x="336" y="66" font-size="10" fill="#6b5f75" font-family="inherit">alert + assertive</text>
+  <text x="470" y="66" font-size="10" fill="#6b5f75" font-family="inherit">submit failed, focus is moving</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">aria-live="assertive"</text>
+  <text x="182" y="100" font-size="10" fill="#a63d6f" font-family="inherit">yes, at once</text>
+  <text x="336" y="100" font-size="10" fill="#6b5f75" font-family="inherit">none implied</text>
+  <text x="470" y="100" font-size="10" fill="#6b5f75" font-family="inherit">session or draft is about to be lost</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">role="status"</text>
+  <text x="182" y="134" font-size="10" fill="#2d6342" font-family="inherit">no, waits its turn</text>
+  <text x="336" y="134" font-size="10" fill="#6b5f75" font-family="inherit">status + polite</text>
+  <text x="470" y="134" font-size="10" fill="#6b5f75" font-family="inherit">a single field just resolved</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">aria-live="polite"</text>
+  <text x="182" y="168" font-size="10" fill="#2d6342" font-family="inherit">no, waits its turn</text>
+  <text x="336" y="168" font-size="10" fill="#6b5f75" font-family="inherit">none implied</text>
+  <text x="470" y="168" font-size="10" fill="#6b5f75" font-family="inherit">counters, progress, saved-draft notes</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#6b5f75" font-family="inherit">Rule of thumb: assertive is a fire alarm. If the message is not worth cutting someone off mid-word, it is polite.</text>
+</svg>
+
 ## Integration Guidance
 
 The announcer is a pure consumer of the normalized error map described in [error state mapping patterns](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/). Inline field errors and the submit summary come from the same source, but they travel through different politeness levels and carry different text.
@@ -317,6 +355,38 @@ For the focus half of the submit response, see [focus management after validatio
 ---
 
 ## Edge Cases and Failure Modes
+
+<svg viewBox="0 8 662 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two timelines of the same failed submit. When the field error is written to a status region and the summary is written to an alert region in the same tick, the screen reader speaks both and the reader hears the error twice. When the summary alone is written and the field region is cleared first, the reader hears it once." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Why one error is announced twice</title>
+  <desc>Top lane: on submit, the field-level status region receives the message and the submit-level alert region receives a summary containing the same sentence, so the screen reader queues both and the reader hears the error twice. Bottom lane: on submit the field-level region is cleared to an empty string first and only the summary is written, so exactly one utterance reaches the reader.</desc>
+  <rect x="0" y="8" width="662" height="210" fill="#f9f5fb"/>
+  <text x="14" y="24" font-size="12" font-weight="700" fill="#a63d6f" font-family="inherit">Both regions written in one tick</text>
+  <rect x="14" y="34" width="196" height="46" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="112" y="53" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">submit handler runs</text>
+  <text x="112" y="70" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">3 fields fail</text>
+  <path d="M210,57 H236" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="236" y="24" width="196" height="30" rx="6" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="334" y="43" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">status region: "Email is required"</text>
+  <rect x="236" y="60" width="196" height="30" rx="6" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="334" y="79" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">alert region: same sentence</text>
+  <path d="M432,57 H458" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="458" y="34" width="190" height="46" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="553" y="53" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">spoken twice</text>
+  <text x="553" y="70" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">reader assumes two errors</text>
+  <text x="14" y="126" font-size="12" font-weight="700" fill="#2d6342" font-family="inherit">Field region cleared before the summary is written</text>
+  <rect x="14" y="136" width="196" height="46" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="112" y="155" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">submit handler runs</text>
+  <text x="112" y="172" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">3 fields fail</text>
+  <path d="M210,159 H236" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="236" y="126" width="196" height="30" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="334" y="145" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="inherit">status region: "" (cleared)</text>
+  <rect x="236" y="162" width="196" height="30" rx="6" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="334" y="181" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">alert region: "3 fields need…"</text>
+  <path d="M432,159 H458" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="458" y="136" width="190" height="46" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="553" y="155" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">spoken once</text>
+  <text x="553" y="172" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">count matches reality</text>
+</svg>
 
 ### The double-announcement bug
 

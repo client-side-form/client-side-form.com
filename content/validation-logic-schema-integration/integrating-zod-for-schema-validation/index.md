@@ -85,20 +85,21 @@ This pattern is part of the broader [Validation Logic & Schema Integration](http
 
 The diagram below shows the full state progression from user input to settled validation outcome. Every transition is driven by an explicit event — no implicit side effects, no fire-and-forget promises.
 
-<svg viewBox="0 0 720 260" role="img" aria-label="State machine diagram showing Zod validation lifecycle from IDLE through VALIDATING to VALID, INVALID, or RETRYABLE states" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;display:block;margin:2rem 0;">
+<svg viewBox="-6 84 682 172" role="img" aria-label="State machine diagram showing Zod validation lifecycle from IDLE through VALIDATING to VALID, INVALID, or RETRYABLE states" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;display:block;margin:2rem 0;">
   <title>Zod Validation Lifecycle State Machine</title>
   <desc>States: IDLE, VALIDATING (sync), ASYNC_PENDING, VALID, INVALID, RETRYABLE. Transitions triggered by onChange, onBlur, abort, resolve, reject, and network error.</desc>
+  <rect x="-6" y="84" width="682" height="172" fill="#f9f5fb"/>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
     <style>
-      .sm-box { fill: none; stroke: currentColor; stroke-width: 1.5; rx: 6; }
-      .sm-active { fill: none; stroke: currentColor; stroke-width: 2; rx: 6; }
-      .sm-label { font: 600 12px/1.4 system-ui,sans-serif; fill: currentColor; }
-      .sm-sublabel { font: 400 10px/1.4 system-ui,sans-serif; fill: currentColor; opacity: .7; }
-      .sm-edge { stroke: currentColor; stroke-width: 1.2; fill: none; marker-end: url(#arrow); opacity: .75; }
-      .sm-edge-label { font: 400 9.5px/1.3 system-ui,sans-serif; fill: currentColor; opacity: .75; }
+      .sm-box { fill: var(--svg-card, #ede5f2); stroke: var(--svg-stroke, #cbb8d9); stroke-width: 1.5; rx: 6; }
+      .sm-active { fill: var(--svg-card-alt, #e2d6ec); stroke: var(--svg-accent, #7b4f8a); stroke-width: 2; rx: 6; }
+      .sm-label { font: 600 12px/1.4 system-ui,sans-serif; fill: var(--svg-ink, #1e1a24); }
+      .sm-sublabel { font: 400 10px/1.4 system-ui,sans-serif; fill: var(--svg-ink-muted, #6b5f75); }
+      .sm-edge { stroke: var(--svg-accent, #7b4f8a); stroke-width: 1.2; fill: none; marker-end: url(#arrow); }
+      .sm-edge-label { font: 400 9.5px/1.3 system-ui,sans-serif; fill: var(--svg-ink-muted, #6b5f75); }
     </style>
   </defs>
   <!-- IDLE -->
@@ -331,6 +332,54 @@ For [cross-field dependency rules](https://www.client-side-form.com/validation-l
 
 ---
 
+## Parse, safeParse, and the Boundary They Draw
+
+The choice between `parse` and `safeParse` is not a style preference — it decides where invalid data stops being an exception and starts being state. A form has exactly one place where that transition should happen, and putting it anywhere else produces either swallowed errors or a crashed render.
+
+`parse` throws a `ZodError`. That is the right shape at a trust boundary you control, where invalid input is genuinely exceptional: a config file that must be well-formed for the application to start, or a server response whose contract you have already agreed. `safeParse` returns a discriminated result instead, which is the right shape everywhere the input is a person typing — because a half-finished email address is not an exceptional condition, it is the normal state of a form that is being filled in.
+
+```typescript
+// At the form boundary: invalid is expected, so never throw.
+const result = schema.safeParse(values);
+if (!result.success) {
+  // result.error.issues is data. Map it, render it, announce it.
+  return toFieldErrorMap(result.error.issues);
+}
+// result.data is fully typed AND coerced — use it, not `values`.
+return submit(result.data);
+```
+
+The last line carries the point that is easiest to miss. `safeParse` returns *transformed* output, so a schema with `z.coerce.number()` or a `.transform()` gives back a value whose type differs from the input. Submitting `values` instead of `result.data` throws away every coercion the schema performed and sends the server the raw strings the DOM produced, which is how a form that validates correctly still posts `"7"` where the API expects `7`.
+
+<svg viewBox="0 8 690 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of parse and safeParse across four questions: what happens on invalid input, whether the caller needs a try-catch, where the transformed data comes from, and which boundary each belongs at." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Which boundary each entry point belongs at</title>
+  <desc>On invalid input, parse throws a ZodError while safeParse returns a result object whose success flag is false. Parse therefore requires the caller to wrap it in a try-catch, while safeParse requires only a branch. Both give transformed output — parse as its return value, safeParse as result.data — and in both cases the transformed value, not the raw input, is what should be submitted. Parse belongs at boundaries where invalid input is exceptional, such as configuration and startup; safeParse belongs at boundaries where invalid input is the normal state, which is every form.</desc>
+  <rect x="0" y="8" width="690" height="220" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Question</text>
+  <text x="264" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">parse</text>
+  <text x="450" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">safeParse</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">on invalid input</text>
+  <text x="264" y="66" font-size="10" fill="#a63d6f" font-family="inherit">throws a ZodError</text>
+  <text x="450" y="66" font-size="10" fill="#2d6342" font-family="inherit">returns success: false</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">caller must write</text>
+  <text x="264" y="100" font-size="10" fill="#6b5f75" font-family="inherit">try / catch</text>
+  <text x="450" y="100" font-size="10" fill="#6b5f75" font-family="inherit">an if</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">transformed output</text>
+  <text x="264" y="134" font-size="10" fill="#6b5f75" font-family="inherit">the return value</text>
+  <text x="450" y="134" font-size="10" fill="#6b5f75" font-family="inherit">result.data — submit this</text>
+  <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">belongs at</text>
+  <text x="264" y="168" font-size="10" fill="#6b5f75" font-family="inherit">config, startup, contracts</text>
+  <text x="450" y="168" font-size="10" fill="#7b4f8a" font-family="inherit">every form, always</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Row three is the quiet one: submitting the raw values instead of result.data discards every coercion the schema performed.</text>
+  <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">Symptom: the form validates, the request is rejected, and the server complains about a type the schema had already fixed.</text>
+</svg>
+
 ## Edge Cases and Failure Modes
 
 **Concurrency: stale async results**
@@ -379,6 +428,31 @@ When the backend adds a new required field, clients using a cached schema build 
 | Shared schema rejected by backend but passes client | Backend Zod version differs; `.email()` regex changed across versions | Pin exact Zod version in both `package.json` files; add a backend contract test |
 
 ---
+
+One structural decision underlies all of this: whether a form owns one schema or one schema per field. Both are legitimate, and they fail differently.
+
+<svg viewBox="0 8 664 216" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two schema decompositions: a single object schema for the whole form, and one schema per field composed into an object. The first expresses cross-field rules naturally but validates everything on every keystroke; the second validates one field cheaply but cannot express a rule spanning two fields." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>One schema for the form, or one per field</title>
+  <desc>A single object schema: cross-field refinements are natural because the whole value is in scope, the submit path is one call, but validating a single field means parsing the entire object or reaching into the shape to pull out one field's schema. One schema per field, composed into an object for submit: per-field validation is a single cheap call, but a rule spanning two fields has nowhere to live except the composed schema, so you end up with both. The practical answer is to keep per-field schemas as the units, compose them for submit, and put cross-field rules on the composition — which is what the object plus superRefine shape gives you.</desc>
+  <rect x="0" y="8" width="664" height="216" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">one object schema</text>
+  <rect x="14" y="36" width="304" height="112" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="28" y="58" font-size="10" fill="#2d6342" font-family="inherit">cross-field rules are natural</text>
+  <text x="28" y="80" font-size="10" fill="#2d6342" font-family="inherit">submit is a single call</text>
+  <text x="28" y="102" font-size="10" fill="#a63d6f" font-family="inherit">one field means parsing all of it</text>
+  <text x="28" y="124" font-size="10" fill="#6b5f75" font-family="inherit">or reaching into .shape by hand</text>
+  <text x="28" y="142" font-size="9.5" fill="#6b5f75" font-family="inherit">fine below ~20 fields</text>
+  <text x="346" y="26" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">one schema per field</text>
+  <rect x="346" y="36" width="304" height="112" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="360" y="58" font-size="10" fill="#2d6342" font-family="inherit">per-field validation is cheap</text>
+  <text x="360" y="80" font-size="10" fill="#2d6342" font-family="inherit">each unit is testable alone</text>
+  <text x="360" y="102" font-size="10" fill="#a63d6f" font-family="inherit">a two-field rule has no home</text>
+  <text x="360" y="124" font-size="10" fill="#6b5f75" font-family="inherit">so you compose anyway</text>
+  <text x="360" y="142" font-size="9.5" fill="#6b5f75" font-family="inherit">scales, with more wiring</text>
+  <text x="14" y="180" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">Take both: per-field schemas as the units, composed into an object, cross-field rules on the composition</text>
+  <text x="14" y="198" font-size="10" fill="#6b5f75" font-family="inherit">z.object(fieldSchemas).superRefine(crossFieldRules) — per-field calls stay cheap and the composed schema owns the rest.</text>
+  <text x="14" y="218" font-size="10" fill="#6b5f75" font-family="inherit">Keep the field schemas in one module so a rule and its message live together, whichever level ends up evaluating them.</text>
+</svg>
 
 ## Testing and QA Hooks
 

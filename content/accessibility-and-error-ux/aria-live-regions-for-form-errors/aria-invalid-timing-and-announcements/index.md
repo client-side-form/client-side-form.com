@@ -3,7 +3,7 @@ layout: page.njk
 title: "aria-invalid Timing and Screen Reader Announcements"
 description: "When to flip aria-invalid true — only after a field is touched or the form submits, never on pristine — and how to debounce so screen readers do not announce mid-typing."
 slug: aria-invalid-timing-and-announcements
-type: guide
+type: howto
 breadcrumb: "aria-invalid Timing"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -93,32 +93,33 @@ The subtle part is the debounce. Even a touched field should not re-announce on 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 300" role="img" aria-label="State machine showing aria-invalid transitions from pristine through touched to invalid and corrected" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>aria-invalid lifecycle relative to interaction state</title>
   <desc>Transitions from PRISTINE with no aria-invalid, to TOUCHED on blur, to INVALID after a debounce when the value fails, and back to VALID when corrected, with submit forcing all fields to evaluate.</desc>
-  <rect width="720" height="300" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
-  <rect x="40" y="120" width="150" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="115" y="143" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">PRISTINE</text>
-  <text x="115" y="161" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">no aria-invalid</text>
-  <rect x="285" y="120" width="150" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="360" y="143" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">TOUCHED</text>
-  <text x="360" y="161" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">eligible to flag</text>
-  <rect x="530" y="40" width="150" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="605" y="63" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">INVALID</text>
-  <text x="605" y="81" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">aria-invalid=true</text>
-  <rect x="530" y="200" width="150" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="605" y="223" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">VALID</text>
-  <text x="605" y="241" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">aria-invalid=false</text>
-  <path d="M190 148 L285 148" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-ariainvalid)"/>
-  <text x="237" y="140" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">blur</text>
-  <path d="M435 138 C490 115 500 95 530 82" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-ariainvalid)"/>
-  <text x="470" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">debounce + fail</text>
-  <path d="M435 158 C490 185 500 205 530 218" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-ariainvalid)"/>
-  <text x="470" y="200" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">debounce + pass</text>
-  <path d="M560 200 C540 160 555 120 575 96" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" stroke-dasharray="5 3" marker-end="url(#arr-ariainvalid)"/>
-  <text x="512" y="150" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">re-fail</text>
-  <path d="M115 120 C130 60 300 45 500 55 L528 60" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" stroke-dasharray="4 3" marker-end="url(#arr-ariainvalid)"/>
-  <text x="300" y="40" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">submit forces evaluation of pristine fields</text>
+  <rect x="0" y="0" width="720" height="300" fill="#f9f5fb"/>
+  <rect width="720" height="300" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
+  <rect x="40" y="120" width="150" height="56" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="115" y="143" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">PRISTINE</text>
+  <text x="115" y="161" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">no aria-invalid</text>
+  <rect x="285" y="120" width="150" height="56" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="360" y="143" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">TOUCHED</text>
+  <text x="360" y="161" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">eligible to flag</text>
+  <rect x="530" y="40" width="150" height="56" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="605" y="63" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">INVALID</text>
+  <text x="605" y="81" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">aria-invalid=true</text>
+  <rect x="530" y="200" width="150" height="56" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="605" y="223" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">VALID</text>
+  <text x="605" y="241" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">aria-invalid=false</text>
+  <path d="M190 148 L285 148" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-ariainvalid)"/>
+  <text x="237" y="140" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">blur</text>
+  <path d="M435 138 C490 115 500 95 530 82" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-ariainvalid)"/>
+  <text x="470" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">debounce + fail</text>
+  <path d="M435 158 C490 185 500 205 530 218" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-ariainvalid)"/>
+  <text x="470" y="200" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">debounce + pass</text>
+  <path d="M560 200 C540 160 555 120 575 96" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-ariainvalid)"/>
+  <text x="512" y="150" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">re-fail</text>
+  <path d="M115 120 C130 60 300 45 500 55 L528 60" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr-ariainvalid)"/>
+  <text x="300" y="40" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">submit forces evaluation of pristine fields</text>
   <defs>
     <marker id="arr-ariainvalid" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
 </svg>
@@ -233,6 +234,39 @@ class AriaInvalidController {
 
 ---
 
+Laid out end to end, the pipeline has a silent half and a speaking half, and every timing bug is a write that happened in the wrong half:
+
+<svg viewBox="0 8 666 148" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pipeline from keystroke to announcement in five stages. The first two stages, the input event and the debounce window, are a silent zone in which no ARIA attribute may be written. The last three stages — validate, set aria-invalid, and swap the live region text — are the announcing zone." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The silent half and the speaking half of the announcement pipeline</title>
+  <desc>Five stages left to right: input event with the value changing; a debounce window of about four hundred milliseconds during which nothing is written; validation, which computes the error; setting aria-invalid, which happens only on blur or submit; and swapping the live region text, which is what the screen reader actually speaks. A bracket under the first two stages marks them as the silent zone where no ARIA write may happen, and a bracket under the last three marks them as the announcing zone.</desc>
+  <rect x="0" y="8" width="666" height="148" fill="#f9f5fb"/>
+  <text x="14" y="22" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">One keystroke, one announcement — and only at the end</text>
+  <rect x="14" y="32" width="118" height="56" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="73" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">input event</text>
+  <text x="73" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">value changes</text>
+  <rect x="144" y="32" width="118" height="56" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="203" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">debounce 400ms</text>
+  <text x="203" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">timer pending</text>
+  <rect x="274" y="32" width="118" height="56" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="333" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">validate</text>
+  <text x="333" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">error computed</text>
+  <rect x="404" y="32" width="118" height="56" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="463" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">aria-invalid</text>
+  <text x="463" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">blur or submit only</text>
+  <rect x="534" y="32" width="118" height="56" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="593" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">live region</text>
+  <text x="593" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">text swapped</text>
+  <path d="M136,60 H142" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M266,60 H272" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M396,60 H402" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M526,60 H532" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M14,98 V106 H262 V98" fill="none" stroke="#a63d6f" stroke-width="1.4"/>
+  <text x="138" y="122" text-anchor="middle" font-size="10" fill="#a63d6f" font-family="inherit">silent zone — write no ARIA here</text>
+  <path d="M274,98 V106 H652 V98" fill="none" stroke="#2d6342" stroke-width="1.4"/>
+  <text x="463" y="122" text-anchor="middle" font-size="10" fill="#2d6342" font-family="inherit">announcing zone — one write, one utterance</text>
+  <text x="14" y="146" font-size="10" fill="#6b5f75" font-family="inherit">Every "it announced too early" bug is an ARIA write that leaked left of the divide.</text>
+</svg>
+
 ## Failure modes and edge cases
 
 ### aria-invalid on load
@@ -273,6 +307,39 @@ If the error region is `aria-live="assertive"` and you commit on input rather th
 If both `aria-invalid` flipping and the live-region message land in the same tick, JAWS may read the field's new invalid state *and* the summary. Announce the summary from `onSubmit`, but let per-field `aria-invalid` changes be silent during a submit flush by suppressing `announce` when `submitted` is true and delegating the single summary announcement to the form controller.
 
 ---
+
+Turning that into a rule you can apply at the call site, the decision has only three inputs:
+
+<svg viewBox="0 8 620 236" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Decision tree for setting aria-invalid. If the field has never been blurred and the form has not been submitted, leave the attribute unset. If it has been blurred or submitted and the value is valid, set aria-invalid to false. If it has been blurred or submitted and the value is invalid, set aria-invalid to true and update the described-by message." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>When aria-invalid may be written</title>
+  <desc>A decision tree. First question: has this field been blurred, or has the form been submitted? If no, leave aria-invalid unset entirely — the user is still typing. If yes, second question: does the value pass validation? If it passes, set aria-invalid to false. If it fails, set aria-invalid to true and swap the message the field is described by.</desc>
+  <rect x="0" y="8" width="620" height="236" fill="#f9f5fb"/>
+  <rect x="14" y="16" width="230" height="52" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="129" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">Blurred, or form submitted?</text>
+  <text x="129" y="55" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">the only gate that matters</text>
+  <path d="M129,68 V96 H14" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <text x="70" y="90" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="inherit">no</text>
+  <rect x="14" y="104" width="230" height="52" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="129" y="126" text-anchor="middle" font-size="11" font-weight="700" fill="#a63d6f" font-family="inherit">leave the attribute off</text>
+  <text x="129" y="143" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">no aria-invalid, no message</text>
+  <path d="M244,42 H300" stroke="#7b4f8a" stroke-width="1.4"/>
+  <text x="272" y="34" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="inherit">yes</text>
+  <rect x="300" y="16" width="200" height="52" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="400" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">Does the value pass?</text>
+  <text x="400" y="55" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">run the validator now</text>
+  <path d="M400,68 V96 H360" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M400,68 V96 H480" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="284" y="104" width="152" height="52" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="360" y="126" text-anchor="middle" font-size="11" font-weight="700" fill="#2d6342" font-family="inherit">aria-invalid="false"</text>
+  <text x="360" y="143" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">clear the message</text>
+  <rect x="452" y="104" width="152" height="52" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="528" y="126" text-anchor="middle" font-size="11" font-weight="700" fill="#a63d6f" font-family="inherit">aria-invalid="true"</text>
+  <text x="528" y="143" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">swap described-by text</text>
+  <text x="14" y="186" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Why the left branch is not aria-invalid="false"</text>
+  <text x="14" y="204" font-size="10" fill="#6b5f75" font-family="inherit">An explicit "false" is a claim that the field was checked and passed. On an untouched field that is a lie,</text>
+  <text x="14" y="220" font-size="10" fill="#6b5f75" font-family="inherit">and some screen readers voice the state change, so the reader hears "valid" for a field they never filled in.</text>
+  <text x="14" y="236" font-size="10" fill="#6b5f75" font-family="inherit">Absent means "not yet judged" — the only honest state before first blur.</text>
+</svg>
 
 ## Verification checklist
 

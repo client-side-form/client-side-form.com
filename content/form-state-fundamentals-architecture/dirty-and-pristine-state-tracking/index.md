@@ -99,48 +99,49 @@ The pattern described here separates them at the adapter boundary: `update()` fo
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" role="img" aria-label="Dirty and pristine state machine diagram" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>Dirty and Pristine State Machine</title>
   <desc>State transitions between PRISTINE, DIRTY, VALIDATING, and RESET states triggered by user input, hydration, blur, and submit events.</desc>
+  <rect x="0" y="0" width="720" height="340" fill="#f9f5fb"/>
   <!-- Background -->
-  <rect width="720" height="340" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+  <rect width="720" height="340" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
   <!-- State nodes -->
   <!-- PRISTINE -->
-  <rect x="40" y="130" width="130" height="54" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="105" y="152" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">PRISTINE</text>
-  <text x="105" y="170" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.65">isDirty: false</text>
+  <rect x="40" y="130" width="130" height="54" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="105" y="152" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">PRISTINE</text>
+  <text x="105" y="170" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">isDirty: false</text>
   <!-- DIRTY -->
-  <rect x="295" y="50" width="130" height="54" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="360" y="72" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">DIRTY</text>
-  <text x="360" y="90" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.65">isDirty: true</text>
+  <rect x="295" y="50" width="130" height="54" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="360" y="72" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">DIRTY</text>
+  <text x="360" y="90" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">isDirty: true</text>
   <!-- VALIDATING -->
-  <rect x="295" y="230" width="130" height="54" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="360" y="252" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">VALIDATING</text>
-  <text x="360" y="270" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.65">async in-flight</text>
+  <rect x="295" y="230" width="130" height="54" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="360" y="252" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">VALIDATING</text>
+  <text x="360" y="270" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">async in-flight</text>
   <!-- RESET / HYDRATED -->
-  <rect x="550" y="130" width="130" height="54" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="615" y="152" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">RESET</text>
-  <text x="615" y="170" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.65">new baseline set</text>
+  <rect x="550" y="130" width="130" height="54" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="615" y="152" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">RESET</text>
+  <text x="615" y="170" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">new baseline set</text>
   <!-- Arrows -->
   <!-- PRISTINE → DIRTY (user input) -->
-  <path d="M170 145 C220 100 260 80 295 77" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr)"/>
-  <text x="220" y="96" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">update(field, value)</text>
+  <path d="M170 145 C220 100 260 80 295 77" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="220" y="96" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">update(field, value)</text>
   <!-- DIRTY → VALIDATING (blur) -->
-  <path d="M360 104 L360 230" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr)"/>
-  <text x="380" y="172" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">onBlur / submit</text>
+  <path d="M360 104 L360 230" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="380" y="172" font-family="inherit" font-size="10" fill="#6b5f75">onBlur / submit</text>
   <!-- VALIDATING → DIRTY (result) -->
-  <path d="M330 230 C290 200 320 140 325 104" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" stroke-dasharray="5 3" marker-end="url(#arr)"/>
-  <text x="265" y="180" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">VALID / INVALID</text>
+  <path d="M330 230 C290 200 320 140 325 104" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr)"/>
+  <text x="265" y="180" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">VALID / INVALID</text>
   <!-- DIRTY → RESET (reset/hydrate) -->
-  <path d="M425 77 C500 60 540 110 550 145" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr)"/>
-  <text x="510" y="88" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">reset() / hydrate()</text>
+  <path d="M425 77 C500 60 540 110 550 145" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="510" y="88" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">reset() / hydrate()</text>
   <!-- RESET → PRISTINE -->
-  <path d="M550 170 C490 210 240 195 170 168" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr)"/>
-  <text x="360" y="210" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">new pristine baseline</text>
+  <path d="M550 170 C490 210 240 195 170 168" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="360" y="210" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">new pristine baseline</text>
   <!-- PRISTINE self-loop (hydrate on mount) -->
-  <path d="M105 130 C85 95 60 85 55 110 C50 125 68 135 105 133" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr)"/>
-  <text x="35" y="96" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">hydrate()</text>
+  <path d="M105 130 C85 95 60 85 55 110 C50 125 68 135 105 133" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="35" y="96" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">hydrate()</text>
   <!-- Arrow marker -->
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
 </svg>
@@ -303,6 +304,45 @@ Pass the appropriate normalizer as the `FieldEqualityFn` in the registry, or cal
 
 ---
 
+### Which writes are allowed to make a form dirty
+
+"Dirty" is not a property of the value; it is a claim about who changed it. Six write paths reach a typical field and only two of them represent a decision by the reader:
+
+<svg viewBox="0 8 700 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Six write paths into a field and whether each should set the dirty flag: typing and pasting should, browser autofill should because it represents an accepted suggestion, a programmatic reset should not, a server sync after save should not, and a draft restore should not because the draft already carried its own dirty state." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Which write paths count as user intent</title>
+  <desc>Typing sets dirty, because it is the reader changing their mind. Pasting sets dirty for the same reason. Browser autofill sets dirty, because the reader accepted a suggestion and the value now differs from what was loaded. A programmatic reset does not set dirty; it re-establishes the baseline instead. A server sync after a successful save does not set dirty; it moves the baseline forward to the saved values. Restoring a saved draft does not set dirty by itself; the dirty flags stored alongside the draft are restored with it.</desc>
+  <rect x="0" y="8" width="700" height="240" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Write path</text>
+  <text x="192" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Sets dirty?</text>
+  <text x="300" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">What it does to the baseline</text>
+  <text x="24" y="64" font-size="10" fill="#1e1a24" font-family="inherit">reader types</text>
+  <text x="192" y="64" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
+  <text x="300" y="64" font-size="10" fill="#6b5f75" font-family="inherit">nothing — the baseline is the comparison point</text>
+  <line x1="10" y1="76" x2="690" y2="76" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="98" font-size="10" fill="#1e1a24" font-family="inherit">reader pastes</text>
+  <text x="192" y="98" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
+  <text x="300" y="98" font-size="10" fill="#6b5f75" font-family="inherit">nothing</text>
+  <line x1="10" y1="110" x2="690" y2="110" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="132" font-size="10" fill="#1e1a24" font-family="inherit">browser autofill</text>
+  <text x="192" y="132" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
+  <text x="300" y="132" font-size="10" fill="#6b5f75" font-family="inherit">nothing — an accepted suggestion is a choice</text>
+  <line x1="10" y1="144" x2="690" y2="144" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="166" font-size="10" fill="#1e1a24" font-family="inherit">programmatic reset</text>
+  <text x="192" y="166" font-size="10" fill="#a63d6f" font-family="inherit">no</text>
+  <text x="300" y="166" font-size="10" fill="#6b5f75" font-family="inherit">values snap back to it; flags clear</text>
+  <line x1="10" y1="178" x2="690" y2="178" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="200" font-size="10" fill="#1e1a24" font-family="inherit">server sync after save</text>
+  <text x="192" y="200" font-size="10" fill="#a63d6f" font-family="inherit">no</text>
+  <text x="300" y="200" font-size="10" fill="#6b5f75" font-family="inherit">baseline moves forward to the saved values</text>
+  <line x1="10" y1="212" x2="690" y2="212" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="234" font-size="10" fill="#1e1a24" font-family="inherit">draft restore</text>
+  <text x="192" y="234" font-size="10" fill="#b07a55" font-family="inherit">restored</text>
+  <text x="300" y="234" font-size="10" fill="#6b5f75" font-family="inherit">the draft carries its own flags — do not recompute</text>
+</svg>
+
 ## Integration Guidance
 
 Dirty and pristine tracking sits between raw DOM events and the [form validation lifecycle](https://www.client-side-form.com/form-state-fundamentals-architecture/form-validation-lifecycle/) pipeline. The adapter answers two questions that other subsystems depend on:
@@ -395,6 +435,39 @@ function onReset(): void {
 | Stale validation error shown after form reset | In-flight `AbortController` was not cancelled on reset | Call `abortController.abort()` before `adapter.reset()` |
 
 ---
+
+Even with the right write path, a raw comparison produces false positives, because the value the reader sees and the value the browser stores are rarely byte-identical. Normalise before comparing:
+
+<svg viewBox="0 8 668 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Normalisation pipeline before a dirty comparison. The raw DOM string passes through trimming, empty-to-null coercion, and type coercion for numbers and dates, before being compared with the identically normalised baseline value." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Normalise both sides before you compare them</title>
+  <desc>The raw value read from the DOM is always a string. It is trimmed of leading and trailing whitespace, then an empty string is coerced to null so that a field cleared by the reader compares equal to a field that was never filled, then numeric and date fields are coerced to their real types so that the string zero-zero-seven and the number seven compare equal. The baseline value is put through the identical pipeline, and only then are the two compared. Skipping any stage produces a field that reports itself dirty for a change the reader cannot see.</desc>
+  <rect x="0" y="8" width="668" height="214" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">Both sides go through the same pipeline, or neither does</text>
+  <rect x="14" y="36" width="128" height="56" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="78" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">raw value</text>
+  <text x="78" y="75" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">always a string</text>
+  <path d="M142,64 H164" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="164" y="36" width="128" height="56" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="228" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">trim</text>
+  <text x="228" y="75" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">" ada " to "ada"</text>
+  <path d="M292,64 H314" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="314" y="36" width="128" height="56" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="378" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">empty to null</text>
+  <text x="378" y="75" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">cleared = never set</text>
+  <path d="M442,64 H464" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="464" y="36" width="128" height="56" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="528" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">coerce type</text>
+  <text x="528" y="75" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">"007" to 7, ISO date</text>
+  <rect x="164" y="118" width="128" height="56" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="228" y="140" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">baseline value</text>
+  <text x="228" y="157" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">same three stages</text>
+  <path d="M292,146 H464" stroke="#6b5f75" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <rect x="464" y="118" width="128" height="56" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="528" y="140" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">compare</text>
+  <text x="528" y="157" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">now a fair test</text>
+  <text x="14" y="200" font-size="10" fill="#6b5f75" font-family="inherit">Skip the trim and a trailing space the reader cannot see makes the save button light up.</text>
+  <text x="14" y="216" font-size="10" fill="#6b5f75" font-family="inherit">Skip the coercion and a number field loaded as 7 and rendered as "7" is dirty from the moment it mounts.</text>
+</svg>
 
 ## Testing and QA Hooks
 

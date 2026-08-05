@@ -3,7 +3,7 @@ layout: page.njk
 title: "Svelte 5 Runes Migration for Form Stores"
 description: "Migrate a writable-store form model to Svelte 5 $state/$derived/$effect runes — with equivalences, deep-proxy gotchas, $effect cleanup, and cross-component sharing via .svelte.ts."
 slug: svelte-5-runes-migration-for-form-stores
-type: guide
+type: howto
 breadcrumb: "Svelte 5 Runes Migration"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -190,6 +190,39 @@ export function createLoginForm(initial: LoginForm) {
 
 ---
 
+The migration is mostly mechanical, and holding the equivalences in one picture keeps it that way:
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Store to rune equivalences: writable becomes state, derived becomes derived, the dollar prefix becomes a plain read, subscribe becomes an effect, and get becomes a plain read. Each row notes the semantic difference that is not purely syntactic." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Store idiom to rune idiom, with the differences that are not cosmetic</title>
+  <desc>A writable store becomes state, and the difference is that state is deeply reactive while a writable is replaced wholesale, so mutating a nested property now notifies where before it did not. A derived store becomes derived, and dependencies are now tracked automatically rather than declared, which removes the wrong-dependency-list failure entirely. The dollar prefix becomes a plain property read, which works in modules as well as components. Subscribe becomes an effect, whose cleanup is returned rather than being a separate unsubscribe you hold. Get becomes a plain read, with the caveat that reading inside an effect creates a dependency where get did not.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Stores</text>
+  <text x="160" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Runes</text>
+  <text x="300" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">The difference that is not syntax</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">writable(v)</text>
+  <text x="160" y="66" font-size="10" fill="#6b5f75" font-family="inherit">$state(v)</text>
+  <text x="300" y="66" font-size="10" fill="#7b4f8a" font-family="inherit">deeply reactive — nested mutation now notifies</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">derived([a,b], fn)</text>
+  <text x="160" y="100" font-size="10" fill="#6b5f75" font-family="inherit">$derived(fn)</text>
+  <text x="300" y="100" font-size="10" fill="#2d6342" font-family="inherit">deps tracked, not declared — one bug class gone</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">$values in markup</text>
+  <text x="160" y="134" font-size="10" fill="#6b5f75" font-family="inherit">values</text>
+  <text x="300" y="134" font-size="10" fill="#2d6342" font-family="inherit">works in modules too, not only components</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">store.subscribe(fn)</text>
+  <text x="160" y="168" font-size="10" fill="#6b5f75" font-family="inherit">$effect(fn)</text>
+  <text x="300" y="168" font-size="10" fill="#7b4f8a" font-family="inherit">cleanup is returned from the effect body</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">get(store)</text>
+  <text x="160" y="202" font-size="10" fill="#6b5f75" font-family="inherit">values</text>
+  <text x="300" y="202" font-size="10" fill="#a63d6f" font-family="inherit">inside an effect this creates a dependency</text>
+</svg>
+
 ## Failure modes and fixes
 
 ### 1. Nested mutation on a detached snapshot loses reactivity
@@ -253,6 +286,28 @@ Passing a proxied `$state` object directly to `structuredClone`, `postMessage`, 
 
 ---
 
+That last row is the one that bites during a migration, because the old code deliberately used `get` to read *without* subscribing:
+
+<svg viewBox="0 8 664 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A validation effect that reads both the values and the baseline. Under stores, get(baseline) read it without subscribing, so the effect ran only when values changed. Under runes, reading baseline inside the effect subscribes to it too, so the effect now also runs whenever the baseline changes, which a syncBaseline call does." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>get() did not subscribe; a plain read does</title>
+  <desc>Before: an effect subscribed to values with the dollar prefix and read the baseline with get, which deliberately did not create a subscription, so the effect ran once per value change. After a naive migration: the same effect reads both as plain properties, which subscribes to both, so it now also runs whenever the baseline is replaced — and syncBaseline replaces it after every save, re-running validation for no reason and potentially announcing results the reader did not ask for. The fix is to read the baseline through untrack, which is the rune equivalent of the old get.</desc>
+  <rect x="0" y="8" width="664" height="214" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">before — one dependency, on purpose</text>
+  <rect x="14" y="36" width="304" height="92" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="28" y="58" font-size="10" fill="#6b5f75" font-family="inherit">reads $values → subscribes</text>
+  <text x="28" y="80" font-size="10" fill="#6b5f75" font-family="inherit">reads get(baseline) → does not</text>
+  <text x="28" y="102" font-size="10" fill="#2d6342" font-family="inherit">runs when values change. Only then.</text>
+  <text x="346" y="26" font-size="11.5" font-weight="700" fill="#a63d6f" font-family="inherit">after a naive migration — two</text>
+  <rect x="346" y="36" width="304" height="92" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="360" y="58" font-size="10" fill="#6b5f75" font-family="inherit">reads values → subscribes</text>
+  <text x="360" y="80" font-size="10" fill="#6b5f75" font-family="inherit">reads baseline → also subscribes</text>
+  <text x="360" y="102" font-size="10" fill="#a63d6f" font-family="inherit">also runs after every syncBaseline</text>
+  <rect x="14" y="144" width="636" height="46" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="28" y="164" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">The fix: untrack(() =&gt; baseline) is the rune spelling of the old get()</text>
+  <text x="28" y="182" font-size="9.5" fill="#6b5f75" font-family="inherit">Read it, do not depend on it — the same intent the original code expressed by choosing get over the $ prefix.</text>
+  <text x="14" y="212" font-size="10" fill="#6b5f75" font-family="inherit">Symptom to look for: validation re-running, and errors re-announcing, immediately after a successful save.</text>
+</svg>
+
 ## Verification checklist
 
 - [ ] Editing every field (including nested objects and array items) updates isDirty and errors.
@@ -266,6 +321,43 @@ Passing a proxied `$state` object directly to `structuredClone`, `postMessage`, 
 - [ ] Build passes with no "rune outside .svelte" or "cannot export reassignable binding" warnings.
 
 ---
+
+## Migrating incrementally rather than in one commit
+
+Runes and stores interoperate, which means the migration does not have to be atomic. Ordering it by dependency direction keeps every intermediate commit shippable.
+
+<svg viewBox="0 8 668 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four migration stages in dependency order: convert leaf derived stores first, then the writable values store, then the components that read them, and finally delete the compatibility bridges. Each stage is independently shippable." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Four shippable stages, in dependency order</title>
+  <desc>Stage one: convert the leaf derived stores — the dirty map, validity, can-submit — since nothing depends on them except the view, and expose each through a small readable bridge so existing consumers keep working. Stage two: convert the writable values store to state, keeping the same bridge so components are untouched. Stage three: convert the components, replacing the dollar prefix with plain reads and deleting their bridges one by one. Stage four: delete the remaining bridges and the compatibility helpers. Every stage compiles and ships on its own, so the migration can pause indefinitely at any point.</desc>
+  <rect x="0" y="8" width="668" height="210" fill="#f9f5fb"/>
+  <rect x="14" y="34" width="150" height="80" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="89" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">1 · leaf deriveds</text>
+  <text x="89" y="76" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">dirty, validity,</text>
+  <text x="89" y="90" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">canSubmit</text>
+  <text x="89" y="106" text-anchor="middle" font-size="9" fill="#2d6342" font-family="inherit">bridge kept</text>
+  <path d="M164,74 H186" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="186" y="34" width="150" height="80" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="261" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">2 · the values store</text>
+  <text x="261" y="76" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">writable becomes</text>
+  <text x="261" y="90" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">$state</text>
+  <text x="261" y="106" text-anchor="middle" font-size="9" fill="#2d6342" font-family="inherit">components untouched</text>
+  <path d="M336,74 H358" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="358" y="34" width="150" height="80" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="433" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">3 · the components</text>
+  <text x="433" y="76" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">$ prefix becomes</text>
+  <text x="433" y="90" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">a plain read</text>
+  <text x="433" y="106" text-anchor="middle" font-size="9" fill="#2d6342" font-family="inherit">one file at a time</text>
+  <path d="M508,74 H530" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="530" y="34" width="118" height="80" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="589" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">4 · bridges</text>
+  <text x="589" y="76" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">delete them and</text>
+  <text x="589" y="90" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">the helpers</text>
+  <text x="589" y="106" text-anchor="middle" font-size="9" fill="#2d6342" font-family="inherit">migration done</text>
+  <text x="14" y="150" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Why leaves first</text>
+  <text x="14" y="168" font-size="10" fill="#6b5f75" font-family="inherit">A derived store has no dependants except the view, so converting one cannot break anything upstream. Converting the</text>
+  <text x="14" y="184" font-size="10" fill="#6b5f75" font-family="inherit">values store first would change what every derived reads, and the migration stops being reviewable in small pieces.</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Each stage compiles and ships on its own, so the work can pause indefinitely without leaving a half-migrated form.</text>
+</svg>
 
 ## Frequently Asked Questions
 

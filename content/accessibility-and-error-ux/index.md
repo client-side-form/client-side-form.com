@@ -87,41 +87,42 @@ A form that validates perfectly for a sighted mouse user can be completely unusa
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" role="img" aria-label="Wiring diagram showing how a single validation error propagates to four accessibility surfaces: aria-invalid on the input, aria-describedby pointing at the error message element, an aria-live region for the submit-level summary, and the focus target" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>Accessible Error Propagation Wiring</title>
   <desc>A validation result flows into four coordinated outputs — aria-invalid on the input, aria-describedby linking to the error message, an aria-live region for the submission summary, and a focus target — all driven from one normalized error map.</desc>
+  <rect x="0" y="0" width="760" height="300" fill="#f9f5fb"/>
   <defs>
     <marker id="arr-a11y" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.75"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
-  <rect width="760" height="300" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+  <rect width="760" height="300" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
   <!-- Source node: validation result -->
-  <rect x="30" y="120" width="150" height="60" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="105" y="146" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">Validation</text>
-  <text x="105" y="164" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">result</text>
+  <rect x="30" y="120" width="150" height="60" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="105" y="146" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">Validation</text>
+  <text x="105" y="164" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">result</text>
   <!-- Hub: normalized error map -->
-  <rect x="270" y="115" width="150" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.85"/>
-  <text x="345" y="142" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">FieldErrorMap</text>
-  <text x="345" y="160" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">normalized, keyed</text>
-  <text x="345" y="174" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">by field name</text>
+  <rect x="270" y="115" width="150" height="70" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="345" y="142" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">FieldErrorMap</text>
+  <text x="345" y="160" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">normalized, keyed</text>
+  <text x="345" y="174" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">by field name</text>
   <!-- Four output nodes -->
-  <rect x="540" y="20" width="200" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6"/>
-  <text x="640" y="40" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="currentColor">aria-invalid="true"</text>
-  <text x="640" y="56" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">on the input</text>
-  <rect x="540" y="86" width="200" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6"/>
-  <text x="640" y="106" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="currentColor">aria-describedby</text>
-  <text x="640" y="122" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">&#8594; error message element</text>
-  <rect x="540" y="152" width="200" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6"/>
-  <text x="640" y="172" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="currentColor">aria-live region</text>
-  <text x="640" y="188" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">submit-level summary</text>
-  <rect x="540" y="218" width="200" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6"/>
-  <text x="640" y="238" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="currentColor">focus target</text>
-  <text x="640" y="254" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">first invalid control</text>
+  <rect x="540" y="20" width="200" height="48" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="640" y="40" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="#1e1a24">aria-invalid="true"</text>
+  <text x="640" y="56" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">on the input</text>
+  <rect x="540" y="86" width="200" height="48" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="640" y="106" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="#1e1a24">aria-describedby</text>
+  <text x="640" y="122" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">&#8594; error message element</text>
+  <rect x="540" y="152" width="200" height="48" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="640" y="172" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="#1e1a24">aria-live region</text>
+  <text x="640" y="188" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">submit-level summary</text>
+  <rect x="540" y="218" width="200" height="48" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="640" y="238" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="#1e1a24">focus target</text>
+  <text x="640" y="254" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">first invalid control</text>
   <!-- Arrows source -> hub -->
-  <line x1="180" y1="150" x2="268" y2="150" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-a11y)"/>
+  <line x1="180" y1="150" x2="268" y2="150" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-a11y)"/>
   <!-- Hub -> four outputs -->
-  <path d="M420 135 C480 110 490 70 538 52" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-a11y)"/>
-  <path d="M420 148 C480 140 495 120 538 112" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-a11y)"/>
-  <path d="M420 158 C480 162 495 172 538 176" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-a11y)"/>
-  <path d="M420 172 C480 210 490 228 538 242" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-a11y)"/>
+  <path d="M420 135 C480 110 490 70 538 52" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-a11y)"/>
+  <path d="M420 148 C480 140 495 120 538 112" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-a11y)"/>
+  <path d="M420 158 C480 162 495 172 538 176" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-a11y)"/>
+  <path d="M420 172 C480 210 490 228 538 242" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-a11y)"/>
 </svg>
 
 ---
@@ -179,6 +180,46 @@ This mirrors the [error state mapping patterns](https://www.client-side-form.com
 **Move focus only in response to intent.** Focus is a shared, single-valued resource. Programmatic focus changes are justified only when the user has taken an action whose whole point is to jump somewhere — submitting, advancing a wizard step, opening a dialog. Moving focus on blur or on change hijacks the user's position and is disorienting for exactly the users this subsystem is meant to serve.
 
 **Never encode meaning in color alone.** WCAG 1.4.1 is not a suggestion. Every error state pairs its color with a text label and, ideally, an icon with a text alternative. This also survives Windows high-contrast and CSS `forced-colors` mode, where your carefully chosen red is replaced by the system palette and a color-only signal disappears entirely.
+
+### One error, five bindings
+
+The reason accessible error handling feels disproportionately fiddly is that a single validation result has to reach five different consumers, each of which reads a different property of the same object. Miss one and the form is broken for exactly one group of readers — usually the group you cannot see in your analytics:
+
+<svg viewBox="0 8 700 244" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One error object fans out to five consumers: the field's aria-invalid state, the described-by message element, the live region that announces it, the error summary entry that links back to the field, and the visual treatment. Each consumer is labelled with the reader it serves and the symptom when it is missing." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The five consumers of a single validation error</title>
+  <desc>A single error object, carrying a field id, a message and a severity, feeds five separate bindings. First, aria-invalid on the control, which conveys the state to assistive technology; without it a screen reader reader never learns the field failed. Second, the described-by message element, which supplies the reason; without it the reader hears that something is wrong but not what. Third, the live region, which announces the change; without it nothing is spoken until the field is revisited. Fourth, the error summary entry, which links back to the field; without it a reader with many errors has no map. Fifth, the visual treatment of border, icon and text; without it sighted readers who do not use assistive technology see nothing at all.</desc>
+  <rect x="0" y="8" width="700" height="244" fill="#f9f5fb"/>
+  <rect x="14" y="86" width="164" height="72" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="96" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">one error object</text>
+  <text x="96" y="128" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">fieldId · message</text>
+  <text x="96" y="144" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">severity · code</text>
+  <path d="M178,122 H206 V38 H236" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M178,122 H206 V82 H236" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M178,122 H236" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M178,122 H206 V162 H236" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M178,122 H206 V206 H236" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="236" y="18" width="200" height="40" rx="7" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="248" y="34" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">aria-invalid on the control</text>
+  <text x="248" y="50" font-size="9.5" fill="#6b5f75" font-family="inherit">carries the state</text>
+  <text x="448" y="42" font-size="9.5" fill="#a63d6f" font-family="inherit">missing: failure is never conveyed</text>
+  <rect x="236" y="62" width="200" height="40" rx="7" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="248" y="78" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">described-by message</text>
+  <text x="248" y="94" font-size="9.5" fill="#6b5f75" font-family="inherit">carries the reason</text>
+  <text x="448" y="86" font-size="9.5" fill="#a63d6f" font-family="inherit">missing: "invalid", but never why</text>
+  <rect x="236" y="106" width="200" height="40" rx="7" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="248" y="122" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">live region</text>
+  <text x="248" y="138" font-size="9.5" fill="#6b5f75" font-family="inherit">carries the timing</text>
+  <text x="448" y="130" font-size="9.5" fill="#a63d6f" font-family="inherit">missing: silence until revisited</text>
+  <rect x="236" y="150" width="200" height="40" rx="7" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="248" y="166" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">error summary entry</text>
+  <text x="248" y="182" font-size="9.5" fill="#6b5f75" font-family="inherit">carries the map</text>
+  <text x="448" y="174" font-size="9.5" fill="#a63d6f" font-family="inherit">missing: no overview of the damage</text>
+  <rect x="236" y="194" width="200" height="40" rx="7" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="248" y="210" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">visual treatment</text>
+  <text x="248" y="226" font-size="9.5" fill="#6b5f75" font-family="inherit">carries the glance</text>
+  <text x="448" y="218" font-size="9.5" fill="#a63d6f" font-family="inherit">missing: sighted readers see nothing</text>
+  <text x="14" y="248" font-size="10" fill="#6b5f75" font-family="inherit">Derive all five from the same object in one place; five hand-written call sites drift within a release.</text>
+</svg>
 
 ## Subsystem: Announcing Errors Without Interrupting
 
@@ -293,6 +334,44 @@ function reportSubmitFailure(
 ```
 
 Notice what is *not* here: no announcement fires on individual keystrokes, no focus moves on blur, and the per-field described-by text (specific, e.g. "Enter a valid email address") is deliberately different from the summary text (aggregate, e.g. "3 errors"). That separation is what prevents the same sentence being announced twice.
+
+### Where the four subsystems actually fail
+
+Read together, the three subsystems above plus message quality form a failure surface with a characteristic shape: each layer fails silently, in a way that is invisible to the developer who built it and obvious to the reader who depends on it.
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four layers of the accessibility failure surface with their characteristic failure, who notices, and the cheapest automated check for each: announcement, focus, keyboard operability, and message quality." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The four layers, their silent failures, and what catches each</title>
+  <desc>Announcement layer: the characteristic failure is an error that is rendered but never spoken; screen reader readers notice; the cheapest check asserts the live region's text content changed exactly once per submit. Focus layer: focus falls to the document body after a submit; keyboard readers notice; assert document.activeElement is not body after every state change. Keyboard layer: a custom control cannot be reached or left without a mouse; keyboard and switch readers notice; assert the tab-stop count of each group. Message quality layer: the message names a rule rather than an action; every reader is affected, and no automated tool catches it, so it needs human review.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Layer</text>
+  <text x="140" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">How it fails silently</text>
+  <text x="392" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Who notices</text>
+  <text x="510" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Cheapest assertion</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">Announcement</text>
+  <text x="140" y="66" font-size="10" fill="#6b5f75" font-family="inherit">rendered but never spoken</text>
+  <text x="392" y="66" font-size="10" fill="#6b5f75" font-family="inherit">screen readers</text>
+  <text x="510" y="66" font-size="10" fill="#2d6342" font-family="inherit">region text changed once</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">Focus</text>
+  <text x="140" y="100" font-size="10" fill="#6b5f75" font-family="inherit">lands on &lt;body&gt; after submit</text>
+  <text x="392" y="100" font-size="10" fill="#6b5f75" font-family="inherit">keyboard readers</text>
+  <text x="510" y="100" font-size="10" fill="#2d6342" font-family="inherit">activeElement is not body</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">Keyboard</text>
+  <text x="140" y="134" font-size="10" fill="#6b5f75" font-family="inherit">a control cannot be left</text>
+  <text x="392" y="134" font-size="10" fill="#6b5f75" font-family="inherit">switch and keyboard</text>
+  <text x="510" y="134" font-size="10" fill="#2d6342" font-family="inherit">tab-stop count per group</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">Message quality</text>
+  <text x="140" y="168" font-size="10" fill="#6b5f75" font-family="inherit">names a rule, not an action</text>
+  <text x="392" y="168" font-size="10" fill="#6b5f75" font-family="inherit">everyone</text>
+  <text x="510" y="168" font-size="10" fill="#a63d6f" font-family="inherit">none — human review</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#6b5f75" font-family="inherit">Three of the four are cheap to assert in CI. Budget review time for the fourth, because nothing else will catch it.</text>
+</svg>
 
 ## Cognitive Load and Message Quality
 

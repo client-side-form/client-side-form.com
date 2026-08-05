@@ -3,7 +3,7 @@ layout: page.njk
 title: "React Hook Form vs Custom Reducer: Performance Tradeoffs"
 description: "Compare React Hook Form's uncontrolled subscription model against a controlled useReducer form: re-render counts, when each wins, and the migration path."
 slug: react-hook-form-vs-custom-reducer-performance
-type: guide
+type: howto
 breadcrumb: "React Hook Form vs Custom Reducer"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -84,44 +84,45 @@ React Hook Form is uncontrolled by default: field values live in the DOM, read t
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" role="img" aria-label="Comparison of re-render propagation on one keystroke: React Hook Form subscription model versus controlled useReducer" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>React Hook Form versus custom reducer re-render propagation</title>
   <desc>On a keystroke, React Hook Form updates the DOM input directly and notifies only the subscribed field, leaving sibling fields unrendered. A controlled useReducer dispatches an action, creates a new state object, and re-renders every field that reads the state unless selectors are added.</desc>
+  <rect x="0" y="0" width="720" height="340" fill="#f9f5fb"/>
   <defs>
     <marker id="arr-rhf-reducer" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.75"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
-  <rect width="720" height="340" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+  <rect width="720" height="340" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
   <!-- Divider -->
-  <line x1="360" y1="24" x2="360" y2="316" stroke="currentColor" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4 4"/>
-  <text x="180" y="42" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">React Hook Form (uncontrolled)</text>
-  <text x="540" y="42" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">useReducer (controlled)</text>
+  <line x1="360" y1="24" x2="360" y2="316" stroke="#6b5f75" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="180" y="42" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">React Hook Form (uncontrolled)</text>
+  <text x="540" y="42" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">useReducer (controlled)</text>
   <!-- LEFT: keystroke -->
-  <rect x="60" y="70" width="120" height="42" rx="8" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7"/>
-  <text x="120" y="96" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor">keystroke</text>
+  <rect x="60" y="70" width="120" height="42" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="120" y="96" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">keystroke</text>
   <!-- LEFT: DOM ref -->
-  <rect x="60" y="150" width="120" height="42" rx="8" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7"/>
-  <text x="120" y="170" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor">DOM ref</text>
-  <text x="120" y="184" text-anchor="middle" font-family="inherit" font-size="9" fill="currentColor" opacity="0.75">no React state</text>
+  <rect x="60" y="150" width="120" height="42" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="120" y="170" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">DOM ref</text>
+  <text x="120" y="184" text-anchor="middle" font-family="inherit" font-size="9" fill="#6b5f75">no React state</text>
   <!-- LEFT: subscribed field -->
-  <rect x="60" y="240" width="120" height="42" rx="8" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7"/>
-  <text x="120" y="260" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor">1 field renders</text>
-  <text x="120" y="274" text-anchor="middle" font-family="inherit" font-size="9" fill="currentColor" opacity="0.75">siblings idle</text>
-  <path d="M120 112 L120 141" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-rhf-reducer)"/>
-  <path d="M120 192 L120 231" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-rhf-reducer)"/>
-  <text x="228" y="216" text-anchor="middle" font-family="inherit" font-size="9" fill="currentColor" opacity="0.75">subscribe(name)</text>
+  <rect x="60" y="240" width="120" height="42" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="120" y="260" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">1 field renders</text>
+  <text x="120" y="274" text-anchor="middle" font-family="inherit" font-size="9" fill="#6b5f75">siblings idle</text>
+  <path d="M120 112 L120 141" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-rhf-reducer)"/>
+  <path d="M120 192 L120 231" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-rhf-reducer)"/>
+  <text x="228" y="216" text-anchor="middle" font-family="inherit" font-size="9" fill="#6b5f75">subscribe(name)</text>
   <!-- RIGHT: keystroke -->
-  <rect x="480" y="70" width="120" height="42" rx="8" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7"/>
-  <text x="540" y="96" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor">keystroke</text>
+  <rect x="480" y="70" width="120" height="42" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="540" y="96" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">keystroke</text>
   <!-- RIGHT: dispatch -->
-  <rect x="480" y="150" width="120" height="42" rx="8" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7"/>
-  <text x="540" y="170" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor">dispatch()</text>
-  <text x="540" y="184" text-anchor="middle" font-family="inherit" font-size="9" fill="currentColor" opacity="0.75">new state object</text>
+  <rect x="480" y="150" width="120" height="42" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="540" y="170" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">dispatch()</text>
+  <text x="540" y="184" text-anchor="middle" font-family="inherit" font-size="9" fill="#6b5f75">new state object</text>
   <!-- RIGHT: all fields render -->
-  <rect x="480" y="240" width="120" height="42" rx="8" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7"/>
-  <text x="540" y="260" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor">N fields render</text>
-  <text x="540" y="274" text-anchor="middle" font-family="inherit" font-size="9" fill="currentColor" opacity="0.75">unless selectors</text>
-  <path d="M540 112 L540 141" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-rhf-reducer)"/>
-  <path d="M540 192 L540 231" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-rhf-reducer)"/>
-  <text x="648" y="216" text-anchor="middle" font-family="inherit" font-size="9" fill="currentColor" opacity="0.75">state changes</text>
+  <rect x="480" y="240" width="120" height="42" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="540" y="260" text-anchor="middle" font-family="inherit" font-size="11" fill="#1e1a24">N fields render</text>
+  <text x="540" y="274" text-anchor="middle" font-family="inherit" font-size="9" fill="#6b5f75">unless selectors</text>
+  <path d="M540 112 L540 141" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-rhf-reducer)"/>
+  <path d="M540 192 L540 231" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-rhf-reducer)"/>
+  <text x="648" y="216" text-anchor="middle" font-family="inherit" font-size="9" fill="#6b5f75">state changes</text>
 </svg>
 
 ## Re-Render Counts Compared
@@ -194,6 +195,39 @@ function ReducerForm() {
 
 5. **Plan migration through a shared schema.** Keep one validation schema — see [integrating Zod for schema validation](https://www.client-side-form.com/validation-logic-schema-integration/integrating-zod-for-schema-validation/) — so behaviour is stable while you move fields between models one section at a time.
 
+Performance is where this comparison usually starts, but it is rarely where the decision is actually made. The costs that matter over a project's life are the ones in the middle rows:
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of a form library against a hand-rolled reducer across five dimensions: renders per keystroke, bundle cost, time to a working form, how much of the behaviour you must own, and how well each survives an unusual requirement." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The dimensions that actually decide this</title>
+  <desc>Renders per keystroke: both can reach one, the library by registering uncontrolled inputs and the reducer by subscribing per field, so this is a tie once either is done properly. Bundle cost: the library adds roughly ten kilobytes minified and compressed, the reducer adds under one. Time to a working form: hours for the library, days for the reducer. Behaviour you must own: almost none for the library — array fields, dependent validation and reset semantics are supplied — against all of it for the reducer. Surviving an unusual requirement: the library may require working around its model, while the reducer bends because you wrote it. The summary is that the library wins on time and the reducer wins on control, and neither wins on renders.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Dimension</text>
+  <text x="250" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Form library</text>
+  <text x="420" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Hand-rolled reducer</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">renders per keystroke</text>
+  <text x="250" y="66" font-size="10" fill="#2d6342" font-family="inherit">1, via uncontrolled inputs</text>
+  <text x="420" y="66" font-size="10" fill="#2d6342" font-family="inherit">1, via per-field subscriptions</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">bundle cost</text>
+  <text x="250" y="100" font-size="10" fill="#b07a55" font-family="inherit">~10 kB compressed</text>
+  <text x="420" y="100" font-size="10" fill="#2d6342" font-family="inherit">under 1 kB</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">time to a working form</text>
+  <text x="250" y="134" font-size="10" fill="#2d6342" font-family="inherit">hours</text>
+  <text x="420" y="134" font-size="10" fill="#a63d6f" font-family="inherit">days</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">behaviour you must own</text>
+  <text x="250" y="168" font-size="10" fill="#2d6342" font-family="inherit">almost none</text>
+  <text x="420" y="168" font-size="10" fill="#a63d6f" font-family="inherit">arrays, deps, reset, focus</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">an unusual requirement</text>
+  <text x="250" y="202" font-size="10" fill="#b07a55" font-family="inherit">work around the model</text>
+  <text x="420" y="202" font-size="10" fill="#2d6342" font-family="inherit">bends — you wrote it</text>
+</svg>
+
 ## Failure Modes and Edge Cases
 
 ### 1. Overusing watch turns React Hook Form controlled again
@@ -216,6 +250,37 @@ A single `useContext(state)` at the leaf makes every field a full-state subscrib
 ### 4. Reset semantics differ between models
 
 React Hook Form's `reset()` rewrites the DOM refs; a reducer's reset dispatches an action producing a new state. Migrating between them silently changes what "dirty after reset" means — re-verify your dirty tracking, covered in [dirty and pristine state tracking](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/).
+
+Read as a decision rather than a table, three questions settle it, and none of them is about speed:
+
+<svg viewBox="0 8 660 224" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three-question decision tree. If the form is a standard shape, take the library. If it is unusual but the library has an escape hatch for the unusual part, still take the library. Only when the form's core model conflicts with the library's is a hand-rolled reducer the cheaper option." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Three questions, in this order</title>
+  <desc>Question one: is this a conventional form — fields, validation, submit? If yes, take the library; you will not beat it on time and you will not need to beat it on renders. Question two: if the form is unusual, is the unusual part reachable through the library's escape hatches, such as a custom controller or a manual register? If yes, still take the library. Question three: does the form's core model genuinely conflict with the library's — a machine-driven wizard, values living in a shared store outside the form, or a field graph the library cannot express? Only then is a reducer the cheaper option, and even then only for the conflicting part.</desc>
+  <rect x="0" y="8" width="660" height="224" fill="#f9f5fb"/>
+  <rect x="14" y="24" width="250" height="52" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="28" y="46" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">1 · a conventional form?</text>
+  <text x="28" y="64" font-size="9.5" fill="#1e1a24" font-family="inherit">fields, validation, submit</text>
+  <path d="M264,50 H320" stroke="#7b4f8a" stroke-width="1.4"/>
+  <text x="292" y="42" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">yes</text>
+  <rect x="320" y="24" width="326" height="52" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="334" y="46" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">take the library</text>
+  <text x="334" y="64" font-size="9.5" fill="#6b5f75" font-family="inherit">you will not beat it on time, and need not on renders</text>
+  <path d="M139,76 V102" stroke="#7b4f8a" stroke-width="1.4"/>
+  <text x="149" y="94" font-size="9.5" fill="#6b5f75" font-family="inherit">no</text>
+  <rect x="14" y="102" width="250" height="52" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="28" y="124" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">2 · escape hatch enough?</text>
+  <text x="28" y="142" font-size="9.5" fill="#1e1a24" font-family="inherit">controller, manual register</text>
+  <path d="M264,128 H320" stroke="#7b4f8a" stroke-width="1.4"/>
+  <text x="292" y="120" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">yes</text>
+  <rect x="320" y="102" width="326" height="52" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="334" y="124" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">still take the library</text>
+  <text x="334" y="142" font-size="9.5" fill="#6b5f75" font-family="inherit">one custom field is cheaper than one custom form</text>
+  <path d="M139,154 V180" stroke="#7b4f8a" stroke-width="1.4"/>
+  <text x="149" y="172" font-size="9.5" fill="#6b5f75" font-family="inherit">no</text>
+  <rect x="14" y="180" width="632" height="46" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="28" y="200" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">3 · the models genuinely conflict — write the reducer, for the conflicting part only</text>
+  <text x="28" y="218" font-size="9.5" fill="#6b5f75" font-family="inherit">a machine-driven wizard, values owned by a shared store, or a field graph the library cannot express</text>
+</svg>
 
 ## Verification Checklist
 

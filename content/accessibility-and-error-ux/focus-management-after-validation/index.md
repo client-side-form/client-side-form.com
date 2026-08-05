@@ -99,45 +99,46 @@ The pattern below models the whole submit-to-focus flow as one cancellable cycle
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" role="img" aria-label="Sequence diagram of submit to validate to focus first invalid field" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>Submit → Validate → Focus Sequence</title>
   <desc>A submit event runs synchronous then asynchronous validation; on failure the focus manager selects an error summary or the first invalid field, focuses it without scrolling, then scrolls it into view. A newer submit or reset aborts the cycle.</desc>
-  <rect width="760" height="360" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+  <rect x="0" y="0" width="760" height="360" fill="#f9f5fb"/>
+  <rect width="760" height="360" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
   <!-- IDLE -->
-  <rect x="40" y="150" width="120" height="54" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="100" y="172" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">IDLE</text>
-  <text x="100" y="190" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.65">awaiting submit</text>
+  <rect x="40" y="150" width="120" height="54" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="100" y="172" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">IDLE</text>
+  <text x="100" y="190" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">awaiting submit</text>
   <!-- VALIDATING -->
-  <rect x="245" y="150" width="130" height="54" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="310" y="172" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">VALIDATING</text>
-  <text x="310" y="190" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.65">sync + async</text>
+  <rect x="245" y="150" width="130" height="54" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="310" y="172" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">VALIDATING</text>
+  <text x="310" y="190" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">sync + async</text>
   <!-- FOCUSING -->
-  <rect x="455" y="60" width="130" height="54" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="520" y="82" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">FOCUSING</text>
-  <text x="520" y="100" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.65">on failure</text>
+  <rect x="455" y="60" width="130" height="54" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="520" y="82" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">FOCUSING</text>
+  <text x="520" y="100" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">on failure</text>
   <!-- SUBMITTED -->
-  <rect x="455" y="240" width="130" height="54" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="520" y="262" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">SUBMITTED</text>
-  <text x="520" y="280" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.65">on success</text>
+  <rect x="455" y="240" width="130" height="54" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="520" y="262" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">SUBMITTED</text>
+  <text x="520" y="280" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">on success</text>
   <!-- ABORTED -->
-  <rect x="640" y="150" width="90" height="54" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.5" stroke-dasharray="5 3"/>
-  <text x="685" y="176" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor" opacity="0.8">ABORTED</text>
-  <text x="685" y="192" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.6">stale</text>
+  <rect x="640" y="150" width="90" height="54" rx="10" fill="none" stroke="#cbb8d9" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="685" y="176" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">ABORTED</text>
+  <text x="685" y="192" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">stale</text>
   <!-- IDLE -> VALIDATING -->
-  <path d="M160 177 L245 177" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-focus)"/>
-  <text x="202" y="168" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">submit</text>
+  <path d="M160 177 L245 177" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-focus)"/>
+  <text x="202" y="168" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">submit</text>
   <!-- VALIDATING -> FOCUSING -->
-  <path d="M360 150 C400 115 425 95 455 90" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-focus)"/>
-  <text x="392" y="112" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">INVALID</text>
+  <path d="M360 150 C400 115 425 95 455 90" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-focus)"/>
+  <text x="392" y="112" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">INVALID</text>
   <!-- VALIDATING -> SUBMITTED -->
-  <path d="M360 204 C400 239 425 259 455 264" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-focus)"/>
-  <text x="392" y="252" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">VALID</text>
+  <path d="M360 204 C400 239 425 259 455 264" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-focus)"/>
+  <text x="392" y="252" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">VALID</text>
   <!-- VALIDATING -> ABORTED -->
-  <path d="M375 172 C480 150 560 160 640 172" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6" stroke-dasharray="5 3" marker-end="url(#arr-focus)"/>
-  <text x="510" y="145" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.7">re-submit / reset → abort()</text>
+  <path d="M375 172 C480 150 560 160 640 172" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-focus)"/>
+  <text x="510" y="145" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">re-submit / reset → abort()</text>
   <!-- FOCUSING -> IDLE (return) -->
-  <path d="M455 100 C300 120 180 130 140 148" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.55" stroke-dasharray="4 3" marker-end="url(#arr-focus)"/>
-  <text x="280" y="118" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.7">focus first invalid, then scrollIntoView</text>
+  <path d="M455 100 C300 120 180 130 140 148" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr-focus)"/>
+  <text x="280" y="118" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">focus first invalid, then scrollIntoView</text>
   <defs>
     <marker id="arr-focus" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
 </svg>
@@ -296,6 +297,38 @@ The `tabindex="-1"` is load-bearing: a `<div>` is not focusable by default, so `
 
 ---
 
+The choice itself is small enough to write as a tree, and it hangs entirely on how many things went wrong:
+
+<svg viewBox="0 8 640 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Decision tree keyed on the number of validation errors. Zero errors moves focus to the success heading. Exactly one error moves focus to that field. Two or more errors move focus to the error summary, whose entries link to each field." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Where focus goes after a submit attempt</title>
+  <desc>Starting from the submit handler, the error count decides the focus target. Zero errors: focus the success or confirmation heading. Exactly one error: focus that field directly, because a summary listing one item wastes a step. Two or more errors: focus the error summary block, whose list items are links that jump to each failing field.</desc>
+  <rect x="0" y="8" width="640" height="214" fill="#f9f5fb"/>
+  <rect x="14" y="16" width="180" height="50" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="104" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">submit handler</text>
+  <text x="104" y="55" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">count the failures</text>
+  <path d="M194,41 H230" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="230" y="16" width="150" height="50" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="305" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#2d6342" font-family="inherit">0 errors</text>
+  <text x="305" y="55" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">confirmation heading</text>
+  <path d="M104,66 V92 H230" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="230" y="80" width="150" height="50" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="305" y="102" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">exactly 1</text>
+  <text x="305" y="119" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">the field itself</text>
+  <path d="M104,66 V156 H230" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="230" y="144" width="150" height="50" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="305" y="166" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">2 or more</text>
+  <text x="305" y="183" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">the error summary</text>
+  <path d="M380,105 H410" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="410" y="80" width="216" height="50" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="518" y="102" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">one step to the fix</text>
+  <text x="518" y="119" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">a summary of one wastes a keystroke</text>
+  <path d="M380,169 H410" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="410" y="144" width="216" height="50" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="518" y="166" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="inherit">scope first, then repair</text>
+  <text x="518" y="183" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">entries are links that jump to each field</text>
+  <text x="14" y="216" font-size="10" fill="#6b5f75" font-family="inherit">The count is known before you move focus, so make the decision once in the handler rather than in each field component.</text>
+</svg>
+
 ## Integration Guidance
 
 Focus management is the terminal step of the submit path; it depends on validation having already produced an ordered error list. The [accessibility and error UX](https://www.client-side-form.com/accessibility-and-error-ux/) area frames how announcement, focus, and keyboard operability fit together, and the [keyboard navigation patterns](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/) page covers the tab-order rules that determine what "first invalid field" even means in DOM order.
@@ -342,6 +375,43 @@ If you also call `form.reportValidity()`, the browser focuses the first field fa
 **Resolution:** Pick one authority. If you own validation, set `novalidate` on the `<form>` and never call `reportValidity()`; let the `FocusManager` be the sole owner of post-submit focus.
 
 ---
+
+The one case this tree does not cover is the async validator that answers after the reader has moved on — which is why the focus decision has to be tied to the submit attempt that produced it:
+
+<svg viewBox="0 8 668 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Timeline in which an async uniqueness check started on submit resolves after the reader has already tabbed to a later field. Moving focus at that point yanks the caret out of the field being typed into; recording the submit token and discarding a late result instead leaves focus alone." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>A late async result must not move focus</title>
+  <desc>Four moments on one timeline. At zero milliseconds the reader submits and an async uniqueness check begins. At around one hundred and twenty milliseconds the reader has already moved on and is typing in a later field. At around six hundred milliseconds the check resolves with a failure. If focus is moved now, the caret is torn out of the field being typed into mid-word. If the result is instead matched against the submit token that produced it and found stale, the error is still shown and announced politely, but focus stays where the reader put it.</desc>
+  <rect x="0" y="8" width="668" height="200" fill="#f9f5fb"/>
+  <text x="14" y="24" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">The reader kept moving while the request was in flight</text>
+  <rect x="14" y="34" width="152" height="66" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="90" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">t = 0ms</text>
+  <text x="90" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">submit; uniqueness</text>
+  <text x="90" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">check starts</text>
+  <path d="M166,67 H188" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="188" y="34" width="152" height="66" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="264" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">t = 120ms</text>
+  <text x="264" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">reader tabs on and</text>
+  <text x="264" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">starts typing</text>
+  <path d="M340,67 H362" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="362" y="34" width="152" height="66" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="438" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">t = 600ms</text>
+  <text x="438" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">check resolves:</text>
+  <text x="438" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">already taken</text>
+  <path d="M514,67 H536" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="536" y="34" width="118" height="66" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="595" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">decision</text>
+  <text x="595" y="74" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">move focus, or</text>
+  <text x="595" y="88" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">leave it alone?</text>
+  <rect x="14" y="116" width="316" height="66" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="28" y="138" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">Move focus</text>
+  <text x="28" y="156" font-size="9.5" fill="#6b5f75" font-family="inherit">The caret is torn out of the field mid-word and the</text>
+  <text x="28" y="170" font-size="9.5" fill="#6b5f75" font-family="inherit">half-typed value is left behind, unvalidated.</text>
+  <rect x="338" y="116" width="316" height="66" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="352" y="138" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">Compare the submit token first</text>
+  <text x="352" y="156" font-size="9.5" fill="#6b5f75" font-family="inherit">Stale result: render the error, announce it politely,</text>
+  <text x="352" y="170" font-size="9.5" fill="#6b5f75" font-family="inherit">and leave focus exactly where the reader put it.</text>
+  <text x="14" y="202" font-size="10" fill="#6b5f75" font-family="inherit">Focus is the reader's cursor, not yours. Only the interaction that is still current has earned the right to move it.</text>
+</svg>
 
 ## Troubleshooting Reference
 

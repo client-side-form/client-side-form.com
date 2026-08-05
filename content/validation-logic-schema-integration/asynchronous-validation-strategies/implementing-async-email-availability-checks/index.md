@@ -3,7 +3,7 @@ layout: page.njk
 title: "Implementing Async Email Availability Checks"
 description: "Production patterns for debounced async email validation with AbortController race-condition prevention, LRU caching, exponential-backoff retries, and ARIA live-region wiring."
 slug: implementing-async-email-availability-checks
-type: guide
+type: howto
 breadcrumb: "Implementing Async Email Availability Checks"
 datePublished: "2024-01-15"
 dateModified: "2026-06-23"
@@ -93,49 +93,50 @@ The hook moves through six states. Understanding these transitions is the fastes
 <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="State machine: IDLE to DEBOUNCING to VALIDATING then to AVAILABLE, TAKEN, or ERROR" style="width:100%;max-width:640px;display:block;margin:1.5rem auto;">
   <title>Async email validation state machine</title>
   <desc>Diagram showing six states: IDLE, DEBOUNCING, VALIDATING, AVAILABLE, TAKEN, ERROR. IDLE transitions to DEBOUNCING on onChange. DEBOUNCING transitions to VALIDATING after 400ms debounce. VALIDATING transitions to AVAILABLE, TAKEN, or ERROR based on the server response. ERROR can transition back to VALIDATING on retry.</desc>
+  <rect x="0" y="0" width="640" height="220" fill="#f9f5fb"/>
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-      <polygon points="0 0, 8 3, 0 6" fill="currentColor" opacity="0.7"/>
+      <polygon points="0 0, 8 3, 0 6" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- State boxes -->
   <!-- IDLE -->
-  <rect x="10" y="80" width="80" height="36" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="50" y="103" text-anchor="middle" font-size="12" fill="currentColor" font-family="monospace">IDLE</text>
+  <rect x="10" y="80" width="80" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="50" y="103" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="monospace">IDLE</text>
   <!-- DEBOUNCING -->
-  <rect x="140" y="80" width="110" height="36" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
-  <text x="195" y="103" text-anchor="middle" font-size="12" fill="currentColor" font-family="monospace">DEBOUNCING</text>
+  <rect x="140" y="80" width="110" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="195" y="103" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="monospace">DEBOUNCING</text>
   <!-- VALIDATING -->
-  <rect x="305" y="80" width="100" height="36" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
-  <text x="355" y="103" text-anchor="middle" font-size="12" fill="currentColor" font-family="monospace">VALIDATING</text>
+  <rect x="305" y="80" width="100" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="355" y="103" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="monospace">VALIDATING</text>
   <!-- AVAILABLE -->
-  <rect x="460" y="20" width="100" height="36" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
-  <text x="510" y="43" text-anchor="middle" font-size="12" fill="currentColor" font-family="monospace">AVAILABLE</text>
+  <rect x="460" y="20" width="100" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="510" y="43" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="monospace">AVAILABLE</text>
   <!-- TAKEN -->
-  <rect x="460" y="80" width="100" height="36" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
-  <text x="510" y="103" text-anchor="middle" font-size="12" fill="currentColor" font-family="monospace">TAKEN</text>
+  <rect x="460" y="80" width="100" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="510" y="103" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="monospace">TAKEN</text>
   <!-- ERROR -->
-  <rect x="460" y="140" width="100" height="36" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-  <text x="510" y="163" text-anchor="middle" font-size="12" fill="currentColor" font-family="monospace">ERROR</text>
+  <rect x="460" y="140" width="100" height="36" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="510" y="163" text-anchor="middle" font-size="12" fill="#1e1a24" font-family="monospace">ERROR</text>
   <!-- Arrows -->
   <!-- IDLE -> DEBOUNCING -->
-  <line x1="90" y1="98" x2="138" y2="98" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/>
-  <text x="114" y="92" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">onChange</text>
+  <line x1="90" y1="98" x2="138" y2="98" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="114" y="92" text-anchor="middle" font-size="10" fill="#6b5f75">onChange</text>
   <!-- DEBOUNCING -> VALIDATING -->
-  <line x1="250" y1="98" x2="303" y2="98" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/>
-  <text x="277" y="92" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">400ms</text>
+  <line x1="250" y1="98" x2="303" y2="98" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="277" y="92" text-anchor="middle" font-size="10" fill="#6b5f75">400ms</text>
   <!-- VALIDATING -> AVAILABLE -->
-  <line x1="405" y1="88" x2="458" y2="48" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/>
-  <text x="428" y="60" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">free</text>
+  <line x1="405" y1="88" x2="458" y2="48" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="428" y="60" text-anchor="middle" font-size="10" fill="#6b5f75">free</text>
   <!-- VALIDATING -> TAKEN -->
-  <line x1="405" y1="98" x2="458" y2="98" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/>
-  <text x="432" y="92" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">in use</text>
+  <line x1="405" y1="98" x2="458" y2="98" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="432" y="92" text-anchor="middle" font-size="10" fill="#6b5f75">in use</text>
   <!-- VALIDATING -> ERROR -->
-  <line x1="405" y1="108" x2="458" y2="148" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/>
-  <text x="428" y="138" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">failure</text>
+  <line x1="405" y1="108" x2="458" y2="148" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="428" y="138" text-anchor="middle" font-size="10" fill="#6b5f75">failure</text>
   <!-- ERROR -> VALIDATING (retry arc) -->
-  <path d="M 510 176 Q 510 210 355 210 Q 280 210 355 118" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)" opacity="0.5"/>
-  <text x="430" y="207" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6">retry</text>
+  <path d="M 510 176 Q 510 210 355 210 Q 280 210 355 118" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <text x="430" y="207" text-anchor="middle" font-size="10" fill="#6b5f75">retry</text>
 </svg>
 
 ---
@@ -303,6 +304,45 @@ export function useAsyncEmailAvailability(
 
 ---
 
+An availability check is a claim with a shelf life, and every state the field can be in needs a distinct treatment — including the two that are neither valid nor invalid:
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five states of an availability-checked field and the treatment of each: not yet checked, checking, available, taken, and could-not-check. Each row gives what aria-invalid should be, what the reader sees, and whether submit is blocked." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Five states, and only one of them blocks the submit</title>
+  <desc>Not yet checked: aria-invalid is absent, nothing is shown, and submit is allowed because the server will check anyway. Checking: aria-invalid is absent, a busy indicator is shown, and submit is allowed but queued behind the check. Available: aria-invalid is false, a confirmation is shown, and submit proceeds. Taken: aria-invalid is true, the reason is shown, and the submit is blocked — the only row that blocks. Could not check, meaning the request failed: aria-invalid is absent, a neutral note is shown, and submit is allowed, because a network problem is not the reader's mistake.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">State</text>
+  <text x="168" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">aria-invalid</text>
+  <text x="290" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Reader sees</text>
+  <text x="520" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Submit</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">not yet checked</text>
+  <text x="168" y="66" font-size="10" fill="#6b5f75" font-family="inherit">absent</text>
+  <text x="290" y="66" font-size="10" fill="#6b5f75" font-family="inherit">nothing</text>
+  <text x="520" y="66" font-size="10" fill="#2d6342" font-family="inherit">allowed</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">checking</text>
+  <text x="168" y="100" font-size="10" fill="#6b5f75" font-family="inherit">absent</text>
+  <text x="290" y="100" font-size="10" fill="#6b5f75" font-family="inherit">a busy indicator</text>
+  <text x="520" y="100" font-size="10" fill="#6b5f75" font-family="inherit">allowed, queued</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">available</text>
+  <text x="168" y="134" font-size="10" fill="#6b5f75" font-family="inherit">false</text>
+  <text x="290" y="134" font-size="10" fill="#2d6342" font-family="inherit">a confirmation</text>
+  <text x="520" y="134" font-size="10" fill="#2d6342" font-family="inherit">allowed</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">taken</text>
+  <text x="168" y="168" font-size="10" fill="#a63d6f" font-family="inherit">true</text>
+  <text x="290" y="168" font-size="10" fill="#a63d6f" font-family="inherit">the reason, and a way forward</text>
+  <text x="520" y="168" font-size="10" fill="#a63d6f" font-family="inherit">blocked</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">could not check</text>
+  <text x="168" y="202" font-size="10" fill="#6b5f75" font-family="inherit">absent</text>
+  <text x="290" y="202" font-size="10" fill="#6b5f75" font-family="inherit">a neutral note</text>
+  <text x="520" y="202" font-size="10" fill="#2d6342" font-family="inherit">allowed</text>
+</svg>
+
 ## Failure modes and edge cases
 
 **Stale `TAKEN` overwrites `AVAILABLE`**
@@ -383,6 +423,35 @@ State-to-ARIA mapping summary:
 | `ERROR` | `true` | polite | Include a retry affordance with a descriptive `aria-label` |
 
 ---
+
+There is also a privacy dimension that a purely technical treatment misses. An availability endpoint is an account-existence oracle, and how you build it decides how cheaply it can be harvested:
+
+<svg viewBox="0 8 690 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three mitigations for an availability endpoint doubling as an account-existence oracle: rate limiting per client, checking only on blur rather than on every keystroke, and returning a generic result on a sign-in form while keeping the specific one on registration." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>The check is also an account-existence oracle</title>
+  <desc>Rate limit per client and per address: an unlimited endpoint lets an attacker test a leaked address list at network speed, which the reader never notices. Check on blur rather than on every keystroke: keystroke checking multiplies the request count by roughly the length of an address, and gives an attacker prefix-level feedback for free. Distinguish the surface: on a registration form, telling the reader an address is taken is the whole point; on a sign-in or password-reset form the same information leaks whether an account exists, so the response there must be identical either way.</desc>
+  <rect x="0" y="8" width="690" height="210" fill="#f9f5fb"/>
+  <rect x="14" y="26" width="212" height="108" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="28" y="48" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">rate limit</text>
+  <text x="28" y="70" font-size="9.5" fill="#6b5f75" font-family="inherit">per client and per address</text>
+  <text x="28" y="88" font-size="9.5" fill="#6b5f75" font-family="inherit">an open endpoint tests a</text>
+  <text x="28" y="104" font-size="9.5" fill="#6b5f75" font-family="inherit">leaked list at network speed</text>
+  <text x="28" y="124" font-size="9.5" fill="#a63d6f" font-family="inherit">invisible to your readers</text>
+  <rect x="238" y="26" width="212" height="108" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="252" y="48" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">check on blur</text>
+  <text x="252" y="70" font-size="9.5" fill="#6b5f75" font-family="inherit">not on every keystroke</text>
+  <text x="252" y="88" font-size="9.5" fill="#6b5f75" font-family="inherit">keystroke checks give</text>
+  <text x="252" y="104" font-size="9.5" fill="#6b5f75" font-family="inherit">prefix-level feedback free</text>
+  <text x="252" y="124" font-size="9.5" fill="#2d6342" font-family="inherit">and cut traffic ~20×</text>
+  <rect x="462" y="26" width="214" height="108" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="476" y="48" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">split by surface</text>
+  <text x="476" y="70" font-size="9.5" fill="#6b5f75" font-family="inherit">registration: be specific</text>
+  <text x="476" y="88" font-size="9.5" fill="#6b5f75" font-family="inherit">sign-in and reset: never</text>
+  <text x="476" y="104" font-size="9.5" fill="#6b5f75" font-family="inherit">reveal whether it exists</text>
+  <text x="476" y="124" font-size="9.5" fill="#2d6342" font-family="inherit">same response either way</text>
+  <text x="14" y="168" font-size="10" fill="#6b5f75" font-family="inherit">On registration the disclosure is inherent: the reader must be told the address is taken, or they cannot proceed.</text>
+  <text x="14" y="184" font-size="10" fill="#6b5f75" font-family="inherit">That is an argument for limiting the rate, not for removing the feedback — the alternative is a submit that always fails.</text>
+  <text x="14" y="204" font-size="10" fill="#6b5f75" font-family="inherit">Pair the "taken" message with a route forward — a sign-in link, or a reset link — so the dead end is one click deep.</text>
+</svg>
 
 ## Verification checklist
 

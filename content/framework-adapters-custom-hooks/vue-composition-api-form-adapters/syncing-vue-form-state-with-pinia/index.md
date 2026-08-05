@@ -3,7 +3,7 @@ layout: page.njk
 title: "Syncing Vue Form State with Pinia"
 description: "How to sync local Vue form state to a Pinia store without infinite watch loops, stale dirty flags, or validation context loss — production-ready pattern with debounce and re-entrancy guard."
 slug: "syncing-vue-form-state-with-pinia"
-type: guide
+type: howto
 breadcrumb: "Syncing Vue Form State with Pinia"
 datePublished: "2025-04-12"
 dateModified: "2026-06-23"
@@ -89,55 +89,56 @@ The sync diagram below shows the three-layer boundary this composable creates: t
 <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Data flow from user input through local reactive state to Pinia store" style="width:100%;max-width:640px;display:block;margin:1.5rem auto;">
   <title>Pinia form sync data flow</title>
   <desc>Three columns showing: user input events on the left, a local reactive sandbox in the centre, and the Pinia store on the right. Arrows show the debounced, dirty-gated path from local state to store, and the store-to-localForm path used during reset.</desc>
+  <rect x="0" y="0" width="640" height="300" fill="#f9f5fb"/>
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- Layer boxes -->
-  <rect x="20" y="60" width="140" height="180" rx="8" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
-  <text x="90" y="52" text-anchor="middle" font-size="12" fill="currentColor" font-family="sans-serif" font-weight="600" opacity="0.7">Input layer</text>
-  <rect x="30" y="80" width="120" height="44" rx="6" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.2"/>
-  <text x="90" y="98" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif" opacity="0.85">&lt;input v-model</text>
-  <text x="90" y="113" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif" opacity="0.85">="localForm.x"&gt;</text>
-  <rect x="30" y="140" width="120" height="44" rx="6" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.2"/>
-  <text x="90" y="158" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif" opacity="0.85">&lt;input v-model</text>
-  <text x="90" y="173" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif" opacity="0.85">="localForm.y"&gt;</text>
-  <rect x="30" y="200" width="120" height="28" rx="6" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.2"/>
-  <text x="90" y="219" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif" opacity="0.85">…more fields</text>
+  <rect x="20" y="60" width="140" height="180" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="90" y="52" text-anchor="middle" font-size="12" fill="#6b5f75" font-family="sans-serif" font-weight="600">Input layer</text>
+  <rect x="30" y="80" width="120" height="44" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="90" y="98" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">&lt;input v-model</text>
+  <text x="90" y="113" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">="localForm.x"&gt;</text>
+  <rect x="30" y="140" width="120" height="44" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="90" y="158" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">&lt;input v-model</text>
+  <text x="90" y="173" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">="localForm.y"&gt;</text>
+  <rect x="30" y="200" width="120" height="28" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="90" y="219" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">…more fields</text>
   <!-- Centre: local reactive -->
-  <rect x="230" y="40" width="180" height="220" rx="8" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
-  <text x="320" y="32" text-anchor="middle" font-size="12" fill="currentColor" font-family="sans-serif" font-weight="600" opacity="0.7">Local reactive sandbox</text>
-  <rect x="242" y="58" width="156" height="36" rx="6" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.2"/>
-  <text x="320" y="74" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif" opacity="0.9">reactive({ ...initialData })</text>
-  <text x="320" y="89" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif" opacity="0.6">isolated from store</text>
-  <rect x="242" y="108" width="156" height="36" rx="6" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.2"/>
-  <text x="320" y="124" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif" opacity="0.9">watch({ deep: true })</text>
-  <text x="320" y="139" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif" opacity="0.6">dirty + equality gate</text>
-  <rect x="242" y="158" width="156" height="36" rx="6" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.2"/>
-  <text x="320" y="174" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif" opacity="0.9">useDebounceFn(patch, 150)</text>
-  <text x="320" y="189" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif" opacity="0.6">+ isSyncing guard</text>
-  <rect x="242" y="208" width="156" height="36" rx="6" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.2"/>
-  <text x="320" y="224" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif" opacity="0.9">Zod / Yup validation</text>
-  <text x="320" y="239" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif" opacity="0.6">local errors only</text>
+  <rect x="230" y="40" width="180" height="220" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="320" y="32" text-anchor="middle" font-size="12" fill="#6b5f75" font-family="sans-serif" font-weight="600">Local reactive sandbox</text>
+  <rect x="242" y="58" width="156" height="36" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="320" y="74" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">reactive({ ...initialData })</text>
+  <text x="320" y="89" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="sans-serif">isolated from store</text>
+  <rect x="242" y="108" width="156" height="36" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="320" y="124" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">watch({ deep: true })</text>
+  <text x="320" y="139" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="sans-serif">dirty + equality gate</text>
+  <rect x="242" y="158" width="156" height="36" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="320" y="174" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">useDebounceFn(patch, 150)</text>
+  <text x="320" y="189" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="sans-serif">+ isSyncing guard</text>
+  <rect x="242" y="208" width="156" height="36" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="320" y="224" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">Zod / Yup validation</text>
+  <text x="320" y="239" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="sans-serif">local errors only</text>
   <!-- Right: Pinia store -->
-  <rect x="480" y="80" width="140" height="140" rx="8" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
-  <text x="550" y="72" text-anchor="middle" font-size="12" fill="currentColor" font-family="sans-serif" font-weight="600" opacity="0.7">Pinia store</text>
-  <rect x="492" y="98" width="116" height="36" rx="6" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.2"/>
-  <text x="550" y="114" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif" opacity="0.9">store.formData</text>
-  <text x="550" y="129" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif" opacity="0.6">source of truth</text>
-  <rect x="492" y="150" width="116" height="36" rx="6" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.2"/>
-  <text x="550" y="166" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif" opacity="0.9">store.$patch(…)</text>
-  <text x="550" y="181" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif" opacity="0.6">batched mutation</text>
+  <rect x="480" y="80" width="140" height="140" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="550" y="72" text-anchor="middle" font-size="12" fill="#6b5f75" font-family="sans-serif" font-weight="600">Pinia store</text>
+  <rect x="492" y="98" width="116" height="36" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="550" y="114" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">store.formData</text>
+  <text x="550" y="129" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="sans-serif">source of truth</text>
+  <rect x="492" y="150" width="116" height="36" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.2"/>
+  <text x="550" y="166" text-anchor="middle" font-size="11" fill="#1e1a24" font-family="sans-serif">store.$patch(…)</text>
+  <text x="550" y="181" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="sans-serif">batched mutation</text>
   <!-- Arrows: input → localForm -->
-  <line x1="160" y1="102" x2="228" y2="102" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="160" y1="162" x2="228" y2="162" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="160" y1="102" x2="228" y2="102" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="160" y1="162" x2="228" y2="162" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
   <!-- Arrow: localForm → store (debounced) -->
-  <line x1="420" y1="174" x2="478" y2="168" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="442" y="163" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif" opacity="0.6">debounced</text>
+  <line x1="420" y1="174" x2="478" y2="168" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="442" y="163" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="sans-serif">debounced</text>
   <!-- Arrow: store → localForm (reset) -->
-  <path d="M 492 210 Q 440 260 420 240" fill="none" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arr)"/>
-  <text x="452" y="258" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif" opacity="0.55">reset()</text>
+  <path d="M 492 210 Q 440 260 420 240" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+  <text x="452" y="258" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="sans-serif">reset()</text>
 </svg>
 
 ## Core pattern: `useFormSync`
@@ -237,6 +238,30 @@ export function useFormSync(initialData: UserFormData) {
 
 8. **Atomic reset.** `Object.assign(localForm, store.formData)` and `isDirty.value = false` must execute in the same synchronous tick. Any async gap between them lets the watcher fire, see the new `localForm` values as "dirty" relative to the old snapshot, and queue a redundant `$patch` of data that was just read from the store.
 
+Deciding what belongs in the store and what stays in the component is the whole design, and getting it wrong in either direction has a distinct symptom:
+
+<svg viewBox="0 8 690 216" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two columns dividing form state between a Pinia store and component-local state: the store holds values that survive navigation, drafts and cross-view derived data, while the component holds in-flight edits, focus and per-field touched flags. Each column names the symptom of putting the wrong thing there." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>What the store owns, and what the component keeps</title>
+  <desc>The store holds values that must survive navigation, the saved draft, and anything another view reads such as an unsaved-changes badge in the header. Putting per-keystroke state here means every keystroke touches global state, so every subscriber anywhere in the application re-evaluates. The component holds the in-flight edit buffer, which field is focused, and the per-field touched flags. Putting the canonical values here means navigating away loses them, which readers experience as the form silently discarding their work.</desc>
+  <rect x="0" y="8" width="690" height="216" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#7b4f8a" font-family="inherit">the Pinia store owns</text>
+  <rect x="14" y="36" width="326" height="128" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="28" y="60" font-size="10" fill="#1e1a24" font-family="inherit">values that must survive navigation</text>
+  <text x="28" y="84" font-size="10" fill="#1e1a24" font-family="inherit">the saved draft and its timestamp</text>
+  <text x="28" y="108" font-size="10" fill="#1e1a24" font-family="inherit">anything another view reads</text>
+  <text x="28" y="132" font-size="10" fill="#6b5f75" font-family="inherit">e.g. the header&#39;s unsaved-changes badge</text>
+  <text x="28" y="154" font-size="9.5" fill="#a63d6f" font-family="inherit">wrong thing here: every keystroke is global</text>
+  <text x="364" y="26" font-size="11.5" font-weight="700" fill="#2d6342" font-family="inherit">the component keeps</text>
+  <rect x="364" y="36" width="312" height="128" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="378" y="60" font-size="10" fill="#1e1a24" font-family="inherit">the in-flight edit buffer</text>
+  <text x="378" y="84" font-size="10" fill="#1e1a24" font-family="inherit">which field currently has focus</text>
+  <text x="378" y="108" font-size="10" fill="#1e1a24" font-family="inherit">per-field touched flags</text>
+  <text x="378" y="132" font-size="10" fill="#6b5f75" font-family="inherit">everything that dies with the view</text>
+  <text x="378" y="154" font-size="9.5" fill="#a63d6f" font-family="inherit">wrong thing here: navigation loses the work</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">The seam is "would another view ever read this?" — if no, it does not belong in a store, however convenient the store is.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Commit the buffer to the store on blur or on a debounce, not on every keystroke.</text>
+</svg>
+
 ## Failure modes and edge cases
 
 **Autofill floods the watcher before initialization completes.** Browser autofill dispatches `input` events synchronously on mount, before `onMounted` has returned. If `syncToStore` has not yet initialized, the first debounce flush can write a partially-filled snapshot. Fix: initialize `localForm` from `store.formData` (not from a prop) inside a `watchOnce` on the store, or set an explicit `isReady` gate that blocks `syncToStore` until `onMounted` resolves.
@@ -259,6 +284,38 @@ const syncToStore = useDebounceFn((payload: UserFormData) => {
 **Pinia `$reset()` does not trigger `resetForm()`.** If another component calls `store.$reset()`, the local reactive object retains the old values because the local watcher only flows outward. Add a `watch(() => store.formData, ...)` (shallow, with `immediate: true`) to pull store resets back into `localForm` — but use a flag identical to `isSyncing` to avoid looping back out.
 
 **`$patch` inside a Pinia action obscures DevTools history.** Calling `store.$patch(...)` directly from a composable creates anonymous timeline entries. For cleaner DevTools output, wrap the mutation in a named store action (`store.commitFormDraft(payload)`) and call that instead of `$patch`. The sync logic in the composable does not change.
+
+Store lifetime is the detail that turns "it works" into "it works the second time too". Pinia stores are singletons, so a form store outlives the form unless something resets it:
+
+<svg viewBox="0 8 664 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Timeline of visiting a form twice. On the first visit the store is created and filled. Navigating away leaves the store populated because it is a singleton. On the second visit the component mounts against the previous visit's values unless the store is reset on unmount or seeded on mount." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>A store is a singleton; a form is not</title>
+  <desc>Visit one: the component mounts, the store is created, and the reader fills in three fields. Navigate away: the component unmounts but the store persists, because a Pinia store lives for the lifetime of the application instance rather than the component. Visit two, without a reset: the component mounts and immediately shows the previous visit's values, including its dirty flags and any errors. Visit two, with an explicit seed or reset: the component mounts, seeds the store from the route's data, and the reader sees the form they expected.</desc>
+  <rect x="0" y="8" width="664" height="210" fill="#f9f5fb"/>
+  <rect x="14" y="34" width="150" height="66" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="89" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">visit 1</text>
+  <text x="89" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">store created,</text>
+  <text x="89" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">3 fields filled</text>
+  <path d="M164,67 H186" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="186" y="34" width="150" height="66" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="261" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">navigate away</text>
+  <text x="261" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">component unmounts,</text>
+  <text x="261" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">store persists</text>
+  <path d="M336,67 H358" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="358" y="34" width="150" height="66" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="433" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">visit 2, no reset</text>
+  <text x="433" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">old values, old flags,</text>
+  <text x="433" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">old errors</text>
+  <path d="M508,67 H530" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="530" y="34" width="118" height="66" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="589" y="56" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">visit 2, seeded</text>
+  <text x="589" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">seed on mount</text>
+  <text x="589" y="88" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">from route data</text>
+  <text x="14" y="134" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Seed on mount, do not reset on unmount</text>
+  <text x="14" y="152" font-size="10" fill="#6b5f75" font-family="inherit">Resetting on unmount destroys the draft the reader may want back after an accidental navigation — which is half the</text>
+  <text x="14" y="168" font-size="10" fill="#6b5f75" font-family="inherit">reason the values are in a store at all. Seeding on mount is explicit about which data this visit is editing.</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">Key the stored draft by record id so returning to a different record cannot show the previous record&#39;s values.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Test it by visiting the form, typing, navigating away and back — the assertion is about the second mount, never the first.</text>
+</svg>
 
 ## Verification checklist
 

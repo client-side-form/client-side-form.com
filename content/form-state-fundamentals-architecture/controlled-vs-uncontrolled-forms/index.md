@@ -93,47 +93,48 @@ Each field in a hybrid form moves through a defined ownership lifecycle. The dia
 <svg role="img" aria-label="State machine diagram for a form field's ownership lifecycle moving from IDLE through VALIDATING to VALID, INVALID, or RETRYABLE states" viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:2rem auto;">
   <title>Form Field Ownership State Machine</title>
   <desc>A state machine showing how a form field transitions from IDLE to VALIDATING, then to VALID, INVALID, or RETRYABLE, with arrows indicating user input, validator resolution, validator rejection, and retry triggers.</desc>
+  <rect x="0" y="0" width="720" height="340" fill="#f9f5fb"/>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6 Z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- IDLE -->
-  <rect x="20" y="130" width="110" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
-  <text x="75" y="158" text-anchor="middle" font-size="13" font-family="inherit" fill="currentColor" opacity="0.9" font-weight="600">IDLE</text>
+  <rect x="20" y="130" width="110" height="48" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="75" y="158" text-anchor="middle" font-size="13" font-family="inherit" fill="#1e1a24" font-weight="600">IDLE</text>
   <!-- VALIDATING -->
-  <rect x="290" y="130" width="140" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
-  <text x="360" y="158" text-anchor="middle" font-size="13" font-family="inherit" fill="currentColor" opacity="0.9" font-weight="600">VALIDATING</text>
+  <rect x="290" y="130" width="140" height="48" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="360" y="158" text-anchor="middle" font-size="13" font-family="inherit" fill="#1e1a24" font-weight="600">VALIDATING</text>
   <!-- VALID -->
-  <rect x="560" y="40" width="110" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
-  <text x="615" y="68" text-anchor="middle" font-size="13" font-family="inherit" fill="currentColor" opacity="0.9" font-weight="600">VALID</text>
+  <rect x="560" y="40" width="110" height="48" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="615" y="68" text-anchor="middle" font-size="13" font-family="inherit" fill="#1e1a24" font-weight="600">VALID</text>
   <!-- INVALID -->
-  <rect x="560" y="140" width="110" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
-  <text x="615" y="168" text-anchor="middle" font-size="13" font-family="inherit" fill="currentColor" opacity="0.9" font-weight="600">INVALID</text>
+  <rect x="560" y="140" width="110" height="48" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="615" y="168" text-anchor="middle" font-size="13" font-family="inherit" fill="#1e1a24" font-weight="600">INVALID</text>
   <!-- RETRYABLE -->
-  <rect x="560" y="240" width="110" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
-  <text x="615" y="268" text-anchor="middle" font-size="13" font-family="inherit" fill="currentColor" opacity="0.9" font-weight="600">RETRYABLE</text>
+  <rect x="560" y="240" width="110" height="48" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="615" y="268" text-anchor="middle" font-size="13" font-family="inherit" fill="#1e1a24" font-weight="600">RETRYABLE</text>
   <!-- IDLE → VALIDATING -->
-  <line x1="130" y1="154" x2="288" y2="154" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
-  <text x="209" y="145" text-anchor="middle" font-size="11" font-family="inherit" fill="currentColor" opacity="0.7">user input / blur</text>
+  <line x1="130" y1="154" x2="288" y2="154" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="209" y="145" text-anchor="middle" font-size="11" font-family="inherit" fill="#6b5f75">user input / blur</text>
   <!-- VALIDATING → VALID -->
-  <line x1="430" y1="143" x2="558" y2="76" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
-  <text x="506" y="100" text-anchor="middle" font-size="11" font-family="inherit" fill="currentColor" opacity="0.7">resolves null</text>
+  <line x1="430" y1="143" x2="558" y2="76" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="506" y="100" text-anchor="middle" font-size="11" font-family="inherit" fill="#6b5f75">resolves null</text>
   <!-- VALIDATING → INVALID -->
-  <line x1="430" y1="160" x2="558" y2="162" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
-  <text x="494" y="153" text-anchor="middle" font-size="11" font-family="inherit" fill="currentColor" opacity="0.7">error string</text>
+  <line x1="430" y1="160" x2="558" y2="162" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="494" y="153" text-anchor="middle" font-size="11" font-family="inherit" fill="#6b5f75">error string</text>
   <!-- VALIDATING → RETRYABLE -->
-  <line x1="430" y1="172" x2="558" y2="252" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
-  <text x="506" y="230" text-anchor="middle" font-size="11" font-family="inherit" fill="currentColor" opacity="0.7">network error</text>
+  <line x1="430" y1="172" x2="558" y2="252" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="506" y="230" text-anchor="middle" font-size="11" font-family="inherit" fill="#6b5f75">network error</text>
   <!-- VALID → IDLE (re-edit) -->
-  <path d="M615,40 Q640,20 380,20 Q120,20 75,128" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow)" opacity="0.45"/>
-  <text x="360" y="14" text-anchor="middle" font-size="10" font-family="inherit" fill="currentColor" opacity="0.55">re-edit</text>
+  <path d="M615,40 Q640,20 380,20 Q120,20 75,128" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="360" y="14" text-anchor="middle" font-size="10" font-family="inherit" fill="#6b5f75">re-edit</text>
   <!-- INVALID → IDLE (re-edit) -->
-  <path d="M560,164 Q540,200 300,210 Q130,210 75,180" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow)" opacity="0.45"/>
-  <text x="310" y="225" text-anchor="middle" font-size="10" font-family="inherit" fill="currentColor" opacity="0.55">re-edit</text>
+  <path d="M560,164 Q540,200 300,210 Q130,210 75,180" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="310" y="225" text-anchor="middle" font-size="10" font-family="inherit" fill="#6b5f75">re-edit</text>
   <!-- RETRYABLE → VALIDATING (retry) -->
-  <path d="M560,264 Q530,310 430,310 Q370,310 360,180" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow)" opacity="0.45"/>
-  <text x="460" y="322" text-anchor="middle" font-size="10" font-family="inherit" fill="currentColor" opacity="0.55">retry trigger</text>
+  <path d="M560,264 Q530,310 430,310 Q370,310 360,180" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="460" y="322" text-anchor="middle" font-size="10" font-family="inherit" fill="#6b5f75">retry trigger</text>
 </svg>
 
 The ownership decision (controlled vs. uncontrolled) is fixed at mount time per field. Transitions between validation states happen identically for both paradigms — only the value-extraction mechanism differs.
@@ -297,6 +298,42 @@ function applyFieldError(
 
 This pattern applies whether the field is controlled (call after state update) or uncontrolled (call after `extractUncontrolledValues`). For more on mapping errors to UI components, see [mapping validation errors to UI components](https://www.client-side-form.com/form-state-fundamentals-architecture/error-state-mapping-patterns/mapping-validation-errors-to-ui-components/).
 
+### The ownership matrix
+
+Every field in a form answers two questions independently: who holds the value between keystrokes, and who is allowed to change it. The four combinations behave very differently, and only three of them are legitimate:
+
+<svg viewBox="0 8 700 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Matrix of value ownership. React-owned value with React-only writes is a controlled field. DOM-owned value with user-only writes is an uncontrolled field. DOM-owned value that React also writes through a ref is a hybrid field, which is legitimate when writes are rare. React-owned value that the DOM also writes is the broken quadrant that produces the switching warning." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Who owns the value, and who is allowed to write it</title>
+  <desc>A two-by-two matrix. Value in React state and only React writes: a controlled field, predictable and the default choice. Value in the DOM and only the user writes: an uncontrolled field, the cheapest option and the right one for very large forms. Value in the DOM with React writing occasionally through a ref: a hybrid field, legitimate when programmatic writes are rare, such as a reset or an autofill. Value in React state with the DOM also writing: the broken quadrant, which produces React's controlled-to-uncontrolled warning and loses keystrokes.</desc>
+  <rect x="0" y="8" width="700" height="210" fill="#f9f5fb"/>
+  <text x="196" y="30" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">only the user writes</text>
+  <text x="482" y="30" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">code also writes</text>
+  <text x="14" y="86" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">value lives</text>
+  <text x="14" y="102" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">in the DOM</text>
+  <text x="14" y="164" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">value lives</text>
+  <text x="14" y="180" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">in state</text>
+  <rect x="110" y="40" width="272" height="82" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="124" y="62" font-size="11" font-weight="700" fill="#2d6342" font-family="inherit">uncontrolled</text>
+  <text x="124" y="80" font-size="9.5" fill="#6b5f75" font-family="inherit">zero renders per keystroke; read on submit</text>
+  <text x="124" y="96" font-size="9.5" fill="#6b5f75" font-family="inherit">with FormData or a ref</text>
+  <text x="124" y="112" font-size="9.5" fill="#6b5f75" font-family="inherit">cheapest at 100+ fields</text>
+  <rect x="396" y="40" width="290" height="82" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
+  <text x="410" y="62" font-size="11" font-weight="700" fill="#b07a55" font-family="inherit">hybrid — legitimate, with care</text>
+  <text x="410" y="80" font-size="9.5" fill="#6b5f75" font-family="inherit">DOM holds the value; code writes it via a ref</text>
+  <text x="410" y="96" font-size="9.5" fill="#6b5f75" font-family="inherit">only for rare events: reset, autofill, restore</text>
+  <text x="410" y="112" font-size="9.5" fill="#6b5f75" font-family="inherit">must dispatch an input event to stay in sync</text>
+  <rect x="110" y="130" width="272" height="82" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="124" y="152" font-size="11" font-weight="700" fill="#a63d6f" font-family="inherit">the broken quadrant</text>
+  <text x="124" y="170" font-size="9.5" fill="#6b5f75" font-family="inherit">state is the source of truth but the DOM</text>
+  <text x="124" y="186" font-size="9.5" fill="#6b5f75" font-family="inherit">also mutates it — keystrokes are lost and</text>
+  <text x="124" y="202" font-size="9.5" fill="#6b5f75" font-family="inherit">React logs the switching warning</text>
+  <rect x="396" y="130" width="290" height="82" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="410" y="152" font-size="11" font-weight="700" fill="#2d6342" font-family="inherit">controlled</text>
+  <text x="410" y="170" font-size="9.5" fill="#6b5f75" font-family="inherit">one owner, one write path, fully predictable</text>
+  <text x="410" y="186" font-size="9.5" fill="#6b5f75" font-family="inherit">costs a render per keystroke per subscriber</text>
+  <text x="410" y="202" font-size="9.5" fill="#6b5f75" font-family="inherit">the default until profiling says otherwise</text>
+</svg>
+
 ## Integration Guidance
 
 The adapter slots into the [form state fundamentals architecture](https://www.client-side-form.com/form-state-fundamentals-architecture/) as the normalisation layer between the DOM and your validation schema:
@@ -334,6 +371,29 @@ If field A's validator reads field B's uncontrolled ref synchronously, and field
 | Uncontrolled field always reads empty string | Check `name` attribute matches the key in `uncontrolledFields` | Ensure every uncontrolled input has a `name` attribute; `FormData.get(key)` returns `null` without it |
 | Hydration warning on SSR uncontrolled input | Inspect server HTML for `value=` attribute on uncontrolled inputs | Switch to `defaultValue` prop; never set `value` on an uncontrolled input after mount |
 | `aria-describedby` not announced by screen reader | Verify the error `<span>` id exists in the DOM before the input renders | Render the error container in the initial HTML even when empty; do not conditionally mount it |
+
+Cost is the other half of the decision, and it scales with field count rather than with taste:
+
+<svg viewBox="0 8 660 224" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bar comparison of renders caused by typing thirty characters into one field of a form. A fully controlled form with a shared state object renders every field on every keystroke. A controlled form with per-field subscriptions renders only the edited field. An uncontrolled form renders nothing until submit." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Component renders while typing 30 characters, 60-field form</title>
+  <desc>Three bars showing total component renders caused by typing thirty characters into one field of a sixty-field form. A single shared state object at the form root produces about eighteen hundred renders, because every field re-renders on every keystroke. Per-field subscriptions through an external store produce about thirty renders, one per keystroke for the edited field only. An uncontrolled form produces zero renders while typing, with the values read once at submit.</desc>
+  <rect x="0" y="8" width="660" height="224" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">Renders while typing 30 characters into one field of a 60-field form</text>
+  <text x="14" y="58" font-size="10" fill="#1e1a24" font-family="inherit">shared state object</text>
+  <rect x="176" y="44" width="440" height="22" rx="4" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="624" y="60" font-size="10" fill="#a63d6f" font-family="inherit">1800</text>
+  <text x="14" y="74" font-size="9.5" fill="#6b5f75" font-family="inherit">30 keystrokes × 60 fields</text>
+  <text x="14" y="112" font-size="10" fill="#1e1a24" font-family="inherit">per-field subscriptions</text>
+  <rect x="176" y="98" width="18" height="22" rx="4" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="202" y="114" font-size="10" fill="#2d6342" font-family="inherit">30</text>
+  <text x="14" y="128" font-size="9.5" fill="#6b5f75" font-family="inherit">30 keystrokes × 1 field</text>
+  <text x="14" y="166" font-size="10" fill="#1e1a24" font-family="inherit">uncontrolled</text>
+  <rect x="176" y="152" width="4" height="22" rx="2" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="190" y="168" font-size="10" fill="#2d6342" font-family="inherit">0 until submit</text>
+  <text x="14" y="182" font-size="9.5" fill="#6b5f75" font-family="inherit">the browser owns the value</text>
+  <text x="14" y="212" font-size="10" fill="#6b5f75" font-family="inherit">The middle row is the honest default: it keeps a single write path and one owner while costing what uncontrolled costs.</text>
+  <text x="14" y="228" font-size="10" fill="#6b5f75" font-family="inherit">Reach for the bottom row only when profiling shows the render itself — not the validator — is the bottleneck.</text>
+</svg>
 
 ## Testing & QA Hooks
 

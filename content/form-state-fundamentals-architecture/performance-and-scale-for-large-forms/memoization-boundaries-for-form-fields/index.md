@@ -3,7 +3,7 @@ layout: page.njk
 title: "Memoization Boundaries for Form Fields"
 description: "Where to place React.memo, useMemo, and selector boundaries so one field's keystroke never re-renders its siblings — plus handler stability and Vue computed boundaries."
 slug: memoization-boundaries-for-form-fields
-type: guide
+type: howto
 breadcrumb: "Memoization Boundaries"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -139,6 +139,39 @@ The load-bearing detail is `onChange`: one handler for the whole form, taking `n
 
 5. **Confirm in the profiler.** Type in one field and read the React Profiler flamegraph. Exactly one field component should appear in the commit. If siblings appear, a prop is still changing identity — log prop references across renders to find which one.
 
+A memo boundary is only as good as the props crossing it. Five things routinely defeat one, and four of them look completely innocent at the call site:
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five props that defeat a memo boundary: an inline object literal, an inline arrow function, a children element, a context value that changes, and an array built with map on each render. Each row shows what the parent writes, why the identity changes, and the fix." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Five ways a prop defeats React.memo</title>
+  <desc>An inline object literal such as a style prop creates a new object on every parent render, so the shallow comparison always fails; hoist it or wrap it in useMemo. An inline arrow function has the same problem; wrap it in useCallback with correct dependencies. Passing children creates a new element object every render, which no memo can compare; restructure so the memoized component owns its subtree. A context value that changes bypasses memo entirely, because context updates reach consumers regardless of props; split the context or subscribe to a slice. An array built with map inside the render is a fresh array every time; memoize the derivation, not the component that receives it.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">What the parent writes</text>
+  <text x="230" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Why memo cannot help</text>
+  <text x="452" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Fix</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">style={{ width: 200 }}</text>
+  <text x="230" y="66" font-size="10" fill="#6b5f75" font-family="inherit">new object every render</text>
+  <text x="452" y="66" font-size="10" fill="#2d6342" font-family="inherit">hoist it out, or useMemo</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">onChange={e =&gt; set(e)}</text>
+  <text x="230" y="100" font-size="10" fill="#6b5f75" font-family="inherit">new function every render</text>
+  <text x="452" y="100" font-size="10" fill="#2d6342" font-family="inherit">useCallback with real deps</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">&lt;Field&gt;{label}&lt;/Field&gt;</text>
+  <text x="230" y="134" font-size="10" fill="#6b5f75" font-family="inherit">children is a new element</text>
+  <text x="452" y="134" font-size="10" fill="#2d6342" font-family="inherit">let the field own its subtree</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">a changing context value</text>
+  <text x="230" y="168" font-size="10" fill="#a63d6f" font-family="inherit">context bypasses props entirely</text>
+  <text x="452" y="168" font-size="10" fill="#2d6342" font-family="inherit">split it, or subscribe to a slice</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">options={list.map(...)}</text>
+  <text x="230" y="202" font-size="10" fill="#6b5f75" font-family="inherit">new array every render</text>
+  <text x="452" y="202" font-size="10" fill="#2d6342" font-family="inherit">memoize the derivation</text>
+</svg>
+
 ## Failure Modes and Edge Cases
 
 **Inline arrow handler defeats the memo.** The single most common cause of a bypassed boundary.
@@ -165,6 +198,31 @@ const rules = React.useMemo(() => [required, maxLength(limit)], [limit]);
 
 **Vue: spreading whole form state into a child.** Vue gives you the memo skip for free through its dependency graph, but only if the child reads a narrow computed. `<Field v-bind="formState" />` makes the child depend on the entire state object, so any field change re-renders it — the [Vue composition API adapter](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/) should pass a per-field computed instead.
 
+It is also worth being honest about where the boundary belongs. Wrapping everything costs more than it saves:
+
+<svg viewBox="0 8 664 218" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A form component tree with memo boundaries marked. The form root is not memoized, the field row is, the label and the error text inside it are not, and the option list of a select is memoized because it is expensive to build. A note explains that each boundary costs a comparison per render." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Put the boundary where the subtree is wide, not everywhere</title>
+  <desc>The form root is never memoized: it is the component whose state changes, so a comparison there can only ever fail. Each field row is memoized, because it is the widest repeated subtree and the one that would otherwise re-render sixty times per keystroke. Inside a row, the label and error text are not memoized: they are two nodes each, so comparing props costs more than re-rendering them. A select's option list is memoized separately, because building it is genuinely expensive and it changes far less often than the field around it.</desc>
+  <rect x="0" y="8" width="664" height="218" fill="#f9f5fb"/>
+  <rect x="14" y="24" width="180" height="48" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="28" y="44" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">&lt;Form&gt;</text>
+  <text x="28" y="62" font-size="9.5" fill="#a63d6f" font-family="inherit">no memo — state lives here</text>
+  <path d="M104,72 V100 H150" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="150" y="76" width="200" height="48" rx="8" fill="#e2d6ec" stroke="#2d6342" stroke-width="2"/>
+  <text x="164" y="96" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">&lt;FieldRow&gt; ×60</text>
+  <text x="164" y="114" font-size="9.5" fill="#2d6342" font-family="inherit">memo — the widest repeat</text>
+  <path d="M250,124 V152 H296" fill="none" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="296" y="128" width="170" height="44" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="308" y="147" font-size="10" fill="#1e1a24" font-family="inherit">&lt;Label&gt; &lt;ErrorText&gt;</text>
+  <text x="308" y="164" font-size="9.5" fill="#6b5f75" font-family="inherit">no memo — two nodes each</text>
+  <path d="M466,150 H500" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="500" y="128" width="150" height="44" rx="8" fill="#e2d6ec" stroke="#2d6342" stroke-width="2"/>
+  <text x="512" y="147" font-size="10" fill="#1e1a24" font-family="inherit">&lt;OptionList&gt;</text>
+  <text x="512" y="164" font-size="9.5" fill="#2d6342" font-family="inherit">memo — costly to build</text>
+  <text x="14" y="196" font-size="10" fill="#6b5f75" font-family="inherit">Each boundary costs a shallow prop comparison on every parent render, so a memo around two text nodes is a net loss.</text>
+  <text x="14" y="212" font-size="10" fill="#6b5f75" font-family="inherit">The rule that survives review: memo the repeated row and anything expensive to build; leave leaves alone.</text>
+</svg>
+
 ## Verification Checklist
 
 - [ ] Typing in one field commits only that field in the React Profiler flamegraph
@@ -175,6 +233,37 @@ const rules = React.useMemo(() => [required, maxLength(limit)], [limit]);
 - [ ] useMemo/useCallback dependency arrays are complete — no stale values shown
 - [ ] Vue fields read a per-field computed, not a spread of whole form state
 - [ ] aria-invalid and aria-describedby still update correctly after memoization (a boundary must not freeze error props)
+
+## Proving the boundary paid for itself
+
+A memo boundary is a claim you can measure. Record a profile before and after, typing the same 20 characters into the same field, and compare the number of components that committed:
+
+<svg viewBox="0 8 664 216" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Before and after profiles of typing twenty characters into one field of a sixty-field form. Before, twelve hundred component commits and a twenty-four millisecond average frame. After, forty commits and a five millisecond average frame, with the remaining commits being the edited field and its error text." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>What the profiler should show once the boundary is in place</title>
+  <desc>Before the memo boundary: typing twenty characters into one field of a sixty-field form commits about twelve hundred components, because every field re-renders on every keystroke, and the average frame takes about twenty-four milliseconds. After: about forty components commit — the edited field and its error text, twenty times — and the average frame drops to about five milliseconds. If the after number is still proportional to field count, the boundary is being defeated by a prop identity rather than being absent.</desc>
+  <rect x="0" y="8" width="664" height="216" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">20 keystrokes, 60-field form, React DevTools Profiler</text>
+  <rect x="14" y="38" width="312" height="132" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="28" y="60" font-size="11" font-weight="700" fill="#a63d6f" font-family="inherit">before</text>
+  <text x="28" y="82" font-size="10" fill="#1e1a24" font-family="inherit">components committed</text>
+  <text x="240" y="82" font-size="12" font-weight="700" fill="#a63d6f" font-family="inherit">~1200</text>
+  <text x="28" y="104" font-size="10" fill="#1e1a24" font-family="inherit">average frame</text>
+  <text x="240" y="104" font-size="12" font-weight="700" fill="#a63d6f" font-family="inherit">24ms</text>
+  <text x="28" y="126" font-size="10" fill="#1e1a24" font-family="inherit">who re-rendered</text>
+  <text x="28" y="144" font-size="9.5" fill="#6b5f75" font-family="inherit">every field, on every keystroke</text>
+  <text x="28" y="160" font-size="9.5" fill="#6b5f75" font-family="inherit">60 × 20 commits</text>
+  <rect x="338" y="38" width="312" height="132" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="352" y="60" font-size="11" font-weight="700" fill="#2d6342" font-family="inherit">after</text>
+  <text x="352" y="82" font-size="10" fill="#1e1a24" font-family="inherit">components committed</text>
+  <text x="564" y="82" font-size="12" font-weight="700" fill="#2d6342" font-family="inherit">~40</text>
+  <text x="352" y="104" font-size="10" fill="#1e1a24" font-family="inherit">average frame</text>
+  <text x="564" y="104" font-size="12" font-weight="700" fill="#2d6342" font-family="inherit">5ms</text>
+  <text x="352" y="126" font-size="10" fill="#1e1a24" font-family="inherit">who re-rendered</text>
+  <text x="352" y="144" font-size="9.5" fill="#6b5f75" font-family="inherit">the edited field and its error text</text>
+  <text x="352" y="160" font-size="9.5" fill="#6b5f75" font-family="inherit">2 × 20 commits</text>
+  <text x="14" y="196" font-size="10" fill="#6b5f75" font-family="inherit">If the "after" figure still scales with field count, the boundary exists but a prop identity is defeating it — check the five in the table above.</text>
+  <text x="14" y="212" font-size="10" fill="#6b5f75" font-family="inherit">Record with the "Record why each component rendered" setting on; it names the offending prop directly.</text>
+</svg>
 
 ## Frequently Asked Questions
 

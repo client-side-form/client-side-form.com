@@ -98,47 +98,49 @@ A secondary failure: surfacing errors on fields the user has never touched, beca
 
 Error mapping is not a function call; it is a state machine. The transitions below are the source of truth for when an error appears, updates, or clears.
 
-<svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Error mapping state machine: IDLE transitions to VALIDATING on blur/change/submit, then to VALID or INVALID, with INVALID transitioning to CLEARING on reset or successful re-validation" style="width:100%;max-width:720px;display:block;margin:1.5rem auto;">
+<svg viewBox="4 -1 702 217" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Error mapping state machine: IDLE transitions to VALIDATING on blur/change/submit, then to VALID or INVALID, with INVALID transitioning to CLEARING on reset or successful re-validation" style="width:100%;max-width:720px;display:block;margin:1.5rem auto;">
   <title>Error Mapping State Machine</title>
   <desc>State diagram showing IDLE, VALIDATING, VALID, INVALID, and CLEARING states with labelled transition arrows</desc>
+  <rect x="4" y="-1" width="702" height="217" fill="#f9f5fb"/>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- IDLE -->
-  <rect x="20" y="100" width="100" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="70" y="125" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">IDLE</text>
+  <rect x="20" y="100" width="100" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="70" y="125" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">IDLE</text>
   <!-- VALIDATING -->
-  <rect x="200" y="100" width="120" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-  <text x="260" y="125" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">VALIDATING</text>
+  <rect x="200" y="100" width="120" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="260" y="125" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">VALIDATING</text>
   <!-- VALID -->
-  <rect x="420" y="40" width="100" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
-  <text x="470" y="65" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">VALID</text>
+  <rect x="420" y="40" width="100" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="470" y="65" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">VALID</text>
   <!-- INVALID -->
-  <rect x="420" y="160" width="100" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-  <text x="470" y="185" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">INVALID</text>
+  <rect x="420" y="160" width="100" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="470" y="185" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">INVALID</text>
   <!-- CLEARING -->
-  <rect x="590" y="100" width="100" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="640" y="125" text-anchor="middle" font-size="13" fill="currentColor" font-family="inherit">CLEARING</text>
+  <rect x="590" y="100" width="100" height="40" rx="6" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="640" y="125" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="inherit">CLEARING</text>
   <!-- IDLE → VALIDATING -->
-  <line x1="120" y1="120" x2="198" y2="120" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
-  <text x="159" y="113" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">blur/change/submit</text>
+  <line x1="120" y1="120" x2="198" y2="120" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="159" y="102" text-anchor="middle" font-size="10" fill="#6b5f75">blur, change</text>
+  <text x="159" y="114" text-anchor="middle" font-size="10" fill="#6b5f75">or submit</text>
   <!-- VALIDATING → VALID -->
-  <line x1="310" y1="108" x2="418" y2="68" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.6"/>
-  <text x="370" y="78" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">no errors</text>
+  <line x1="310" y1="108" x2="418" y2="68" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="370" y="78" text-anchor="middle" font-size="10" fill="#6b5f75">no errors</text>
   <!-- VALIDATING → INVALID -->
-  <line x1="310" y1="132" x2="418" y2="172" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="370" y="168" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.8">errors found</text>
+  <line x1="310" y1="132" x2="418" y2="172" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="370" y="168" text-anchor="middle" font-size="10" fill="#6b5f75">errors found</text>
   <!-- VALID → CLEARING -->
-  <line x1="520" y1="60" x2="584" y2="98" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.6"/>
-  <text x="572" y="78" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">reset</text>
+  <line x1="520" y1="60" x2="584" y2="98" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="572" y="78" text-anchor="middle" font-size="10" fill="#6b5f75">reset</text>
   <!-- INVALID → CLEARING -->
-  <line x1="520" y1="180" x2="584" y2="142" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.6"/>
-  <text x="572" y="168" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.7">reset / re-valid</text>
+  <line x1="520" y1="180" x2="584" y2="142" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="572" y="168" text-anchor="middle" font-size="10" fill="#6b5f75">reset / re-valid</text>
   <!-- CLEARING → IDLE (arc back) -->
-  <path d="M640,100 Q640,20 70,95" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)" opacity="0.4"/>
-  <text x="370" y="26" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.5">clearAll()</text>
+  <path d="M640,100 Q640,20 70,95" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <text x="370" y="26" text-anchor="middle" font-size="10" fill="#6b5f75">clearAll()</text>
 </svg>
 
 | State | What it means | Entry trigger | Exit trigger |
@@ -307,6 +309,42 @@ function scheduleErrorUpdate(map: ReadonlyMap<string, FieldErrorState>) {
 
 ---
 
+### Three producers, one shape
+
+Errors arrive from three very different places and none of them agrees on a format. The mapping layer exists so that everything downstream — rendering, ARIA wiring, the error summary, analytics — sees one shape:
+
+<svg viewBox="0 8 690 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three error producers normalised into one field error map: the browser's native ValidityState, a schema library's issue list with dotted paths, and a server 422 response with pointer-style paths. Each adapter converts paths, codes and messages into the same field-keyed shape." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Adapters turn three error formats into one</title>
+  <desc>Left column, three producers. The browser's ValidityState exposes boolean flags such as valueMissing and typeMismatch with a browser-authored message. A schema library emits an issue array whose paths are arrays of segments and whose codes are library-specific. A server rejection returns a 422 body with JSON-pointer paths and human messages. Centre, one adapter per producer converts the path to a canonical dotted field name, maps the code onto the application's own code vocabulary, and picks the message to show. Right, the resulting field error map is keyed by field name and holds a code, a message and a severity for each.</desc>
+  <rect x="0" y="8" width="690" height="220" fill="#f9f5fb"/>
+  <rect x="14" y="24" width="200" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="28" y="44" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">native ValidityState</text>
+  <text x="28" y="62" font-size="9.5" fill="#6b5f75" font-family="inherit">boolean flags, browser wording</text>
+  <rect x="14" y="86" width="200" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="28" y="106" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">schema issue list</text>
+  <text x="28" y="124" font-size="9.5" fill="#6b5f75" font-family="inherit">path arrays, library codes</text>
+  <rect x="14" y="148" width="200" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="28" y="168" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">server 422 body</text>
+  <text x="28" y="186" font-size="9.5" fill="#6b5f75" font-family="inherit">pointer paths, prose messages</text>
+  <path d="M214,50 H248" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M214,112 H248" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M214,174 H248" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="248" y="60" width="196" height="104" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="346" y="84" text-anchor="middle" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">one adapter each</text>
+  <text x="262" y="106" font-size="9.5" fill="#1e1a24" font-family="inherit">path → canonical dotted name</text>
+  <text x="262" y="124" font-size="9.5" fill="#1e1a24" font-family="inherit">code → your vocabulary</text>
+  <text x="262" y="142" font-size="9.5" fill="#1e1a24" font-family="inherit">message → what you show</text>
+  <text x="262" y="158" font-size="9.5" fill="#1e1a24" font-family="inherit">severity → error or warning</text>
+  <path d="M444,112 H478" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="478" y="60" width="198" height="104" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="577" y="84" text-anchor="middle" font-size="11" font-weight="700" fill="#2d6342" font-family="inherit">FieldErrorMap</text>
+  <text x="492" y="106" font-size="9.5" fill="#6b5f75" font-family="inherit">keyed by field name</text>
+  <text x="492" y="124" font-size="9.5" fill="#6b5f75" font-family="inherit">{ code, message, severity }</text>
+  <text x="492" y="142" font-size="9.5" fill="#6b5f75" font-family="inherit">the only shape the UI knows</text>
+  <text x="492" y="158" font-size="9.5" fill="#6b5f75" font-family="inherit">and the only one you test</text>
+  <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">Adapters are the seam worth unit-testing: they are pure functions from a captured payload to a map, and they change whenever an API does.</text>
+</svg>
+
 ## Integration guidance
 
 This adapter slots into the validation lifecycle at the normalisation stage — after the schema library fires and before any component reads error state.
@@ -409,6 +447,35 @@ function routeCrossFieldErrors(
 | Errors vanish on form reset but field still shows `aria-invalid="true"` | Confirm `clearAll()` is called AND the DOM update that writes `aria-invalid` fires after the clear | Sequence: `clearAll()` → `scheduleErrorUpdate(new Map())` → let framework re-render before resetting the native input |
 
 ---
+
+When two producers name the same field, the map needs a rule rather than a race. Precedence by origin, then by severity, keeps it deterministic:
+
+<svg viewBox="0 8 662 218" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Precedence for merging errors that target the same field: a server rejection outranks a schema failure, which outranks a native constraint message, and within one origin an error outranks a warning. A worked example shows a field carrying all three and the server message winning." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Who wins when two producers name the same field</title>
+  <desc>Precedence from highest to lowest: a server rejection wins, because only the server has seen the whole record and its constraints; a schema failure comes next, because it encodes the application's own rules; a native constraint message comes last, because its wording is browser and locale dependent. Within a single origin, an error outranks a warning. A worked example shows the email field carrying a native type mismatch, a schema format issue and a server already-registered rejection, and the server message being the one rendered.</desc>
+  <rect x="0" y="8" width="662" height="218" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">Precedence, highest first</text>
+  <rect x="14" y="36" width="300" height="44" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="2"/>
+  <text x="28" y="54" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">1 · server rejection</text>
+  <text x="28" y="71" font-size="9.5" fill="#6b5f75" font-family="inherit">only it has seen the whole record</text>
+  <rect x="14" y="88" width="300" height="44" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="28" y="106" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">2 · schema failure</text>
+  <text x="28" y="123" font-size="9.5" fill="#6b5f75" font-family="inherit">your rules, your wording</text>
+  <rect x="14" y="140" width="300" height="44" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="28" y="158" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">3 · native constraint</text>
+  <text x="28" y="175" font-size="9.5" fill="#6b5f75" font-family="inherit">browser and locale dependent</text>
+  <text x="346" y="26" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">Worked example — one email field</text>
+  <rect x="346" y="36" width="302" height="30" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="360" y="55" font-size="9.5" fill="#6b5f75" font-family="inherit">native: "Please enter an email address."</text>
+  <rect x="346" y="72" width="302" height="30" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="360" y="91" font-size="9.5" fill="#6b5f75" font-family="inherit">schema: "Must be a valid email."</text>
+  <rect x="346" y="108" width="302" height="30" rx="6" fill="#e2d6ec" stroke="#2d6342" stroke-width="2"/>
+  <text x="360" y="127" font-size="9.5" fill="#1e1a24" font-family="inherit">server: "That address is already registered."</text>
+  <text x="346" y="160" font-size="10" fill="#2d6342" font-family="inherit">Rendered: the server message.</text>
+  <text x="346" y="178" font-size="9.5" fill="#6b5f75" font-family="inherit">The other two stay in the map for logging.</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Keep the losers rather than discarding them: "which rule fired first" is the question you will ask when a report comes in.</text>
+  <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">Within one origin, sort error above warning above info so a blocking problem is never hidden behind a hint.</text>
+</svg>
 
 ## Testing and QA hooks
 

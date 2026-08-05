@@ -101,47 +101,48 @@ The matrix below scores the three libraries on the criteria that drive the choic
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 372" role="img" aria-label="Comparison matrix of Zod, Yup, and Valibot across five selection criteria" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>Schema Validation Library Comparison Matrix</title>
   <desc>A five-row matrix comparing Zod, Yup, and Valibot on type inference, gzipped bundle size, async refinement support, tree-shaking granularity, and resolver ecosystem.</desc>
-  <rect x="10" y="20" width="700" height="336" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.12" stroke-width="1"/>
+  <rect x="0" y="0" width="720" height="372" fill="#f9f5fb"/>
+  <rect x="10" y="20" width="700" height="336" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
   <!-- Column separators -->
-  <line x1="240" y1="20" x2="240" y2="356" stroke="currentColor" stroke-opacity="0.15" stroke-width="1"/>
-  <line x1="397" y1="20" x2="397" y2="356" stroke="currentColor" stroke-opacity="0.15" stroke-width="1"/>
-  <line x1="553" y1="20" x2="553" y2="356" stroke="currentColor" stroke-opacity="0.15" stroke-width="1"/>
+  <line x1="240" y1="20" x2="240" y2="356" stroke="#7b4f8a" stroke-width="1"/>
+  <line x1="397" y1="20" x2="397" y2="356" stroke="#7b4f8a" stroke-width="1"/>
+  <line x1="553" y1="20" x2="553" y2="356" stroke="#7b4f8a" stroke-width="1"/>
   <!-- Header row -->
-  <line x1="10" y1="66" x2="710" y2="66" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
-  <text x="24" y="48" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">Criterion</text>
-  <text x="318" y="48" text-anchor="middle" font-family="inherit" font-size="13" font-weight="700" fill="currentColor">Zod</text>
-  <text x="475" y="48" text-anchor="middle" font-family="inherit" font-size="13" font-weight="700" fill="currentColor">Yup</text>
-  <text x="631" y="48" text-anchor="middle" font-family="inherit" font-size="13" font-weight="700" fill="currentColor">Valibot</text>
+  <line x1="10" y1="66" x2="710" y2="66" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="24" y="48" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">Criterion</text>
+  <text x="318" y="48" text-anchor="middle" font-family="inherit" font-size="13" font-weight="700" fill="#1e1a24">Zod</text>
+  <text x="475" y="48" text-anchor="middle" font-family="inherit" font-size="13" font-weight="700" fill="#1e1a24">Yup</text>
+  <text x="631" y="48" text-anchor="middle" font-family="inherit" font-size="13" font-weight="700" fill="#1e1a24">Valibot</text>
   <!-- Row separators -->
-  <line x1="10" y1="124" x2="710" y2="124" stroke="currentColor" stroke-opacity="0.1" stroke-width="1"/>
-  <line x1="10" y1="182" x2="710" y2="182" stroke="currentColor" stroke-opacity="0.1" stroke-width="1"/>
-  <line x1="10" y1="240" x2="710" y2="240" stroke="currentColor" stroke-opacity="0.1" stroke-width="1"/>
-  <line x1="10" y1="298" x2="710" y2="298" stroke="currentColor" stroke-opacity="0.1" stroke-width="1"/>
+  <line x1="10" y1="124" x2="710" y2="124" stroke="#7b4f8a" stroke-width="1"/>
+  <line x1="10" y1="182" x2="710" y2="182" stroke="#7b4f8a" stroke-width="1"/>
+  <line x1="10" y1="240" x2="710" y2="240" stroke="#7b4f8a" stroke-width="1"/>
+  <line x1="10" y1="298" x2="710" y2="298" stroke="#7b4f8a" stroke-width="1"/>
   <!-- Row 1: Type inference -->
-  <text x="24" y="99" font-family="inherit" font-size="12" fill="currentColor">Type inference</text>
-  <text x="318" y="99" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">Excellent</text>
-  <text x="475" y="99" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">Partial</text>
-  <text x="631" y="99" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">Excellent</text>
+  <text x="24" y="99" font-family="inherit" font-size="12" fill="#1e1a24">Type inference</text>
+  <text x="318" y="99" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">Excellent</text>
+  <text x="475" y="99" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">Partial</text>
+  <text x="631" y="99" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">Excellent</text>
   <!-- Row 2: Bundle size -->
-  <text x="24" y="157" font-family="inherit" font-size="12" fill="currentColor">Bundle (gzip)</text>
-  <text x="318" y="157" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">~14 kB</text>
-  <text x="475" y="157" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">~12 kB</text>
-  <text x="631" y="157" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">~1.4 kB core</text>
+  <text x="24" y="157" font-family="inherit" font-size="12" fill="#1e1a24">Bundle (gzip)</text>
+  <text x="318" y="157" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">~14 kB</text>
+  <text x="475" y="157" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">~12 kB</text>
+  <text x="631" y="157" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">~1.4 kB core</text>
   <!-- Row 3: Async refinement -->
-  <text x="24" y="215" font-family="inherit" font-size="12" fill="currentColor">Async refinement</text>
-  <text x="318" y="215" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">parseAsync</text>
-  <text x="475" y="215" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">validate()</text>
-  <text x="631" y="215" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">pipeAsync</text>
+  <text x="24" y="215" font-family="inherit" font-size="12" fill="#1e1a24">Async refinement</text>
+  <text x="318" y="215" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">parseAsync</text>
+  <text x="475" y="215" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">validate()</text>
+  <text x="631" y="215" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">pipeAsync</text>
   <!-- Row 4: Tree-shaking -->
-  <text x="24" y="273" font-family="inherit" font-size="12" fill="currentColor">Tree-shaking</text>
-  <text x="318" y="273" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">Limited</text>
-  <text x="475" y="273" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">Limited</text>
-  <text x="631" y="273" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">Full (modular)</text>
+  <text x="24" y="273" font-family="inherit" font-size="12" fill="#1e1a24">Tree-shaking</text>
+  <text x="318" y="273" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">Limited</text>
+  <text x="475" y="273" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">Limited</text>
+  <text x="631" y="273" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">Full (modular)</text>
   <!-- Row 5: Ecosystem -->
-  <text x="24" y="331" font-family="inherit" font-size="12" fill="currentColor">Resolver ecosystem</text>
-  <text x="318" y="331" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">Broad</text>
-  <text x="475" y="331" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">Broad</text>
-  <text x="631" y="331" text-anchor="middle" font-family="inherit" font-size="12" fill="currentColor">Growing</text>
+  <text x="24" y="331" font-family="inherit" font-size="12" fill="#1e1a24">Resolver ecosystem</text>
+  <text x="318" y="331" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">Broad</text>
+  <text x="475" y="331" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">Broad</text>
+  <text x="631" y="331" text-anchor="middle" font-family="inherit" font-size="12" fill="#1e1a24">Growing</text>
 </svg>
 
 The same data in table form, with the nuance the matrix cannot hold:
@@ -297,6 +298,41 @@ The anti-pattern is optimizing a row that is not your constraint — shaving thr
 
 ---
 
+### The properties that survive a migration
+
+Bundle size and throughput are the numbers everyone quotes, but they are also the two easiest to change later. The properties that are expensive to change are the ones baked into how your schemas are written:
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Six properties of a schema library ranked by how expensive each is to change after adoption: bundle size and throughput are cheap to change, error shape and type inference style are moderate, and the refinement model and ecosystem integrations are expensive." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>What is cheap to change later, and what is not</title>
+  <desc>Bundle size: cheap to change, because it is a property of the library rather than of your schemas. Parse throughput: cheap, for the same reason. Error shape: moderate, because your adapters read it but they are one layer and can be rewritten. Type inference style: moderate, since it affects how types are derived but not how rules are expressed. The refinement model — how cross-field rules and conditional requirements are written — is expensive, because it is spread through every schema you own. Ecosystem integrations such as resolvers and form-library bindings are expensive, because replacing them touches every form.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Property</text>
+  <text x="230" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Cost to change later</text>
+  <text x="400" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Because</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">bundle size</text>
+  <text x="230" y="66" font-size="10" fill="#2d6342" font-family="inherit">cheap</text>
+  <text x="400" y="66" font-size="10" fill="#6b5f75" font-family="inherit">a property of the library, not your schemas</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">parse throughput</text>
+  <text x="230" y="100" font-size="10" fill="#2d6342" font-family="inherit">cheap</text>
+  <text x="400" y="100" font-size="10" fill="#6b5f75" font-family="inherit">same — and rarely the bottleneck anyway</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">error shape</text>
+  <text x="230" y="134" font-size="10" fill="#b07a55" font-family="inherit">moderate</text>
+  <text x="400" y="134" font-size="10" fill="#6b5f75" font-family="inherit">one adapter layer reads it — rewritable</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">refinement model</text>
+  <text x="230" y="168" font-size="10" fill="#a63d6f" font-family="inherit">expensive</text>
+  <text x="400" y="168" font-size="10" fill="#6b5f75" font-family="inherit">spread through every schema you own</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">ecosystem bindings</text>
+  <text x="230" y="202" font-size="10" fill="#a63d6f" font-family="inherit">expensive</text>
+  <text x="400" y="202" font-size="10" fill="#6b5f75" font-family="inherit">replacing them touches every form</text>
+</svg>
+
 ## Integration Guidance
 
 Whichever library wins, it plugs into the same three seams:
@@ -333,6 +369,32 @@ A practical order: port the object shape first (fast, mostly mechanical), then r
 | `parse()` throws "async refinement" error | Look for async `.refine`/`.test`/`checkAsync` in the schema | Call the async parser (`parseAsync` / `validate`) for schemas containing async rules |
 
 ---
+
+There is a way to keep the two expensive rows cheap, and it costs one small module: define your own validator interface and let the library sit behind it.
+
+<svg viewBox="-2 40 664 179" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An adapter layer between the form and the schema library. The form calls a validate function returning a field error map, the adapter translates that call into the library's API and its errors into the map, and swapping libraries replaces only the adapter." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>One interface, any library behind it</title>
+  <desc>The form calls a single validate function that takes values and returns a field error map, and that is the entire surface it knows. Behind it, an adapter of roughly thirty lines translates the call into the schema library's own API and translates the library's issue list into the map. Swapping libraries replaces only the adapter, and the test suite for the adapter is a table of inputs and expected maps, which transfers unchanged to the replacement. The cost of the indirection is one function call per validation, which is unmeasurable next to the parse itself.</desc>
+  <rect x="-2" y="40" width="664" height="179" fill="#f9f5fb"/>
+  <rect x="14" y="60" width="176" height="72" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="102" y="84" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">the form</text>
+  <text x="102" y="104" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">calls validate(values)</text>
+  <text x="102" y="120" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">knows nothing else</text>
+  <path d="M190,96 H222" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="222" y="60" width="196" height="72" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="320" y="84" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">your adapter</text>
+  <text x="320" y="104" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">~30 lines, fully tested</text>
+  <text x="320" y="120" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">the only thing that changes</text>
+  <path d="M418,80 H450" stroke="#7b4f8a" stroke-width="1.4"/>
+  <path d="M418,112 H450" stroke="#6b5f75" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <rect x="450" y="56" width="196" height="34" rx="6" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="548" y="78" text-anchor="middle" font-size="10" fill="#2d6342" font-family="inherit">today&#39;s library</text>
+  <rect x="450" y="98" width="196" height="34" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="548" y="120" text-anchor="middle" font-size="10" fill="#6b5f75" font-family="inherit">next year&#39;s library</text>
+  <text x="14" y="164" font-size="10" fill="#6b5f75" font-family="inherit">The adapter&#39;s test suite is a table of values and expected error maps — it transfers to the replacement unchanged.</text>
+  <text x="14" y="180" font-size="10" fill="#6b5f75" font-family="inherit">Cost: one function call per validation, unmeasurable beside the parse. Benefit: the two expensive rows above become cheap.</text>
+  <text x="14" y="200" font-size="10" fill="#6b5f75" font-family="inherit">Do not abstract the schema DSL itself — that way lies a worse library. Abstract only the call and the error shape.</text>
+</svg>
 
 ## Testing and QA Hooks
 

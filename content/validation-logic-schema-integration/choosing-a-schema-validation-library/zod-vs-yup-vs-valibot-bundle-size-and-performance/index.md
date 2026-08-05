@@ -3,7 +3,7 @@ layout: page.njk
 title: "Zod vs Yup vs Valibot: Bundle Size and Performance"
 description: "Measure the gzipped bundle contribution and parse throughput of Zod, Yup, and Valibot, and where Valibot's modular tree-shaking actually wins."
 slug: zod-vs-yup-vs-valibot-bundle-size-and-performance
-type: guide
+type: howto
 breadcrumb: "Zod vs Yup vs Valibot"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -174,6 +174,26 @@ For a single form field, all three libraries parse in well under a microsecond a
 
 ---
 
+<svg viewBox="0 8 664 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bar comparison of the compressed bytes each library adds to a bundle for a representative eight-field registration schema, and a second bar row showing the same figure as a share of a typical two-hundred-kilobyte application bundle." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Compressed bytes added, for one eight-field schema</title>
+  <desc>Measured as the increase in the compressed bundle when the schema and its library are added to an application that did not previously use one. Zod adds roughly thirteen kilobytes. Yup adds roughly twelve. Valibot, whose modular design means only the validators you import are included, adds roughly three. Below, the same figures are expressed as a share of a typical two hundred kilobyte compressed application bundle: about six and a half per cent, six per cent, and one and a half per cent respectively.</desc>
+  <rect x="0" y="8" width="664" height="214" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">Added to the compressed bundle by one 8-field schema</text>
+  <text x="14" y="54" font-size="10" fill="#1e1a24" font-family="inherit">Zod</text>
+  <rect x="90" y="40" width="416" height="20" rx="4" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="516" y="55" font-size="10" fill="#1e1a24" font-family="inherit">~13 kB · 6.5% of a 200 kB app</text>
+  <text x="14" y="88" font-size="10" fill="#1e1a24" font-family="inherit">Yup</text>
+  <rect x="90" y="74" width="384" height="20" rx="4" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="484" y="89" font-size="10" fill="#1e1a24" font-family="inherit">~12 kB · 6.0%</text>
+  <text x="14" y="122" font-size="10" fill="#1e1a24" font-family="inherit">Valibot</text>
+  <rect x="90" y="108" width="96" height="20" rx="4" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="196" y="123" font-size="10" fill="#2d6342" font-family="inherit">~3 kB · 1.5% — only the validators imported</text>
+  <text x="14" y="160" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">How to read this</text>
+  <text x="14" y="178" font-size="10" fill="#6b5f75" font-family="inherit">Ten kilobytes is roughly 40ms of transfer on a slow 3G connection, and effectively nothing on anything faster.</text>
+  <text x="14" y="194" font-size="10" fill="#6b5f75" font-family="inherit">It is worth optimising for a public sign-up page measured on cold mobile visits, and noise for an internal dashboard.</text>
+  <text x="14" y="214" font-size="10" fill="#6b5f75" font-family="inherit">Measure your own schemas: a schema using many validators narrows the gap, because Valibot then imports more of them.</text>
+</svg>
+
 ## When the Difference Actually Matters
 
 The measured delta only becomes a decision input in specific conditions. Ranked by how often they actually justify choosing on size:
@@ -191,6 +211,34 @@ And the conditions where the difference is noise:
 The discipline is to divide the measured size delta by the route's total gzipped payload and the measured throughput delta by the number of parses per interaction. If neither ratio is material, size and speed are not your deciding factors, and you should defer to the broader [selection framework](https://www.client-side-form.com/validation-logic-schema-integration/choosing-a-schema-validation-library/).
 
 ---
+
+Throughput tells a different story, and one that matters at a different place in the form:
+
+<svg viewBox="0 8 690 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Where parse cost actually lands: a per-keystroke field validation parses one field and costs microseconds in all three libraries, while a full-form parse on submit costs milliseconds, and a list of two thousand rows parsed on import is the only case where the difference is visible." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Three parse workloads, and which one you can feel</title>
+  <desc>Validating a single field on a keystroke parses one field's schema and takes on the order of microseconds in every library, so the difference is invisible and any of the three is fine. Validating the whole form on submit parses eight fields and takes on the order of a millisecond, which is well inside a frame and happens once per submit. Parsing two thousand imported rows against the same schema takes hundreds of milliseconds and is the only workload where the throughput difference is perceptible — and even there the right fix is usually to move the parse off the main thread rather than to change library.</desc>
+  <rect x="0" y="8" width="690" height="220" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="136" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Workload</text>
+  <text x="220" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Order of magnitude</text>
+  <text x="400" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Can the reader feel it?</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">one field, per keystroke</text>
+  <text x="220" y="66" font-size="10" fill="#6b5f75" font-family="inherit">microseconds</text>
+  <text x="400" y="66" font-size="10" fill="#2d6342" font-family="inherit">no — pick on other grounds</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">whole form, on submit</text>
+  <text x="220" y="100" font-size="10" fill="#6b5f75" font-family="inherit">about a millisecond</text>
+  <text x="400" y="100" font-size="10" fill="#2d6342" font-family="inherit">no — once, inside a frame</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">2000 imported rows</text>
+  <text x="220" y="134" font-size="10" fill="#a63d6f" font-family="inherit">hundreds of ms</text>
+  <text x="400" y="134" font-size="10" fill="#a63d6f" font-family="inherit">yes — the only case</text>
+  <text x="14" y="176" font-size="10" fill="#6b5f75" font-family="inherit">Even in the third row, moving the parse to a worker helps more than any library change: it takes the block off the main thread</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">entirely rather than shortening it, and it works the same whichever library you kept.</text>
+  <text x="14" y="212" font-size="10" fill="#6b5f75" font-family="inherit">Benchmark with your own schema shapes: unions and refinements dominate the cost, and synthetic benchmarks rarely use them.</text>
+</svg>
 
 ## Failure Modes and Edge Cases
 
@@ -211,6 +259,24 @@ import { object, string, email, minLength, pipe /* ...only what you use */ } fro
 **Ignoring code-splitting.** If the schema loads with a lazily imported form route, its bytes are not on your initial payload at all. Confirm which chunk the schema lands in before optimizing it — you may be optimizing bytes the user never downloads on first paint.
 
 ---
+
+Putting both measurements next to the properties that are actually hard to change gives a decision rather than a scoreboard:
+
+<svg viewBox="0 8 664 218" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A three-question decision: whether the page is a public cold-start entry point, whether the team already knows one of the libraries, and whether the schemas need heavy conditional refinement. Each answer points at a library." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>What the numbers are worth, next to what they are not</title>
+  <desc>First: is this a public, cold-start entry point measured on mobile? If yes, the ten-kilobyte difference is real and the modular option earns it. Second: does the team already use one of these elsewhere? If yes, that consistency is worth more than the difference in every row above, because it decides how quickly a schema bug gets diagnosed. Third: do the schemas need heavy conditional refinement — dependent fields, discriminated unions? If yes, choose on how comfortable that syntax is to read, since it is the property you will live with and the one that is expensive to change.</desc>
+  <rect x="0" y="8" width="664" height="218" fill="#f9f5fb"/>
+  <rect x="14" y="26" width="636" height="52" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="28" y="46" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">1 · Is this a public, cold-start page measured on mobile?</text>
+  <text x="28" y="64" font-size="9.5" fill="#6b5f75" font-family="inherit">If yes, the 10 kB is a real number and the modular option earns its keep. If no, stop weighing it.</text>
+  <rect x="14" y="88" width="636" height="52" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="28" y="108" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">2 · Does the team already use one of these elsewhere?</text>
+  <text x="28" y="126" font-size="9.5" fill="#6b5f75" font-family="inherit">If yes, take it. Consistency decides how fast a schema bug gets diagnosed, which outweighs every row above.</text>
+  <rect x="14" y="150" width="636" height="52" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="28" y="170" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">3 · Do the schemas need heavy conditional refinement?</text>
+  <text x="28" y="188" font-size="9.5" fill="#6b5f75" font-family="inherit">If yes, choose on how readable that syntax is — it is the property you live with and the one you cannot cheaply undo.</text>
+  <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">Three questions, and only the first one is about the benchmarks. That ordering is the actual finding of this page.</text>
+</svg>
 
 ## Verification Checklist
 

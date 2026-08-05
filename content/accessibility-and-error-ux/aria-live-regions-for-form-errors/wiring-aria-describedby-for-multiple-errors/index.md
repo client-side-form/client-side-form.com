@@ -3,7 +3,7 @@ layout: page.njk
 title: "Wiring aria-describedby for Multiple Errors"
 description: "Associate one input with a hint, an error, and a live character count using a space-separated aria-describedby token list — add and remove ids without clobbering."
 slug: wiring-aria-describedby-for-multiple-errors
-type: guide
+type: howto
 breadcrumb: "aria-describedby for Multiple Errors"
 datePublished: "2026-07-09"
 dateModified: "2026-07-09"
@@ -90,25 +90,26 @@ This pattern sits underneath the [ARIA live regions for form errors](https://www
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 250" role="img" aria-label="Diagram of an input whose aria-describedby lists three ids resolving to hint, error, and count elements" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>aria-describedby token list resolution</title>
   <desc>An input element with aria-describedby containing three space-separated ids, each arrow pointing to the hint, error, and count elements it references, read in list order.</desc>
-  <rect width="720" height="250" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
-  <rect x="40" y="100" width="220" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="150" y="122" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="currentColor">&lt;input aria-describedby=</text>
-  <text x="150" y="140" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.75">"pw-hint pw-err pw-count"&gt;</text>
-  <rect x="470" y="30" width="200" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6"/>
-  <text x="570" y="50" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="currentColor">#pw-hint</text>
-  <text x="570" y="66" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">read 1st — persistent</text>
-  <rect x="470" y="103" width="200" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6"/>
-  <text x="570" y="123" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="currentColor">#pw-err</text>
-  <text x="570" y="139" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">read 2nd — toggled</text>
-  <rect x="470" y="176" width="200" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6"/>
-  <text x="570" y="196" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="currentColor">#pw-count</text>
-  <text x="570" y="212" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.65">read 3rd — volatile</text>
-  <path d="M260 118 C360 90 400 60 470 52" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-describedby)"/>
-  <path d="M260 125 L470 125" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-describedby)"/>
-  <path d="M260 132 C360 160 400 190 470 198" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-describedby)"/>
+  <rect x="0" y="0" width="720" height="250" fill="#f9f5fb"/>
+  <rect width="720" height="250" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
+  <rect x="40" y="100" width="220" height="50" rx="8" fill="none" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="150" y="122" text-anchor="middle" font-family="inherit" font-size="12" font-weight="600" fill="#1e1a24">&lt;input aria-describedby=</text>
+  <text x="150" y="140" text-anchor="middle" font-family="inherit" font-size="11" fill="#6b5f75">"pw-hint pw-err pw-count"&gt;</text>
+  <rect x="470" y="30" width="200" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="570" y="50" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="#1e1a24">#pw-hint</text>
+  <text x="570" y="66" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">read 1st — persistent</text>
+  <rect x="470" y="103" width="200" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="570" y="123" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="#1e1a24">#pw-err</text>
+  <text x="570" y="139" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">read 2nd — toggled</text>
+  <rect x="470" y="176" width="200" height="44" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="570" y="196" text-anchor="middle" font-family="inherit" font-size="11" font-weight="600" fill="#1e1a24">#pw-count</text>
+  <text x="570" y="212" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">read 3rd — volatile</text>
+  <path d="M260 118 C360 90 400 60 470 52" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-describedby)"/>
+  <path d="M260 125 L470 125" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-describedby)"/>
+  <path d="M260 132 C360 160 400 190 470 198" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-describedby)"/>
   <defs>
     <marker id="arr-describedby" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
 </svg>
@@ -204,6 +205,34 @@ function syncFieldDescriptions(
 
 ---
 
+The surgery is easier to picture as three states of one attribute — what was there, what you add, and what survives a cleanup:
+
+<svg viewBox="0 8 660 236" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three states of one aria-describedby attribute. Before validation it holds only the hint token. After a failed check the two error tokens are prepended while the hint token is preserved. After the field passes, only the error tokens are removed and the hint token remains." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Adding and removing error tokens without losing the hint</title>
+  <desc>State one, before validation: aria-describedby holds the single token pw-hint, contributed by the design system. State two, after a failed check: the tokens pw-err-length and pw-err-digit are prepended so errors are read first, and pw-hint is still present at the end. State three, after the field passes: only the two error tokens are filtered out and pw-hint survives untouched, which is what a blanket setAttribute call would have destroyed.</desc>
+  <rect x="0" y="8" width="660" height="236" fill="#f9f5fb"/>
+  <text x="14" y="24" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">1 · before validation — the design system owns the attribute</text>
+  <rect x="14" y="32" width="632" height="38" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="26" y="42" width="90" height="18" rx="9" fill="#f9f5fb" stroke="#6b5f75" stroke-width="1"/>
+  <text x="71" y="55" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">pw-hint</text>
+  <text x="132" y="55" font-size="9.5" fill="#6b5f75" font-family="inherit">"Use 12 characters or more" — not yours to remove</text>
+  <text x="14" y="98" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">2 · after a failed check — errors go in front, hint stays put</text>
+  <rect x="14" y="106" width="632" height="38" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <rect x="26" y="116" width="118" height="18" rx="9" fill="#f9f5fb" stroke="#a63d6f" stroke-width="1"/>
+  <text x="85" y="129" text-anchor="middle" font-size="9.5" fill="#a63d6f" font-family="inherit">pw-err-length</text>
+  <rect x="152" y="116" width="112" height="18" rx="9" fill="#f9f5fb" stroke="#a63d6f" stroke-width="1"/>
+  <text x="208" y="129" text-anchor="middle" font-size="9.5" fill="#a63d6f" font-family="inherit">pw-err-digit</text>
+  <rect x="272" y="116" width="90" height="18" rx="9" fill="#f9f5fb" stroke="#6b5f75" stroke-width="1"/>
+  <text x="317" y="129" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">pw-hint</text>
+  <text x="376" y="129" font-size="9.5" fill="#6b5f75" font-family="inherit">order is speech order — the failure is heard first</text>
+  <text x="14" y="172" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">3 · after the field passes — filter, never overwrite</text>
+  <rect x="14" y="180" width="632" height="38" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <rect x="26" y="190" width="90" height="18" rx="9" fill="#f9f5fb" stroke="#6b5f75" stroke-width="1"/>
+  <text x="71" y="203" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">pw-hint</text>
+  <text x="132" y="203" font-size="9.5" fill="#2d6342" font-family="inherit">only the tokens you added were removed — the hint survived</text>
+  <text x="14" y="238" font-size="10" fill="#6b5f75" font-family="inherit">setAttribute("aria-describedby", errorIds) collapses all three states into state 2 and then loses the hint forever.</text>
+</svg>
+
 ## Step-by-step walkthrough
 
 1. **Assign stable ids at render.** Each description element gets a deterministic id derived from the field name: `pw-hint`, `pw-err`, `pw-count`. Deterministic ids let the validator, the counter, and any test reference the same node without querying the DOM.
@@ -247,6 +276,38 @@ The counter node updating on every keystroke is fine for `aria-describedby` (it 
 An element referenced by `aria-describedby` is announced even if it is visually hidden with `.sr-only` — that is intentional. But `display:none` or `hidden` on the referenced node suppresses the description entirely. Use a clipping utility (`position:absolute; clip-path`), never `display:none`, for descriptions you want read but not shown.
 
 ---
+
+It matters because the attribute is not read in isolation. A screen reader assembles one utterance per field, and your tokens are only the tail of it:
+
+<svg viewBox="0 8 668 176" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The order in which a screen reader assembles one utterance for a field: the accessible name from the label, then the role, then the current value, then the invalid state, then each described-by token in attribute order." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>What the reader hears, in the order they hear it</title>
+  <desc>Five segments left to right forming a single utterance: the accessible name taken from the label element; the role, edit text; the current value of the field; the invalid state contributed by aria-invalid; and finally the described-by tokens, read in the order they appear in the attribute. A note underneath explains that a described-by token placed after a long hint is heard last, which is why error tokens are prepended.</desc>
+  <rect x="0" y="8" width="668" height="176" fill="#f9f5fb"/>
+  <text x="14" y="24" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">One field, one utterance, assembled in this order</text>
+  <rect x="14" y="34" width="112" height="54" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="70" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">name</text>
+  <text x="70" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">from &lt;label&gt;</text>
+  <path d="M126,61 H144" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="144" y="34" width="112" height="54" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="200" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">role</text>
+  <text x="200" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">"edit text"</text>
+  <path d="M256,61 H274" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="274" y="34" width="112" height="54" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="330" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">value</text>
+  <text x="330" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">what is typed</text>
+  <path d="M386,61 H404" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="404" y="34" width="112" height="54" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="460" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">state</text>
+  <text x="460" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">from aria-invalid</text>
+  <path d="M516,61 H534" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="534" y="34" width="120" height="54" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="594" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">description</text>
+  <text x="594" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">token order</text>
+  <text x="14" y="118" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Consequences of the tail position</text>
+  <text x="14" y="136" font-size="10" fill="#6b5f75" font-family="inherit">A reader who interrupts after the state has already heard the failure — but not why it failed.</text>
+  <text x="14" y="152" font-size="10" fill="#6b5f75" font-family="inherit">Putting a 20-word hint before the error means the reason arrives several seconds late, so errors are prepended.</text>
+  <text x="14" y="168" font-size="10" fill="#6b5f75" font-family="inherit">Tokens pointing at removed or empty elements contribute nothing and silently shorten the utterance.</text>
+</svg>
 
 ## Verification checklist
 

@@ -86,42 +86,43 @@ Synchronous validation follows a tight four-state model. The key design decision
 <svg viewBox="0 0 720 220" role="img" aria-label="Synchronous validation state machine: IDLE transitions to VALID or INVALID on onChange/onBlur, and back to IDLE on reset" xmlns="http://www.w3.org/2000/svg">
   <title>Synchronous Validation State Machine</title>
   <desc>State diagram showing IDLE, VALID, INVALID, and SUBMIT_BLOCKED states with labeled transitions for onChange, onBlur, onSubmit, and reset events.</desc>
+  <rect x="0" y="0" width="720" height="220" fill="#f9f5fb"/>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6 Z" fill="currentColor" opacity="0.7"/>
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- IDLE -->
-  <rect x="20" y="80" width="110" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="75" y="109" text-anchor="middle" font-size="13" font-family="monospace" fill="currentColor" opacity="0.8">IDLE</text>
+  <rect x="20" y="80" width="110" height="50" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="75" y="109" text-anchor="middle" font-size="13" font-family="monospace" fill="#1e1a24">IDLE</text>
   <!-- VALID -->
-  <rect x="300" y="20" width="120" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="360" y="49" text-anchor="middle" font-size="13" font-family="monospace" fill="currentColor" opacity="0.8">VALID</text>
+  <rect x="300" y="20" width="120" height="50" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="360" y="49" text-anchor="middle" font-size="13" font-family="monospace" fill="#1e1a24">VALID</text>
   <!-- INVALID -->
-  <rect x="300" y="140" width="120" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  <text x="360" y="169" text-anchor="middle" font-size="13" font-family="monospace" fill="currentColor" opacity="0.8">INVALID</text>
+  <rect x="300" y="140" width="120" height="50" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="360" y="169" text-anchor="middle" font-size="13" font-family="monospace" fill="#1e1a24">INVALID</text>
   <!-- SUBMIT_BLOCKED -->
-  <rect x="560" y="80" width="140" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
-  <text x="630" y="102" text-anchor="middle" font-size="11" font-family="monospace" fill="currentColor" opacity="0.7">SUBMIT</text>
-  <text x="630" y="118" text-anchor="middle" font-size="11" font-family="monospace" fill="currentColor" opacity="0.7">BLOCKED</text>
+  <rect x="560" y="80" width="140" height="50" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="630" y="102" text-anchor="middle" font-size="11" font-family="monospace" fill="#6b5f75">SUBMIT</text>
+  <text x="630" y="118" text-anchor="middle" font-size="11" font-family="monospace" fill="#6b5f75">BLOCKED</text>
   <!-- IDLE → VALID -->
-  <path d="M130,95 Q200,50 300,45" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.6" marker-end="url(#arrow)"/>
-  <text x="210" y="58" text-anchor="middle" font-size="10" font-family="sans-serif" fill="currentColor" opacity="0.7">onChange / onBlur [passes]</text>
+  <path d="M130,95 Q200,50 300,45" fill="none" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="210" y="58" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#6b5f75">onChange / onBlur [passes]</text>
   <!-- IDLE → INVALID -->
-  <path d="M130,115 Q200,150 300,160" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.6" marker-end="url(#arrow)"/>
-  <text x="210" y="165" text-anchor="middle" font-size="10" font-family="sans-serif" fill="currentColor" opacity="0.7">onChange / onBlur [fails]</text>
+  <path d="M130,115 Q200,150 300,160" fill="none" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="210" y="165" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#6b5f75">onChange / onBlur [fails]</text>
   <!-- VALID → INVALID -->
-  <path d="M380,70 L380,140" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.5" marker-end="url(#arrow)"/>
-  <text x="395" y="110" font-size="10" font-family="sans-serif" fill="currentColor" opacity="0.6">onChange [fails]</text>
+  <path d="M380,70 L380,140" fill="none" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="395" y="110" font-size="10" font-family="sans-serif" fill="#6b5f75">onChange [fails]</text>
   <!-- INVALID → VALID -->
-  <path d="M340,140 L340,70" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.5" marker-end="url(#arrow)"/>
-  <text x="270" y="110" font-size="10" font-family="sans-serif" fill="currentColor" opacity="0.6">onChange [passes]</text>
+  <path d="M340,140 L340,70" fill="none" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="270" y="110" font-size="10" font-family="sans-serif" fill="#6b5f75">onChange [passes]</text>
   <!-- INVALID → SUBMIT_BLOCKED -->
-  <path d="M420,160 Q490,160 560,120" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.5" marker-end="url(#arrow)"/>
-  <text x="500" y="155" text-anchor="middle" font-size="10" font-family="sans-serif" fill="currentColor" opacity="0.6">onSubmit</text>
+  <path d="M420,160 Q490,160 560,120" fill="none" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="500" y="155" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#6b5f75">onSubmit</text>
   <!-- VALID → reset → IDLE -->
-  <path d="M300,30 Q180,5 130,90" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" opacity="0.4" marker-end="url(#arrow)"/>
-  <text x="195" y="18" text-anchor="middle" font-size="10" font-family="sans-serif" fill="currentColor" opacity="0.5">reset</text>
+  <path d="M300,30 Q180,5 130,90" fill="none" stroke="#6b5f75" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <text x="195" y="18" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#6b5f75">reset</text>
 </svg>
 
 | State | Enters when | aria-invalid | Error visible |
@@ -304,6 +305,46 @@ This synchronous layer slots into the broader [validation logic & schema integra
 
 For React specifically, [debouncing validation triggers](https://www.client-side-form.com/validation-logic-schema-integration/synchronous-validation-patterns/debouncing-validation-triggers-in-react/) shows how to wrap the synchronous reducer call in a debounce boundary that keeps keystroke feedback immediate on `onBlur` while deferring the heavier per-keystroke re-render pass.
 
+### Ordering the checks so the first message is the useful one
+
+A field usually fails several rules at once, and the reader should hear about exactly one of them. Ordering the checks by how fundamental each is means the first failure is always the one that explains the rest.
+
+<svg viewBox="0 8 668 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A five-stage synchronous validation ladder for one field: presence, type and shape, format, range and length, and finally business rules. Each stage names what it would be wrong to report before it, using an empty date field as the worked example." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Five stages, and why the order is not arbitrary</title>
+  <desc>Stage one, presence: is there a value at all? Reporting "not a valid date" for an empty field tells the reader nothing they can use. Stage two, type and shape: can the string be parsed into the intended type? Reporting "must be after today" about an unparseable string is meaningless. Stage three, format: does it match the expected pattern? Stage four, range and length: is the parsed value inside its bounds? Stage five, business rules: everything specific to this application, such as a date that must fall inside a booking window. Each stage may only run when every stage above it has passed, and only the first failure is shown.</desc>
+  <rect x="0" y="8" width="668" height="214" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">Worked on one date field — only the first failure is shown</text>
+  <rect x="14" y="36" width="126" height="70" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="77" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">1 · presence</text>
+  <text x="77" y="78" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">is there a value?</text>
+  <text x="77" y="94" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">"enter a date"</text>
+  <path d="M140,71 H158" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="158" y="36" width="126" height="70" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="221" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">2 · type</text>
+  <text x="221" y="78" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">does it parse?</text>
+  <text x="221" y="94" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">"we cannot read it"</text>
+  <path d="M284,71 H302" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="302" y="36" width="126" height="70" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="365" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">3 · format</text>
+  <text x="365" y="78" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">expected pattern?</text>
+  <text x="365" y="94" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">"use DD/MM/YYYY"</text>
+  <path d="M428,71 H446" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="446" y="36" width="126" height="70" rx="8" fill="#ede5f2" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="509" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">4 · range</text>
+  <text x="509" y="78" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">inside bounds?</text>
+  <text x="509" y="94" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">"must be future"</text>
+  <path d="M572,71 H590" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="590" y="36" width="64" height="70" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
+  <text x="622" y="58" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">5 · rules</text>
+  <text x="622" y="78" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">booking</text>
+  <text x="622" y="94" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">window</text>
+  <text x="14" y="140" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Why order beats collecting every failure</text>
+  <text x="14" y="158" font-size="10" fill="#6b5f75" font-family="inherit">An empty field fails stages 1, 2, 3 and 4 simultaneously. Showing all four is four messages saying one thing.</text>
+  <text x="14" y="174" font-size="10" fill="#6b5f75" font-family="inherit">Showing "must be in the future" for an empty field is worse: it is technically true and completely unhelpful.</text>
+  <text x="14" y="196" font-size="10" fill="#6b5f75" font-family="inherit">Each stage may only run when every stage to its left passed — which also means later stages can assume a parsed value.</text>
+  <text x="14" y="212" font-size="10" fill="#6b5f75" font-family="inherit">That assumption is what lets stage 5 be written in terms of Date objects rather than defensive string handling.</text>
+</svg>
+
 ## Edge Cases and Failure Modes
 
 ### Number inputs always yield strings
@@ -374,6 +415,34 @@ function getCheckedValues(name: string, form: HTMLFormElement): string[] {
 | All fields show errors on mount | The `SUBMIT` reducer path is running before the user interacts. Check whether an `onMount` / `useEffect` is calling the submit handler. | Gate the `SUBMIT` evaluation behind an explicit user gesture check (e.g. `hasAttemptedSubmit` boolean in state). |
 | Stale error persists after value corrects | Rules are cached in a closure that captured the old value. Confirm the `validate()` call receives the new state object, not the old one. | Pass the full updated `FieldState` to `validate()` on every `CHANGE` event — never mutate the existing state object. |
 | Regex rule freezes the browser tab | A catastrophic backtracking regex is running on an adversarial value. Open the browser profiler, find the long synchronous task, and examine the stack trace. | Replace the regex with a linear-time alternative or add a length guard (`if (v.length > 256) return 'Too long.'`) before evaluating the pattern. |
+
+Synchronous does not mean free. Three costs hide inside a validator that looks like a pure function, and each has a different shape in a profile:
+
+<svg viewBox="0 8 690 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three hidden costs in synchronous validation: catastrophic backtracking in a regular expression, schema objects rebuilt on every call, and locale-aware formatting constructed per validation. Each row gives the symptom and the fix." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Three ways a "cheap" synchronous validator stops being cheap</title>
+  <desc>A regular expression with nested quantifiers can backtrack catastrophically, turning a validator that runs in microseconds on normal input into one that blocks the main thread for seconds on a crafted string; the symptom is a single enormously long task in the profile, and the fix is to rewrite the pattern without nested quantifiers or to bound the input length first. A schema object rebuilt inside the validator allocates on every keystroke; the symptom is heavy garbage collection between keystrokes, and the fix is to build it once at module scope. A locale-aware formatter or collator constructed per call is expensive to create and cheap to reuse; the symptom is a consistent few milliseconds per keystroke, and the fix is to memoise it by locale.</desc>
+  <rect x="0" y="8" width="690" height="210" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="670" height="136" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="670" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="670" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Hidden cost</text>
+  <text x="216" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Symptom in a profile</text>
+  <text x="440" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Fix</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">backtracking regex</text>
+  <text x="216" y="66" font-size="10" fill="#a63d6f" font-family="inherit">one enormous task</text>
+  <text x="440" y="66" font-size="10" fill="#2d6342" font-family="inherit">drop nested quantifiers; cap length</text>
+  <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">schema rebuilt per call</text>
+  <text x="216" y="100" font-size="10" fill="#6b5f75" font-family="inherit">heavy GC between keystrokes</text>
+  <text x="440" y="100" font-size="10" fill="#2d6342" font-family="inherit">build it once at module scope</text>
+  <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">formatter per call</text>
+  <text x="216" y="134" font-size="10" fill="#6b5f75" font-family="inherit">a steady few ms each time</text>
+  <text x="440" y="134" font-size="10" fill="#2d6342" font-family="inherit">memoise Intl objects by locale</text>
+  <text x="14" y="176" font-size="10" fill="#6b5f75" font-family="inherit">The first row is a denial-of-service surface, not just a performance bug: the crafted input can come from a pasted value.</text>
+  <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">Test validators against pathological input — long repeated characters — and assert a time bound, not just the verdict.</text>
+  <text x="14" y="208" font-size="10" fill="#6b5f75" font-family="inherit">Intl.NumberFormat and Intl.Collator are the usual third-row offenders, and both are safe to cache for the page lifetime.</text>
+</svg>
 
 ## Testing and QA Hooks
 

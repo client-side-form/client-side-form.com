@@ -101,49 +101,50 @@ The adapter's states are a superset of Angular's status strings. Angular tells u
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" role="img" aria-label="Data flow between Angular FormControl, the adapter, and the schema validation pipeline" style="max-width:100%;height:auto;display:block;margin:2rem auto;">
   <title>Angular FormControl to adapter to schema pipeline</title>
   <desc>FormControl and FormGroup emit valueChanges and statusChanges into the adapter. The adapter runs a synchronous Zod ValidatorFn and a cancellable AsyncValidatorFn, maps Angular status onto an explicit state machine, and emits a plain snapshot consumed by an OnPush component through the async pipe. takeUntilDestroyed completes every stream.</desc>
+  <rect x="0" y="0" width="760" height="360" fill="#f9f5fb"/>
   <defs>
     <marker id="arr-angular-adapters" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor" opacity="0.75"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
-  <rect width="760" height="360" rx="12" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+  <rect width="760" height="360" rx="12" fill="none" stroke="#cbb8d9" stroke-width="1"/>
   <!-- FormGroup node -->
-  <rect x="30" y="140" width="150" height="70" rx="10" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="105" y="168" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">FormGroup</text>
-  <text x="105" y="186" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">valueChanges</text>
-  <text x="105" y="200" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">statusChanges</text>
+  <rect x="30" y="140" width="150" height="70" rx="10" fill="#ede5f2" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="105" y="168" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">FormGroup</text>
+  <text x="105" y="186" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">valueChanges</text>
+  <text x="105" y="200" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">statusChanges</text>
   <!-- Adapter node -->
-  <rect x="290" y="130" width="170" height="90" rx="10" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="375" y="158" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">Adapter</text>
-  <text x="375" y="176" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">map status → state</text>
-  <text x="375" y="190" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">merge sync + async</text>
-  <text x="375" y="204" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">emit snapshot</text>
+  <rect x="290" y="130" width="170" height="90" rx="10" fill="#ede5f2" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="375" y="158" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">Adapter</text>
+  <text x="375" y="176" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">map status → state</text>
+  <text x="375" y="190" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">merge sync + async</text>
+  <text x="375" y="204" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">emit snapshot</text>
   <!-- Schema node -->
-  <rect x="560" y="30" width="170" height="76" rx="10" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="645" y="58" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">Zod schema</text>
-  <text x="645" y="76" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">safeParse (sync)</text>
-  <text x="645" y="90" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">refine + async check</text>
+  <rect x="560" y="30" width="170" height="76" rx="10" fill="#ede5f2" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="645" y="58" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">Zod schema</text>
+  <text x="645" y="76" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">safeParse (sync)</text>
+  <text x="645" y="90" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">refine + async check</text>
   <!-- Component node -->
-  <rect x="560" y="250" width="170" height="76" rx="10" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="2" stroke-opacity="0.7"/>
-  <text x="645" y="278" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="currentColor">OnPush view</text>
-  <text x="645" y="296" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">async pipe</text>
-  <text x="645" y="310" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">snapshot$ | async</text>
+  <rect x="560" y="250" width="170" height="76" rx="10" fill="#ede5f2" stroke="#cbb8d9" stroke-width="2"/>
+  <text x="645" y="278" text-anchor="middle" font-family="inherit" font-size="13" font-weight="600" fill="#1e1a24">OnPush view</text>
+  <text x="645" y="296" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">async pipe</text>
+  <text x="645" y="310" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">snapshot$ | async</text>
   <!-- Arrows -->
   <!-- FormGroup -> Adapter -->
-  <path d="M180 175 L284 175" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-angular-adapters)"/>
-  <text x="232" y="166" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">streams</text>
+  <path d="M180 175 L284 175" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-angular-adapters)"/>
+  <text x="232" y="166" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">streams</text>
   <!-- Adapter -> Schema -->
-  <path d="M448 135 C514 102 538 92 550 82" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-angular-adapters)"/>
-  <text x="512" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">validate(value)</text>
+  <path d="M448 135 C514 102 538 92 550 82" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-angular-adapters)"/>
+  <text x="512" y="104" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">validate(value)</text>
   <!-- Schema -> Adapter (errors) -->
-  <path d="M574 98 C524 128 504 138 472 150" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" stroke-dasharray="5 3" marker-end="url(#arr-angular-adapters)"/>
-  <text x="502" y="144" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">ValidationErrors</text>
+  <path d="M574 98 C524 128 504 138 472 150" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-angular-adapters)"/>
+  <text x="502" y="144" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">ValidationErrors</text>
   <!-- Adapter -> Component -->
-  <path d="M448 210 C514 238 538 246 550 256" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7" marker-end="url(#arr-angular-adapters)"/>
-  <text x="512" y="248" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">snapshot$</text>
+  <path d="M448 210 C514 238 538 246 550 256" fill="none" stroke="#7b4f8a" stroke-width="1.5" marker-end="url(#arr-angular-adapters)"/>
+  <text x="512" y="248" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">snapshot$</text>
   <!-- Component -> FormGroup (CVA writeValue) -->
-  <path d="M560 300 C360 338 200 296 132 220" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6" stroke-dasharray="5 3" marker-end="url(#arr-angular-adapters)"/>
-  <text x="360" y="330" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">ControlValueAccessor writeValue / onChange</text>
+  <path d="M560 300 C360 338 200 296 132 220" fill="none" stroke="#6b5f75" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-angular-adapters)"/>
+  <text x="360" y="330" text-anchor="middle" font-family="inherit" font-size="10" fill="#6b5f75">ControlValueAccessor writeValue / onChange</text>
 </svg>
 
 The status-to-state mapping is the load-bearing table. Read it as the contract between Angular's four strings and the machine's explicit states:
@@ -483,6 +484,41 @@ The adapter is the boundary between Angular's control tree and every other subsy
 
 ---
 
+### Where Angular already has a state machine, and where it does not
+
+Angular ships more form state than any other mainstream framework, which is both why an adapter is easy and why it is easy to duplicate state that already exists. Mapping the built-in flags onto the machine first tells you exactly what is left to build:
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapping between Angular's built-in FormControl flags and the machine's states. Pristine and dirty map directly, touched and untouched map directly, valid, invalid and pending map to the validation states, and the machine's submitting, succeeded and failed states have no Angular equivalent and must be added." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>What Angular gives you, and what the adapter still has to own</title>
+  <desc>The control's pristine and dirty flags map directly onto the machine's pristine and dirty states and need no extra storage. The touched and untouched flags map directly onto whether validation may display. The valid, invalid and pending flags map onto the validating and settled states, with pending covering async validators. The submitting, succeeded and failed states have no equivalent on a FormControl at all: Angular models the value's validity, not the request's lifecycle, so those three must be added by the adapter and kept beside the group rather than on any control.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="204" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Machine state</text>
+  <text x="220" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Angular already has</text>
+  <text x="420" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Adapter responsibility</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">pristine / dirty</text>
+  <text x="220" y="66" font-size="10" fill="#2d6342" font-family="inherit">control.pristine, control.dirty</text>
+  <text x="420" y="66" font-size="10" fill="#6b5f75" font-family="inherit">read it — never mirror it</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">touched</text>
+  <text x="220" y="100" font-size="10" fill="#2d6342" font-family="inherit">control.touched</text>
+  <text x="420" y="100" font-size="10" fill="#6b5f75" font-family="inherit">read it; it gates display</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">validating</text>
+  <text x="220" y="134" font-size="10" fill="#2d6342" font-family="inherit">control.pending</text>
+  <text x="420" y="134" font-size="10" fill="#6b5f75" font-family="inherit">read it; async validators set it</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">valid / invalid</text>
+  <text x="220" y="168" font-size="10" fill="#2d6342" font-family="inherit">control.status</text>
+  <text x="420" y="168" font-size="10" fill="#6b5f75" font-family="inherit">read it; map errors to messages</text>
+  <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">submitting / succeeded / failed</text>
+  <text x="220" y="202" font-size="10" fill="#a63d6f" font-family="inherit">nothing equivalent</text>
+  <text x="420" y="202" font-size="10" fill="#7b4f8a" font-family="inherit">own it, beside the group</text>
+</svg>
+
 ## Edge Cases and Failure Modes
 
 ### Feedback loops from patchValue inside a valueChanges subscription
@@ -528,6 +564,48 @@ A custom element wrapping a `ControlValueAccessor` may sit inside a shadow root 
 | Custom input shows value but form stays pristine | Confirm `onChange`/`onTouched` are invoked in the widget | Call both callbacks in the widget's change handler |
 
 ---
+
+The `emitEvent` flag is the single most consequential option in this whole surface, because it decides whether a write re-enters the pipeline that produced it:
+
+<svg viewBox="0 8 664 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two write paths into a FormControl. A default setValue emits on valueChanges, which re-enters the adapter's subscription and, if the adapter writes back, loops. Passing emitEvent false updates the control without notifying valueChanges, breaking the loop." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>setValue with and without emitEvent</title>
+  <desc>Top path: the adapter receives external state, calls setValue with default options, the control updates and emits on valueChanges, the adapter's own subscription receives that emission and pushes it back into external state, which triggers another setValue — an infinite loop, or at best a doubled update on every keystroke. Bottom path: the adapter calls setValue with emitEvent false, the control updates, valueChanges stays silent, and the loop is broken at its only join point.</desc>
+  <rect x="0" y="8" width="664" height="214" fill="#f9f5fb"/>
+  <text x="14" y="26" font-size="12" font-weight="700" fill="#a63d6f" font-family="inherit">setValue(v) — the write re-enters your own subscription</text>
+  <rect x="14" y="36" width="140" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="84" y="57" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">external state</text>
+  <text x="84" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">store or signal</text>
+  <path d="M154,62 H176" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="176" y="36" width="140" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="246" y="57" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">setValue(v)</text>
+  <text x="246" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">default options</text>
+  <path d="M316,62 H338" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="338" y="36" width="140" height="52" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="408" y="57" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">valueChanges fires</text>
+  <text x="408" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">your subscription runs</text>
+  <path d="M478,62 H500" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="500" y="36" width="150" height="52" rx="8" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
+  <text x="575" y="57" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">writes back</text>
+  <text x="575" y="74" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">and round again</text>
+  <path d="M650,88 V104 H84 V90" fill="none" stroke="#a63d6f" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <text x="14" y="140" font-size="12" font-weight="700" fill="#2d6342" font-family="inherit">setValue(v, { emitEvent: false }) — the loop has no join</text>
+  <rect x="14" y="150" width="140" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="84" y="171" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">external state</text>
+  <text x="84" y="188" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">store or signal</text>
+  <path d="M154,176 H176" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="176" y="150" width="140" height="52" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="246" y="171" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">setValue(v, …)</text>
+  <text x="246" y="188" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">emitEvent: false</text>
+  <path d="M316,176 H338" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="338" y="150" width="140" height="52" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="408" y="171" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">control updated</text>
+  <text x="408" y="188" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">valueChanges silent</text>
+  <path d="M478,176 H500" stroke="#7b4f8a" stroke-width="1.4"/>
+  <rect x="500" y="150" width="150" height="52" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
+  <text x="575" y="171" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">no echo</text>
+  <text x="575" y="188" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">one update, one render</text>
+  <text x="14" y="220" font-size="10" fill="#6b5f75" font-family="inherit">The same option exists on markAsDirty, markAsTouched, disable and enable — and the loop is identical if you forget it there.</text>
+</svg>
 
 ## Testing and QA Hooks
 

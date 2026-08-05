@@ -113,50 +113,51 @@ The diagram below shows every permitted transition. Arrows from `validating` to 
 <svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Async validation state machine diagram" style="width:100%;max-width:700px;display:block;margin:1.5rem auto;">
   <title>Async Validation State Machine</title>
   <desc>State diagram showing transitions between idle, validating, valid, error, and retryable states for an async form validator.</desc>
+  <rect x="0" y="0" width="700" height="340" fill="#f9f5fb"/>
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="currentColor"/>
+      <path d="M0,0 L0,6 L8,3 z" fill="#7b4f8a"/>
     </marker>
   </defs>
   <!-- IDLE -->
-  <ellipse cx="90" cy="170" rx="68" ry="30" fill="none" stroke="currentColor" stroke-width="1.5"/>
-  <text x="90" y="175" text-anchor="middle" font-size="13" fill="currentColor" font-family="sans-serif">idle</text>
+  <ellipse cx="90" cy="170" rx="68" ry="30" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="90" y="175" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="sans-serif">idle</text>
   <!-- VALIDATING -->
-  <ellipse cx="310" cy="170" rx="80" ry="30" fill="none" stroke="currentColor" stroke-width="1.5"/>
-  <text x="310" y="175" text-anchor="middle" font-size="13" fill="currentColor" font-family="sans-serif">validating</text>
+  <ellipse cx="310" cy="170" rx="80" ry="30" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <text x="310" y="175" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="sans-serif">validating</text>
   <!-- VALID -->
-  <ellipse cx="560" cy="80" rx="68" ry="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 2"/>
-  <text x="560" y="85" text-anchor="middle" font-size="13" fill="currentColor" font-family="sans-serif">valid</text>
+  <ellipse cx="560" cy="80" rx="68" ry="30" fill="none" stroke="#cbb8d9" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <text x="560" y="85" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="sans-serif">valid</text>
   <!-- ERROR -->
-  <ellipse cx="560" cy="170" rx="68" ry="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 2"/>
-  <text x="560" y="175" text-anchor="middle" font-size="13" fill="currentColor" font-family="sans-serif">error</text>
+  <ellipse cx="560" cy="170" rx="68" ry="30" fill="none" stroke="#cbb8d9" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <text x="560" y="175" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="sans-serif">error</text>
   <!-- RETRYABLE -->
-  <ellipse cx="560" cy="260" rx="80" ry="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 2"/>
-  <text x="560" y="265" text-anchor="middle" font-size="13" fill="currentColor" font-family="sans-serif">retryable</text>
+  <ellipse cx="560" cy="260" rx="80" ry="30" fill="none" stroke="#cbb8d9" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <text x="560" y="265" text-anchor="middle" font-size="13" fill="#1e1a24" font-family="sans-serif">retryable</text>
   <!-- idle -> validating (input change) -->
-  <line x1="158" y1="170" x2="228" y2="170" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr)"/>
-  <text x="193" y="162" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">input</text>
+  <line x1="158" y1="170" x2="228" y2="170" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="193" y="162" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="sans-serif">input</text>
   <!-- validating -> idle (aborted) -->
-  <path d="M290,145 Q230,95 158,152" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 2" marker-end="url(#arr)"/>
-  <text x="210" y="108" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">aborted</text>
+  <path d="M290,145 Q230,95 158,152" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="4 2" marker-end="url(#arr)"/>
+  <text x="210" y="108" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="sans-serif">aborted</text>
   <!-- validating -> valid -->
-  <line x1="385" y1="152" x2="490" y2="97" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr)"/>
-  <text x="448" y="113" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">isValid</text>
+  <line x1="385" y1="152" x2="490" y2="97" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="448" y="113" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="sans-serif">isValid</text>
   <!-- validating -> error -->
-  <line x1="390" y1="170" x2="490" y2="170" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr)"/>
-  <text x="440" y="163" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">!isValid</text>
+  <line x1="390" y1="170" x2="490" y2="170" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="440" y="163" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="sans-serif">!isValid</text>
   <!-- validating -> retryable -->
-  <line x1="375" y1="190" x2="477" y2="247" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr)"/>
-  <text x="438" y="233" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">timeout/err</text>
+  <line x1="375" y1="190" x2="477" y2="247" stroke="#7b4f8a" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="438" y="233" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="sans-serif">timeout/err</text>
   <!-- valid -> idle (re-input) -->
-  <path d="M492,80 Q300,20 158,152" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#arr)"/>
-  <text x="310" y="32" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">re-input</text>
+  <path d="M492,80 Q300,20 158,152" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+  <text x="310" y="32" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="sans-serif">re-input</text>
   <!-- error -> idle (re-input) -->
-  <path d="M495,158 Q400,300 165,185" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#arr)"/>
-  <text x="348" y="308" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">re-input</text>
+  <path d="M495,158 Q400,300 165,185" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+  <text x="348" y="308" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="sans-serif">re-input</text>
   <!-- retryable -> validating (retry) -->
-  <path d="M482,248 Q360,310 305,202" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#arr)"/>
-  <text x="380" y="326" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">retry</text>
+  <path d="M482,248 Q360,310 305,202" fill="none" stroke="#6b5f75" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+  <text x="380" y="326" text-anchor="middle" font-size="10" fill="#1e1a24" font-family="sans-serif">retry</text>
 </svg>
 
 **Trigger table:**
@@ -389,6 +390,43 @@ function mapValidationState(
 
 ---
 
+### Four ways to sequence overlapping requests
+
+Every async validator eventually faces the same question: the reader typed again while a check was in flight. There are only four answers, and they differ in what the reader experiences rather than in how hard they are to write.
+
+<svg viewBox="0 8 700 226" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four strategies for overlapping async validation: take the latest and abort the rest, queue requests serially, drop new requests while one is in flight, and debounce so that at most one starts. Each row gives the requests sent, the answer the reader ends on, and what it costs." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>Four sequencing strategies, and what each does to the reader</title>
+  <desc>Take the latest: every keystroke starts a request and aborts the previous one, so the reader always ends on the newest answer, at the cost of the most requests. Serial queue: requests run one after another and every answer is rendered in turn, which produces visible flicker as older answers arrive before the newest. Drop while busy: a new keystroke during a request is ignored, so the reader can end on an answer for a value they no longer hold — the one strategy that is simply wrong. Debounce then take the latest: only settled input starts a request, which gives the newest answer with roughly a tenth of the traffic and is the right default.</desc>
+  <rect x="0" y="8" width="700" height="226" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="680" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="680" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="680" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Strategy</text>
+  <text x="196" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Requests sent</text>
+  <text x="330" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Reader ends on</text>
+  <text x="484" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Cost</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">latest wins, abort rest</text>
+  <text x="196" y="66" font-size="10" fill="#b07a55" font-family="inherit">one per keystroke</text>
+  <text x="330" y="66" font-size="10" fill="#2d6342" font-family="inherit">the newest answer</text>
+  <text x="484" y="66" font-size="10" fill="#6b5f75" font-family="inherit">traffic, and server load</text>
+  <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">serial queue</text>
+  <text x="196" y="100" font-size="10" fill="#b07a55" font-family="inherit">one per keystroke</text>
+  <text x="330" y="100" font-size="10" fill="#2d6342" font-family="inherit">the newest answer</text>
+  <text x="484" y="100" font-size="10" fill="#a63d6f" font-family="inherit">visible flicker on the way</text>
+  <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">drop while busy</text>
+  <text x="196" y="134" font-size="10" fill="#2d6342" font-family="inherit">fewest</text>
+  <text x="330" y="134" font-size="10" fill="#a63d6f" font-family="inherit">a stale answer</text>
+  <text x="484" y="134" font-size="10" fill="#a63d6f" font-family="inherit">correctness — avoid</text>
+  <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">debounce, then latest wins</text>
+  <text x="196" y="168" font-size="10" fill="#2d6342" font-family="inherit">~1 per pause</text>
+  <text x="330" y="168" font-size="10" fill="#2d6342" font-family="inherit">the newest answer</text>
+  <text x="484" y="168" font-size="10" fill="#2d6342" font-family="inherit">a short delay — the default</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Rows one, two and four all end correctly; only row three can leave the reader looking at a verdict for a value they replaced.</text>
+</svg>
+
 ## Edge Cases and Failure Modes
 
 ### Race condition on rapid input
@@ -428,6 +466,32 @@ In React 18 concurrent mode, `setState` calls inside `useEffect` cleanup may be 
 | Memory leak warning on unmount | `cleanup()` is not being called in the component's teardown lifecycle | Call `cleanup()` in `useEffect` return, `onUnmounted` (Vue), or `onDestroy` (Svelte) |
 
 ---
+
+Cancellation itself has to reach further than the `fetch` call, or an aborted check still costs you a render and an announcement:
+
+<svg viewBox="0 8 668 216" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Everything a single abort must reach: the in-flight request, the pending debounce timer, the state write that would follow, the live region announcement, and the busy indicator. Each row names the symptom of missing that one." style="max-width:100%;height:auto;display:block;margin:1.5rem 0;">
+  <title>One abort, five things it has to reach</title>
+  <desc>The network request: missing it wastes bandwidth and server capacity but is otherwise invisible. The pending debounce timer: missing it starts a request for a value the reader has already left. The state write that follows the response: missing it puts a stale error on a field the reader has since corrected. The live region announcement: missing it speaks a verdict for a value that is no longer in the field. The busy indicator: missing it leaves a spinner running forever, which readers interpret as a hung form.</desc>
+  <rect x="0" y="8" width="668" height="216" fill="#f9f5fb"/>
+  <rect x="10" y="16" width="648" height="170" rx="8" fill="none" stroke="#cbb8d9" stroke-width="1.5"/>
+  <rect x="10" y="16" width="648" height="30" rx="8" fill="#e2d6ec"/>
+  <rect x="10" y="36" width="648" height="10" fill="#e2d6ec"/>
+  <text x="24" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Abort must reach</text>
+  <text x="240" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">If it does not</text>
+  <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">the in-flight request</text>
+  <text x="240" y="66" font-size="10" fill="#6b5f75" font-family="inherit">wasted bandwidth and server capacity</text>
+  <line x1="10" y1="80" x2="658" y2="80" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">the pending debounce timer</text>
+  <text x="240" y="100" font-size="10" fill="#6b5f75" font-family="inherit">a request starts for a value already left</text>
+  <line x1="10" y1="114" x2="658" y2="114" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">the state write after it</text>
+  <text x="240" y="134" font-size="10" fill="#a63d6f" font-family="inherit">a stale error on a corrected field</text>
+  <line x1="10" y1="148" x2="658" y2="148" stroke="#cbb8d9" stroke-width="1"/>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">the announcement</text>
+  <text x="240" y="168" font-size="10" fill="#a63d6f" font-family="inherit">a verdict spoken for a value that is gone</text>
+  <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Fifth, and easiest to forget: the busy indicator. An aborted check that leaves its spinner spinning reads as a hung form.</text>
+  <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">Put all five behind one signal so there is exactly one place to get it right.</text>
+</svg>
 
 ## Testing and QA Hooks
 
