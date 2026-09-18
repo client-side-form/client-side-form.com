@@ -486,6 +486,7 @@ table {
   border-collapse: collapse;
   font-size: 0.95rem;
   min-width: 480px;
+  font-variant-numeric: tabular-nums;
 }
 
 thead {

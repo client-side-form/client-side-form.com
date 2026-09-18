@@ -275,7 +275,7 @@ An API that starts returning `field` where it used to return `pointer` will sile
   <line x1="10" y1="148" x2="658" y2="148" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">unrecognised</text>
   <text x="248" y="168" font-size="10" fill="#6b5f75" font-family="inherit">the summary, plus a log</text>
-  <text x="450" y="168" font-size="10" fill="#b07a55" font-family="inherit">at least visible</text>
+  <text x="450" y="168" font-size="10" fill="#1e1a24" font-family="inherit">at least visible</text>
   <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">No branch discards the error, which is the property that makes "the submit failed and nothing appeared" impossible.</text>
 </svg>
 

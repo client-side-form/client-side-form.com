@@ -6,7 +6,7 @@ slug: "form-state-fundamentals-architecture"
 type: section
 breadcrumb: "Form State Fundamentals"
 datePublished: "2024-01-15"
-dateModified: "2026-06-23"
+dateModified: "2026-09-18"
 eleventyNavigation:
   key: "Form State Fundamentals"
   order: 1
@@ -26,7 +26,7 @@ schema:
       "headline": "Form State Fundamentals & Architecture",
       "description": "Architectural blueprint for managing client-side form state — lifecycle, dirty/pristine tracking, error mapping, and validation pipeline patterns.",
       "datePublished": "2024-01-15",
-      "dateModified": "2026-06-23",
+      "dateModified": "2026-09-18",
       "author": { "@type": "Organization", "name": "client-side-form.com" },
       "publisher": { "@type": "Organization", "name": "client-side-form.com" }
     },
@@ -410,6 +410,16 @@ Three levers exist, and they should be pulled in this order. First, narrow the s
   <text x="352" y="180" font-size="10" fill="#2d6342" font-family="inherit">1 render, 59 pointer comparisons</text>
   <text x="14" y="210" font-size="10" fill="#6b5f75" font-family="inherit">Identical validation cost on both sides. The difference is entirely in how many components were asked to produce output.</text>
 </svg>
+
+## Repeatable Groups and File Fields
+
+Two kinds of field break the assumption that a form is a fixed set of named strings. **Repeatable groups** — line items, contacts, itineraries — add, remove and reorder rows at runtime, so any state keyed by position attaches itself to the wrong row after the first delete. The fix is stable row identity: every row carries a client id, errors and touched flags are keyed by it, and positions exist only at the edges. [Dynamic field arrays and repeatable groups](https://www.client-side-form.com/form-state-fundamentals-architecture/dynamic-field-arrays-and-repeatable-groups/) sets out that model, and its guides cover [stable keys for reorderable field arrays](https://www.client-side-form.com/form-state-fundamentals-architecture/dynamic-field-arrays-and-repeatable-groups/stable-keys-for-reorderable-field-arrays/), [keeping array errors aligned after reorder and delete](https://www.client-side-form.com/form-state-fundamentals-architecture/dynamic-field-arrays-and-repeatable-groups/keeping-array-errors-aligned-after-reorder/) and undoable row deletion.
+
+**File fields** hold binary handles rather than strings, can take minutes to become usable, and fail halfway. [File upload fields and binary state](https://www.client-side-form.com/form-state-fundamentals-architecture/file-upload-fields-and-binary-state/) models each file as its own upload lifecycle — selected, uploading, processing, ready — so submit waits for real server ids, previews do not leak memory, and a dropped connection costs one chunk rather than the whole transfer, as in [resumable chunked uploads for large files](https://www.client-side-form.com/form-state-fundamentals-architecture/file-upload-fields-and-binary-state/resumable-chunked-uploads-for-large-files/).
+
+The same identity-over-position principle also governs the newer guides elsewhere in this section: [resetting the dirty baseline after a successful save](https://www.client-side-form.com/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/resetting-the-dirty-baseline-after-a-successful-save/) keeps edits typed during a save, and [queueing form submissions while offline](https://www.client-side-form.com/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/queueing-form-submissions-while-offline/) keeps submissions made without a connection.
+
+---
 
 ## Error Propagation and Accessibility
 

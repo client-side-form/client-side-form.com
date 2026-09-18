@@ -339,7 +339,7 @@ Pass the appropriate normalizer as the `FieldEqualityFn` in the registry, or cal
   <text x="300" y="200" font-size="10" fill="#6b5f75" font-family="inherit">baseline moves forward to the saved values</text>
   <line x1="10" y1="212" x2="690" y2="212" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="234" font-size="10" fill="#1e1a24" font-family="inherit">draft restore</text>
-  <text x="192" y="234" font-size="10" fill="#b07a55" font-family="inherit">restored</text>
+  <text x="192" y="234" font-size="10" fill="#1e1a24" font-family="inherit">restored</text>
   <text x="300" y="234" font-size="10" fill="#6b5f75" font-family="inherit">the draft carries its own flags — do not recompute</text>
 </svg>
 

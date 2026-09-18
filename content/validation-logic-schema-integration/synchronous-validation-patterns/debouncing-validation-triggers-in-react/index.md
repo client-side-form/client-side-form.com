@@ -290,10 +290,10 @@ Debounce and throttle are often used interchangeably in conversation and are not
   <rect x="14" y="36" width="640" height="52" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
   <text x="28" y="58" font-size="9.5" fill="#6b5f75" font-family="inherit">typing ································································· stops</text>
   <text x="28" y="78" font-size="9.5" fill="#2d6342" font-family="inherit">validator runs: once, 400ms after the last keystroke</text>
-  <text x="14" y="118" font-size="12" font-weight="700" fill="#b07a55" font-family="inherit">throttle 400ms — five verdicts, four about half-typed values</text>
+  <text x="14" y="118" font-size="12" font-weight="700" fill="#1e1a24" font-family="inherit">throttle 400ms — five verdicts, four about half-typed values</text>
   <rect x="14" y="128" width="640" height="52" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
   <text x="28" y="150" font-size="9.5" fill="#6b5f75" font-family="inherit">typing ································································· stops</text>
-  <text x="28" y="170" font-size="9.5" fill="#b07a55" font-family="inherit">validator runs: at 400, 800, 1200, 1600 and 2000ms</text>
+  <text x="28" y="170" font-size="9.5" fill="#1e1a24" font-family="inherit">validator runs: at 400, 800, 1200, 1600 and 2000ms</text>
   <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">For anything the reader is told about, debounce: a verdict on "ada@exam" is noise, and announcing it five times is worse.</text>
   <text x="14" y="222" font-size="10" fill="#6b5f75" font-family="inherit">Throttle suits things that must stay live and cannot be wrong — a character counter, a password-strength meter.</text>
 </svg>

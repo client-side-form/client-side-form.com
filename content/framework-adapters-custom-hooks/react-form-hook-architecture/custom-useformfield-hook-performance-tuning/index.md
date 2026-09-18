@@ -338,7 +338,7 @@ Tuning is only finished when the numbers say so, and the two numbers worth watch
   <text x="90" y="170" font-size="9.5" fill="#6b5f75" font-family="inherit">anything still slow is in the validator</text>
   <text x="90" y="186" font-size="9.5" fill="#6b5f75" font-family="inherit">or in layout, not in React</text>
   <rect x="360" y="128" width="290" height="70" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
-  <text x="374" y="150" font-size="10" font-weight="700" fill="#b07a55" font-family="inherit">an expensive field component</text>
+  <text x="374" y="150" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">an expensive field component</text>
   <text x="374" y="170" font-size="9.5" fill="#6b5f75" font-family="inherit">the subscription is right — look at what</text>
   <text x="374" y="186" font-size="9.5" fill="#6b5f75" font-family="inherit">the field renders, not how often</text>
   <text x="14" y="218" font-size="10" fill="#6b5f75" font-family="inherit">Record both numbers before and after every change; a fix that improves one and worsens the other is common and easy to miss.</text>

@@ -181,7 +181,7 @@ A combobox is three elements pretending to be one, and only one of them is the f
   <text x="252" y="114" font-size="9.5" fill="#1e1a24" font-family="inherit">aria-activedescendant</text>
   <text x="252" y="136" font-size="9.5" fill="#2d6342" font-family="inherit">aria-invalid</text>
   <text x="252" y="158" font-size="9.5" fill="#2d6342" font-family="inherit">aria-describedby</text>
-  <text x="252" y="188" font-size="9.5" fill="#6b5f75" font-family="inherit">focus lands here; so does the query</text>
+  <text x="252" y="188" font-size="9.5" fill="#1e1a24" font-family="inherit">focus lands here; so does the query</text>
   <rect x="462" y="26" width="214" height="182" rx="8" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
   <text x="476" y="48" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">the listbox</text>
   <text x="476" y="70" font-size="9.5" fill="#6b5f75" font-family="inherit">role="listbox"</text>

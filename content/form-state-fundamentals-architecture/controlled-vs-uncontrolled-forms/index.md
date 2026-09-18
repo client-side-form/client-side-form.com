@@ -318,7 +318,7 @@ Every field in a form answers two questions independently: who holds the value b
   <text x="124" y="96" font-size="9.5" fill="#6b5f75" font-family="inherit">with FormData or a ref</text>
   <text x="124" y="112" font-size="9.5" fill="#6b5f75" font-family="inherit">cheapest at 100+ fields</text>
   <rect x="396" y="40" width="290" height="82" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
-  <text x="410" y="62" font-size="11" font-weight="700" fill="#b07a55" font-family="inherit">hybrid — legitimate, with care</text>
+  <text x="410" y="62" font-size="11" font-weight="700" fill="#1e1a24" font-family="inherit">hybrid — legitimate, with care</text>
   <text x="410" y="80" font-size="9.5" fill="#6b5f75" font-family="inherit">DOM holds the value; code writes it via a ref</text>
   <text x="410" y="96" font-size="9.5" fill="#6b5f75" font-family="inherit">only for rare events: reset, autofill, restore</text>
   <text x="410" y="112" font-size="9.5" fill="#6b5f75" font-family="inherit">must dispatch an input event to stay in sync</text>

@@ -471,8 +471,8 @@ Autofill is the case that breaks most uncontrolled forms in production, precisel
   <text x="410" y="100" font-size="10" fill="#6b5f75" font-family="inherit">nothing</text>
   <line x1="10" y1="114" x2="650" y2="114" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">browser autofill</text>
-  <text x="176" y="134" font-size="10" fill="#b07a55" font-family="inherit">usually</text>
-  <text x="286" y="134" font-size="10" fill="#b07a55" font-family="inherit">not reliably</text>
+  <text x="176" y="134" font-size="10" fill="#1e1a24" font-family="inherit">usually</text>
+  <text x="286" y="134" font-size="10" fill="#1e1a24" font-family="inherit">not reliably</text>
   <text x="410" y="134" font-size="10" fill="#6b5f75" font-family="inherit">re-read on submit; watch :autofill</text>
   <line x1="10" y1="148" x2="650" y2="148" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">el.value = "…"</text>

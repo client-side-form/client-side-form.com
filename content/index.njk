@@ -10,7 +10,7 @@ permalink: /
     <h1>Client-Side Form State &amp;<br>Validation Architecture</h1>
     <p class="hero-tagline">Production-ready patterns for deterministic state lifecycles, schema-driven validation, and cross-framework adapters.</p>
     <p class="hero-desc">
-      Battle-tested architectural blueprints for frontend engineers, UX developers, and design-system maintainers building robust client-side forms. Eighty-four in-depth pages across four areas — twenty-four topics, from wizard state machines and draft autosave to server-error reconciliation, form-associated custom elements, and accessible error summaries. We focus on real-world constraints — async latency, SSR hydration, memory limits, and race conditions — not theoretical abstractions.
+      Battle-tested architectural blueprints for frontend engineers, UX developers, and design-system maintainers building robust client-side forms. 185 in-depth pages across four areas — twenty-eight topics, from wizard state machines, repeatable field groups and resumable file uploads to input masking, server-error reconciliation, validation testing and accessible error summaries. We focus on real-world constraints — async latency, SSR hydration, memory limits, and race conditions — not theoretical abstractions.
     </p>
     <div class="cta-group">
       <a href="/form-state-fundamentals-architecture/" class="cta-btn cta-btn-primary">
@@ -40,13 +40,13 @@ permalink: /
 
 <div class="home-section" style="padding-top:0">
   <h2 class="section-heading">Explore the Four Knowledge Areas</h2>
-  <p class="section-sub">Twenty-four topics and sixty in-depth guides, organised into four interconnected knowledge areas.</p>
+  <p class="section-sub">Twenty-eight topics and 153 in-depth guides, organised into four interconnected knowledge areas.</p>
 
   <div class="area-grid">
     <div class="area-card">
       <div class="area-card-icon" aria-hidden="true">📐</div>
       <h3>Form State Fundamentals &amp; Architecture</h3>
-      <p>Lifecycle mapping, dirty/pristine tracking, error state propagation, and the architectural patterns that govern how form data flows through your application.</p>
+      <p>Lifecycle mapping, dirty/pristine tracking, error state propagation, repeatable row groups, file upload state, and the architectural patterns that govern how form data flows through your application.</p>
       <ul>
         <li><a href="/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/">Controlled vs Uncontrolled Forms</a></li>
         <li><a href="/form-state-fundamentals-architecture/dirty-and-pristine-state-tracking/">Dirty &amp; Pristine State Tracking</a></li>
@@ -56,6 +56,8 @@ permalink: /
         <li><a href="/form-state-fundamentals-architecture/draft-persistence-and-autosave/">Draft Persistence &amp; Autosave</a></li>
         <li><a href="/form-state-fundamentals-architecture/submission-state-and-optimistic-updates/">Submission &amp; Optimistic Updates</a></li>
         <li><a href="/form-state-fundamentals-architecture/performance-and-scale-for-large-forms/">Performance &amp; Scale</a></li>
+        <li><a href="/form-state-fundamentals-architecture/dynamic-field-arrays-and-repeatable-groups/">Field Arrays &amp; Repeatable Groups</a></li>
+        <li><a href="/form-state-fundamentals-architecture/file-upload-fields-and-binary-state/">File Uploads &amp; Binary State</a></li>
       </ul>
       <a href="/form-state-fundamentals-architecture/" class="area-card-link">Explore Form State &rarr;</a>
     </div>
@@ -78,7 +80,7 @@ permalink: /
     <div class="area-card">
       <div class="area-card-icon" aria-hidden="true">✅</div>
       <h3>Validation Logic &amp; Schema Integration</h3>
-      <p>Synchronous and async validation pipelines, Zod schema integration, cross-field dependency graphs, debouncing strategies, and server-schema synchronisation.</p>
+      <p>Synchronous and async validation pipelines, Zod schema integration, cross-field dependency graphs, input masking, testing strategies, and server-schema synchronisation.</p>
       <ul>
         <li><a href="/validation-logic-schema-integration/integrating-zod-for-schema-validation/">Integrating Zod for Schema Validation</a></li>
         <li><a href="/validation-logic-schema-integration/asynchronous-validation-strategies/">Asynchronous Validation Strategies</a></li>
@@ -86,6 +88,8 @@ permalink: /
         <li><a href="/validation-logic-schema-integration/synchronous-validation-patterns/">Synchronous Validation Patterns</a></li>
         <li><a href="/validation-logic-schema-integration/server-error-reconciliation/">Server Error Reconciliation</a></li>
         <li><a href="/validation-logic-schema-integration/choosing-a-schema-validation-library/">Choosing a Schema Library</a></li>
+        <li><a href="/validation-logic-schema-integration/input-masking-and-formatting/">Input Masking &amp; Formatting</a></li>
+        <li><a href="/validation-logic-schema-integration/testing-form-validation/">Testing Form Validation</a></li>
       </ul>
       <a href="/validation-logic-schema-integration/" class="area-card-link">Explore Validation &rarr;</a>
     </div>
@@ -138,31 +142,43 @@ permalink: /
 
 <div class="home-section" style="padding-top:0">
   <h2 class="section-heading">Recently Added</h2>
-  <p class="section-sub">The newest topics — wizard state, autosaved drafts, server rejections, custom elements, and error copy.</p>
+  <p class="section-sub">Four new topics and ninety-six new guides — repeatable groups, file uploads, masking, testing, and dozens of framework and accessibility deep-dives.</p>
   <div class="related-grid">
-    <a href="/form-state-fundamentals-architecture/multi-step-form-state-machines/" class="related-card">
-      <span class="card-title">Multi-Step Form State Machines</span>
-      <span class="card-desc">Derived step status, a path computed from the answers, and a stale phase that keeps later work when an earlier answer changes.</span>
+    <a href="/form-state-fundamentals-architecture/dynamic-field-arrays-and-repeatable-groups/" class="related-card">
+      <span class="card-title">Dynamic Field Arrays &amp; Repeatable Groups</span>
+      <span class="card-desc">Stable row identity so errors, focus and typed text follow their rows through every add, delete and reorder.</span>
     </a>
-    <a href="/form-state-fundamentals-architecture/draft-persistence-and-autosave/" class="related-card">
-      <span class="card-title">Draft Persistence &amp; Autosave</span>
-      <span class="card-desc">Debounced writes, lifecycle flushes, an honest status line, and a conflict phase the reader resolves rather than one you merge silently.</span>
+    <a href="/form-state-fundamentals-architecture/file-upload-fields-and-binary-state/" class="related-card">
+      <span class="card-title">File Upload Fields &amp; Binary State</span>
+      <span class="card-desc">Model each file as its own upload lifecycle: local checks, progress, cancellation, previews and resumable chunks.</span>
     </a>
-    <a href="/validation-logic-schema-integration/server-error-reconciliation/" class="related-card">
-      <span class="card-title">Server Error Reconciliation</span>
-      <span class="card-desc">Route a rejected submit correctly: field-scoped 422s onto their inputs, conflicts to reconciliation, outages to a retryable banner.</span>
+    <a href="/validation-logic-schema-integration/input-masking-and-formatting/" class="related-card">
+      <span class="card-title">Input Masking &amp; Formatting</span>
+      <span class="card-desc">Separate raw and display values, keep the caret where the user left it, and validate what the data means.</span>
     </a>
-    <a href="/framework-adapters-custom-hooks/web-components-and-form-association/" class="related-card">
-      <span class="card-title">Web Components &amp; Form Association</span>
-      <span class="card-desc">Make a custom element a real form control with <code>ElementInternals</code> — FormData, constraint validation, reset, disable and restore.</span>
+    <a href="/validation-logic-schema-integration/testing-form-validation/" class="related-card">
+      <span class="card-title">Testing Form Validation</span>
+      <span class="card-desc">Layered tests for rules, timing, ARIA wiring, async races and real-browser behaviour.</span>
     </a>
-    <a href="/accessibility-and-error-ux/error-summary-and-messaging/" class="related-card">
-      <span class="card-title">Error Summary &amp; Messaging</span>
-      <span class="card-desc">Give a failed submit a scope and a route, and write messages that say what to type rather than which rule fired.</span>
+    <a href="/framework-adapters-custom-hooks/react-form-hook-architecture/form-submission-with-react-19-useactionstate/" class="related-card">
+      <span class="card-title">Form Submission With React 19 useActionState</span>
+      <span class="card-desc">Typed action state, values kept across the automatic reset, and pending UI from useFormStatus.</span>
     </a>
-    <a href="/form-state-fundamentals-architecture/multi-step-form-state-machines/persisting-wizard-progress-across-reloads/" class="related-card">
-      <span class="card-title">Persisting Wizard Progress Across Reloads</span>
-      <span class="card-desc">Save the answers, recompute the path and the validity on load, and land the reader on the first genuinely incomplete step.</span>
+    <a href="/validation-logic-schema-integration/server-error-reconciliation/handling-409-conflicts-on-form-submit/" class="related-card">
+      <span class="card-title">Handling 409 Conflicts on Form Submit</span>
+      <span class="card-desc">Version-guarded saves and a three-way merge that keeps every edit instead of letting the last write win.</span>
+    </a>
+    <a href="/accessibility-and-error-ux/keyboard-navigation-patterns/autocomplete-tokens-for-autofill-friendly-forms/" class="related-card">
+      <span class="card-title">Autocomplete Tokens for Autofill-Friendly Forms</span>
+      <span class="card-desc">The exact tokens for names, addresses, payment and credentials — and why autofill is an accessibility feature.</span>
+    </a>
+    <a href="/accessibility-and-error-ux/aria-live-regions-for-form-errors/throttling-live-region-announcements/" class="related-card">
+      <span class="card-title">Throttling Live Region Announcements</span>
+      <span class="card-desc">One page-level announcer that coalesces, de-duplicates and waits for a pause in typing.</span>
+    </a>
+    <a href="/form-state-fundamentals-architecture/controlled-vs-uncontrolled-forms/handling-browser-autofill-in-controlled-inputs/" class="related-card">
+      <span class="card-title">Handling Browser Autofill in Controlled Inputs</span>
+      <span class="card-desc">Reconcile values browsers paint but never report, so a visibly filled form can actually submit.</span>
     </a>
   </div>
 </div>

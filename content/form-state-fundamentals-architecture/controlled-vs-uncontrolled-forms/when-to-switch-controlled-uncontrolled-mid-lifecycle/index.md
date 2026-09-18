@@ -250,7 +250,7 @@ When the switch is genuinely intended — a "start over" that must discard every
   <title>Reset the state, or remount the subtree</title>
   <desc>Left column, calling a reset function: the state object is replaced but the same component instance survives, so refs still hold old nodes, uncontrolled inputs keep their DOM values, pending debounce timers keep running and the validation cache still holds results keyed by the previous values. Right column, changing the key prop: React unmounts the whole subtree and mounts a new one, so refs are null again, inputs render with their defaultValue, effect cleanups have cancelled the timers and the cache is gone with the instance.</desc>
   <rect x="0" y="8" width="660" height="214" fill="#f9f5fb"/>
-  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#b07a55" font-family="inherit">reset() — same instance survives</text>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">reset() — same instance survives</text>
   <rect x="14" y="36" width="304" height="150" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
   <text x="28" y="58" font-size="10" fill="#2d6342" font-family="inherit">state object — replaced</text>
   <text x="28" y="80" font-size="10" fill="#a63d6f" font-family="inherit">refs — still point at the old nodes</text>

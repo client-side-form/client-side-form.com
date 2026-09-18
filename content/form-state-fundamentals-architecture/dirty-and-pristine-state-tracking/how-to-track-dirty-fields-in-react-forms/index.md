@@ -402,7 +402,7 @@ export function ProfileForm() {
   <text x="24" y="128" font-size="10" fill="#1e1a24" font-family="inherit">JSON.stringify pair</text>
   <text x="222" y="128" font-size="10" fill="#6b5f75" font-family="inherit">plain, serialisable</text>
   <text x="416" y="128" font-size="10" fill="#6b5f75" font-family="inherit">size of value</text>
-  <text x="540" y="128" font-size="10" fill="#b07a55" font-family="inherit">key-order sensitive</text>
+  <text x="540" y="128" font-size="10" fill="#1e1a24" font-family="inherit">key-order sensitive</text>
   <line x1="10" y1="142" x2="690" y2="142" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="162" font-size="10" fill="#1e1a24" font-family="inherit">deep equal, per key</text>
   <text x="222" y="162" font-size="10" fill="#6b5f75" font-family="inherit">nested objects</text>

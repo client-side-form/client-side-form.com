@@ -224,7 +224,7 @@ Rendering a set rather than a range means the pinned rows are absolutely positio
   <text x="24" y="134" font-size="10" fill="#a63d6f" font-family="inherit">native required validation</text>
   <text x="280" y="134" font-size="10" fill="#2d6342" font-family="inherit">all validation runs over the store</text>
   <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
-  <text x="24" y="168" font-size="10" fill="#b07a55" font-family="inherit">rows in tab order</text>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">rows in tab order</text>
   <text x="280" y="168" font-size="10" fill="#2d6342" font-family="inherit">the error summary becomes the route to them</text>
   <text x="14" y="226" font-size="10" fill="#6b5f75" font-family="inherit">Each row is a real capability, not a technicality — which is why content-visibility, which keeps all four, is worth trying first.</text>
 </svg>

@@ -406,12 +406,12 @@ Every async validator eventually faces the same question: the reader typed again
   <text x="330" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Reader ends on</text>
   <text x="484" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Cost</text>
   <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">latest wins, abort rest</text>
-  <text x="196" y="66" font-size="10" fill="#b07a55" font-family="inherit">one per keystroke</text>
+  <text x="196" y="66" font-size="10" fill="#1e1a24" font-family="inherit">one per keystroke</text>
   <text x="330" y="66" font-size="10" fill="#2d6342" font-family="inherit">the newest answer</text>
   <text x="484" y="66" font-size="10" fill="#6b5f75" font-family="inherit">traffic, and server load</text>
   <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">serial queue</text>
-  <text x="196" y="100" font-size="10" fill="#b07a55" font-family="inherit">one per keystroke</text>
+  <text x="196" y="100" font-size="10" fill="#1e1a24" font-family="inherit">one per keystroke</text>
   <text x="330" y="100" font-size="10" fill="#2d6342" font-family="inherit">the newest answer</text>
   <text x="484" y="100" font-size="10" fill="#a63d6f" font-family="inherit">visible flicker on the way</text>
   <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>

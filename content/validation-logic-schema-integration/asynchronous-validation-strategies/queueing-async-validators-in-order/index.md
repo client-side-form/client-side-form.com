@@ -245,7 +245,7 @@ Two mechanisms, doing different jobs. The per-key abort handles "the reader type
   <text x="380" y="134" font-size="10" fill="#2d6342" font-family="inherit">no — you caused it</text>
   <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">timed out</text>
-  <text x="210" y="168" font-size="10" fill="#b07a55" font-family="inherit">as "could not check"</text>
+  <text x="210" y="168" font-size="10" fill="#1e1a24" font-family="inherit">as "could not check"</text>
   <text x="380" y="168" font-size="10" fill="#2d6342" font-family="inherit">no — not the reader’s fault</text>
   <text x="14" y="226" font-size="10" fill="#6b5f75" font-family="inherit">Only the first row writes a verdict. The other three are the reason a boolean return type is not enough for an async validator.</text>
 </svg>

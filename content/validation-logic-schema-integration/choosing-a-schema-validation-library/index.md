@@ -321,7 +321,7 @@ Bundle size and throughput are the numbers everyone quotes, but they are also th
   <text x="400" y="100" font-size="10" fill="#6b5f75" font-family="inherit">same — and rarely the bottleneck anyway</text>
   <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">error shape</text>
-  <text x="230" y="134" font-size="10" fill="#b07a55" font-family="inherit">moderate</text>
+  <text x="230" y="134" font-size="10" fill="#1e1a24" font-family="inherit">moderate</text>
   <text x="400" y="134" font-size="10" fill="#6b5f75" font-family="inherit">one adapter layer reads it — rewritable</text>
   <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">refinement model</text>

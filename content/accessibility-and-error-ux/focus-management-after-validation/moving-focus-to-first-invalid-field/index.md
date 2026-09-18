@@ -237,7 +237,7 @@ form.addEventListener("submit", async (e) => {
   <rect x="360" y="34" width="290" height="28" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>
   <text x="372" y="52" font-size="10" fill="#1e1a24" font-family="inherit">1 · Given name</text>
   <rect x="360" y="66" width="290" height="28" rx="6" fill="#e2d6ec" stroke="#a63d6f" stroke-width="1.5"/>
-  <text x="372" y="84" font-size="10" fill="#a63d6f" font-family="inherit">2 · Family name — the query returns this one</text>
+  <text x="372" y="84" font-size="10" fill="#1e1a24" font-family="inherit">2 · Family name — the query returns this one</text>
   <rect x="360" y="98" width="290" height="28" rx="6" fill="#ede5f2" stroke="#a63d6f" stroke-width="1.5"/>
   <text x="372" y="116" font-size="10" fill="#a63d6f" font-family="inherit">3 · Country</text>
   <rect x="360" y="130" width="290" height="28" rx="6" fill="#ede5f2" stroke="#cbb8d9" stroke-width="1.5"/>

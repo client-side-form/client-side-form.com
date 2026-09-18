@@ -175,7 +175,7 @@ Comparing the draft's `baseVersion` against the server's current version, and ch
   <text x="110" y="174" font-size="9.5" fill="#6b5f75" font-family="inherit">apply the draft, announce it</text>
   <text x="110" y="192" font-size="9.5" fill="#6b5f75" font-family="inherit">the common case after a reload</text>
   <rect x="376" y="132" width="300" height="72" rx="8" fill="#e2d6ec" stroke="#a63d6f" stroke-width="2"/>
-  <text x="390" y="154" font-size="10.5" font-weight="700" fill="#a63d6f" font-family="inherit">a real conflict — ask</text>
+  <text x="390" y="154" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">a real conflict — ask</text>
   <text x="390" y="174" font-size="9.5" fill="#1e1a24" font-family="inherit">both sides changed since the base</text>
   <text x="390" y="192" font-size="9.5" fill="#1e1a24" font-family="inherit">the only case worth a dialog</text>
   <text x="14" y="224" font-size="10" fill="#6b5f75" font-family="inherit">Systems that prompt on every restore are collapsing all four cases into the fourth, which trains readers to dismiss the prompt.</text>
@@ -337,7 +337,7 @@ And the three states the conflict view itself can be in, each of which needs a d
   <text x="345" y="102" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">base moved forward</text>
   <path d="M448,80 H470" stroke="#7b4f8a" stroke-width="1.4"/>
   <rect x="470" y="42" width="206" height="76" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
-  <text x="573" y="66" text-anchor="middle" font-size="10.5" font-weight="700" fill="#b07a55" font-family="inherit">dismissed</text>
+  <text x="573" y="66" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">dismissed</text>
   <text x="573" y="86" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">nothing written, still flagged,</text>
   <text x="573" y="102" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">reachable again</text>
   <text x="14" y="142" font-size="10" fill="#6b5f75" font-family="inherit">Dismissal must not pick a side — readers dismiss by reflex, and a reflex should not decide whose edit survives.</text>

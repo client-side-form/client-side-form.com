@@ -375,7 +375,7 @@ The cost of the synchronous write is worth knowing in numbers, because it is wha
   <text x="380" y="100" font-size="10" fill="#6b5f75" font-family="inherit">keep the debounce; do not shorten it</text>
   <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">~500 kB — structured data</text>
-  <text x="220" y="134" font-size="10" fill="#b07a55" font-family="inherit">several ms</text>
+  <text x="220" y="134" font-size="10" fill="#1e1a24" font-family="inherit">several ms</text>
   <text x="380" y="134" font-size="10" fill="#6b5f75" font-family="inherit">trim the payload, or move to IndexedDB</text>
   <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">an encoded file</text>

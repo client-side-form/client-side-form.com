@@ -302,7 +302,7 @@ It matters because the attribute is not read in isolation. A screen reader assem
   <path d="M516,61 H534" stroke="#7b4f8a" stroke-width="1.4"/>
   <rect x="534" y="34" width="120" height="54" rx="8" fill="#e2d6ec" stroke="#7b4f8a" stroke-width="1.5"/>
   <text x="594" y="55" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">description</text>
-  <text x="594" y="72" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">token order</text>
+  <text x="594" y="72" text-anchor="middle" font-size="9.5" fill="#1e1a24" font-family="inherit">token order</text>
   <text x="14" y="118" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Consequences of the tail position</text>
   <text x="14" y="136" font-size="10" fill="#6b5f75" font-family="inherit">A reader who interrupts after the state has already heard the failure — but not why it failed.</text>
   <text x="14" y="152" font-size="10" fill="#6b5f75" font-family="inherit">Putting a 20-word hint before the error means the reason arrives several seconds late, so errors are prepended.</text>

@@ -158,7 +158,7 @@ The `conflict` phase only exists for server-side drafts, and the temptation is t
   <text x="612" y="52" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">saved</text>
   <text x="612" y="70" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">timestamp shown</text>
   <rect x="548" y="98" width="128" height="52" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
-  <text x="612" y="120" text-anchor="middle" font-size="10.5" font-weight="700" fill="#b07a55" font-family="inherit">failed</text>
+  <text x="612" y="120" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">failed</text>
   <text x="612" y="138" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">back off, retry</text>
   <path d="M482,138 H504 V190 H548" fill="none" stroke="#a63d6f" stroke-width="1.4"/>
   <text x="452" y="184" font-size="9.5" fill="#a63d6f" font-family="inherit">409</text>
@@ -290,7 +290,7 @@ The interface side matters more than the storage side. A reader needs to know th
   <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">conflicts</text>
   <text x="250" y="134" font-size="10" fill="#2d6342" font-family="inherit">impossible — one copy</text>
-  <text x="460" y="134" font-size="10" fill="#b07a55" font-family="inherit">possible, must be designed for</text>
+  <text x="460" y="134" font-size="10" fill="#1e1a24" font-family="inherit">possible, must be designed for</text>
   <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">privacy</text>
   <text x="250" y="168" font-size="10" fill="#a63d6f" font-family="inherit">left on the device</text>

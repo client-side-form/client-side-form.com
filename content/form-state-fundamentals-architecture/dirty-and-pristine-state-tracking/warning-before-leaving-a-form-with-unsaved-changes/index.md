@@ -216,7 +216,7 @@ Conflating them produces the two classic bugs: registering `beforeunload` and ex
   <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">presses back</text>
   <text x="220" y="168" font-size="10" fill="#a63d6f" font-family="inherit">no</text>
-  <text x="370" y="168" font-size="10" fill="#b07a55" font-family="inherit">with popstate</text>
+  <text x="370" y="168" font-size="10" fill="#1e1a24" font-family="inherit">with popstate</text>
   <text x="520" y="168" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
   <line x1="10" y1="182" x2="680" y2="182" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">the tab is reclaimed</text>
@@ -266,7 +266,7 @@ An expired session redirecting to sign-in should not be interrupted by an unsave
   <title>What the router dialog can say that the browser cannot</title>
   <desc>The browser dialog offers two options with wording you do not control, and cannot mention what is unsaved. Your own dialog can name the work — three unsaved answers — offer to save and continue rather than only to discard, explain what happens either way, and be made properly accessible with focus management and an announcement. That difference is the whole reason for handling the two departures separately rather than treating beforeunload as sufficient.</desc>
   <rect x="0" y="8" width="690" height="198" fill="#f9f5fb"/>
-  <text x="14" y="28" font-size="11.5" font-weight="700" fill="#b07a55" font-family="inherit">the browser dialog</text>
+  <text x="14" y="28" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">the browser dialog</text>
   <rect x="14" y="38" width="324" height="118" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
   <text x="28" y="62" font-size="10" fill="#6b5f75" font-family="inherit">two options: leave, or stay</text>
   <text x="28" y="84" font-size="10" fill="#6b5f75" font-family="inherit">wording you cannot change</text>

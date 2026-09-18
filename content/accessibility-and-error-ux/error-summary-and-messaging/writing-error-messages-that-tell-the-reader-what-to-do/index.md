@@ -267,13 +267,13 @@ A short review pass catches most of it, and it can be done without opening the f
   <text x="24" y="100" font-size="10" fill="#a63d6f" font-family="inherit">"must", "you must"</text>
   <text x="260" y="100" font-size="10" fill="#6b5f75" font-family="inherit">a rule where an action belongs</text>
   <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
-  <text x="24" y="134" font-size="10" fill="#b07a55" font-family="inherit">under ~4 words</text>
+  <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">under ~4 words</text>
   <text x="260" y="134" font-size="10" fill="#6b5f75" font-family="inherit">too vague to act on</text>
   <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
-  <text x="24" y="168" font-size="10" fill="#b07a55" font-family="inherit">duplicate strings</text>
+  <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">duplicate strings</text>
   <text x="260" y="168" font-size="10" fill="#6b5f75" font-family="inherit">the summary will say the same thing twice</text>
   <line x1="10" y1="182" x2="680" y2="182" stroke="#cbb8d9" stroke-width="1"/>
-  <text x="24" y="202" font-size="10" fill="#b07a55" font-family="inherit">no example, on a formatted field</text>
+  <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">no example, on a formatted field</text>
   <text x="260" y="202" font-size="10" fill="#6b5f75" font-family="inherit">the reader is left guessing the format</text>
   <text x="14" y="260" font-size="10" fill="#6b5f75" font-family="inherit">None of this is automatable as a pass or fail, but all of it is findable in a minute with a search.</text>
 </svg>

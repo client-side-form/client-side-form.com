@@ -212,7 +212,7 @@ Performance is where this comparison usually starts, but it is rarely where the 
   <text x="420" y="66" font-size="10" fill="#2d6342" font-family="inherit">1, via per-field subscriptions</text>
   <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">bundle cost</text>
-  <text x="250" y="100" font-size="10" fill="#b07a55" font-family="inherit">~10 kB compressed</text>
+  <text x="250" y="100" font-size="10" fill="#1e1a24" font-family="inherit">~10 kB compressed</text>
   <text x="420" y="100" font-size="10" fill="#2d6342" font-family="inherit">under 1 kB</text>
   <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">time to a working form</text>
@@ -224,7 +224,7 @@ Performance is where this comparison usually starts, but it is rarely where the 
   <text x="420" y="168" font-size="10" fill="#a63d6f" font-family="inherit">arrays, deps, reset, focus</text>
   <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="202" font-size="10" fill="#1e1a24" font-family="inherit">an unusual requirement</text>
-  <text x="250" y="202" font-size="10" fill="#b07a55" font-family="inherit">work around the model</text>
+  <text x="250" y="202" font-size="10" fill="#1e1a24" font-family="inherit">work around the model</text>
   <text x="420" y="202" font-size="10" fill="#2d6342" font-family="inherit">bends — you wrote it</text>
 </svg>
 

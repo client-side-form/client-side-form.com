@@ -242,7 +242,7 @@ export function affectedBy(field: string, edges: Map<string, Set<string>>): stri
   <line x1="10" y1="80" x2="680" y2="80" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">requiredness</text>
   <text x="200" y="100" font-size="10" fill="#6b5f75" font-family="inherit">A decides whether B is required</text>
-  <text x="460" y="100" font-size="10" fill="#b07a55" font-family="inherit">sometimes</text>
+  <text x="460" y="100" font-size="10" fill="#1e1a24" font-family="inherit">sometimes</text>
   <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">visibility</text>
   <text x="200" y="134" font-size="10" fill="#6b5f75" font-family="inherit">A decides whether B is rendered</text>

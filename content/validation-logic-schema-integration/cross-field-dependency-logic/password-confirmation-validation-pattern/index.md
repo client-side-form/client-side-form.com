@@ -224,12 +224,12 @@ The rule is symmetric but the *reporting* must not be. Which field carries the e
   <text x="28" y="124" font-size="9.5" fill="#6b5f75" font-family="inherit">the secret they had chosen</text>
   <text x="28" y="146" font-size="9.5" fill="#a63d6f" font-family="inherit">wrong field, wrong action</text>
   <rect x="238" y="26" width="212" height="130" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
-  <text x="252" y="48" font-size="10.5" font-weight="700" fill="#b07a55" font-family="inherit">on both fields</text>
+  <text x="252" y="48" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">on both fields</text>
   <text x="252" y="70" font-size="9.5" fill="#6b5f75" font-family="inherit">two identical messages</text>
   <text x="252" y="88" font-size="9.5" fill="#6b5f75" font-family="inherit">announced twice</text>
   <text x="252" y="106" font-size="9.5" fill="#6b5f75" font-family="inherit">summary lists one problem</text>
   <text x="252" y="124" font-size="9.5" fill="#6b5f75" font-family="inherit">as if it were two</text>
-  <text x="252" y="146" font-size="9.5" fill="#b07a55" font-family="inherit">noise, no extra information</text>
+  <text x="252" y="146" font-size="9.5" fill="#1e1a24" font-family="inherit">noise, no extra information</text>
   <rect x="462" y="26" width="214" height="130" rx="8" fill="#ede5f2" stroke="#2d6342" stroke-width="1.5"/>
   <text x="476" y="48" font-size="10.5" font-weight="700" fill="#2d6342" font-family="inherit">on the confirmation</text>
   <text x="476" y="70" font-size="9.5" fill="#6b5f75" font-family="inherit">sits on the field to change</text>

@@ -285,7 +285,7 @@ customElements.define('x-currency', XCurrency);
   <text x="240" y="100" font-size="10" fill="#2d6342" font-family="inherit">nothing — the field is absent, not blank</text>
   <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">an empty string</text>
-  <text x="240" y="134" font-size="10" fill="#b07a55" font-family="inherit">one pair with a blank value</text>
+  <text x="240" y="134" font-size="10" fill="#1e1a24" font-family="inherit">one pair with a blank value</text>
   <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">a File</text>
   <text x="240" y="168" font-size="10" fill="#6b5f75" font-family="inherit">a file entry, as a file input would</text>

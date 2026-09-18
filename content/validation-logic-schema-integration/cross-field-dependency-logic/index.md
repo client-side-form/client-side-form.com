@@ -460,7 +460,7 @@ Evaluation order follows directly from the graph, and doing it in the wrong orde
   <title>Fixed-point iteration versus one topological pass</title>
   <desc>Left: re-run every rule, then check whether anything changed, and repeat until it does not. This terminates on an acyclic graph but the number of passes depends on rule ordering, cost scales with rule count times graph depth, and an accidental cycle turns it into an infinite loop at runtime. Right: from the changed field, walk only its dependants in topological order, evaluating each rule exactly once with inputs that are already settled. Cost is proportional to the affected subgraph alone, the pass count is always one, and a cycle is impossible because it was rejected when the graph was built.</desc>
   <rect x="0" y="8" width="668" height="206" fill="#f9f5fb"/>
-  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#b07a55" font-family="inherit">re-run everything until it settles</text>
+  <text x="14" y="26" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">re-run everything until it settles</text>
   <rect x="14" y="36" width="308" height="116" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
   <text x="28" y="58" font-size="10" fill="#6b5f75" font-family="inherit">evaluate all rules</text>
   <text x="28" y="80" font-size="10" fill="#6b5f75" font-family="inherit">did anything change? then repeat</text>

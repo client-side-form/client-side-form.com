@@ -295,7 +295,7 @@ Validation modes are usually presented as a preference. They are not: each one p
   <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">on submit</text>
   <text x="160" y="134" font-size="10" fill="#6b5f75" font-family="inherit">the submit attempt</text>
-  <text x="348" y="134" font-size="10" fill="#b07a55" font-family="inherit">all bad news at once</text>
+  <text x="348" y="134" font-size="10" fill="#1e1a24" font-family="inherit">all bad news at once</text>
   <text x="516" y="134" font-size="10" fill="#6b5f75" font-family="inherit">short forms, cross-field rules</text>
   <line x1="10" y1="148" x2="690" y2="148" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">touched, then change</text>

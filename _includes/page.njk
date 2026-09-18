@@ -28,6 +28,21 @@ pageType: article
       {{ content | stripFirstH1 | safe }}
     </div>
 
+    {# Child guides — a topic page lists every guide filed under it #}
+    {% set childGuides = collections.all | eleventyNavigation(eleventyNavigation.key) %}
+    {% if childGuides.length > 0 %}
+    <nav class="related-content" aria-label="Guides in this topic">
+      <h2>Guides in This Topic</h2>
+      <div class="related-grid">
+        {% for item in childGuides %}
+        <a href="{{ item.url }}" class="related-card">
+          <span class="card-title">{{ item.title }}</span>
+        </a>
+        {% endfor %}
+      </div>
+    </nav>
+    {% endif %}
+
     {# Related / sibling navigation — other pages with same parent #}
     {% if eleventyNavigation.parent %}
       {% set siblings = collections.all | eleventyNavigation(eleventyNavigation.parent) %}

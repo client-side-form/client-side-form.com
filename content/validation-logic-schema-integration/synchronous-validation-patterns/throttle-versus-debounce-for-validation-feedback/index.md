@@ -259,7 +259,7 @@ A single debounced function reused by every field means typing in one cancels th
   <title>The two failure shapes, and what they look like</title>
   <desc>A debounce used where a throttle belongs produces visible lag: the counter sits on the wrong number while the reader types, updates late, and looks broken because the reader can see both the text and the count. A throttle used where a debounce belongs produces repetition: a verdict about a half-typed value, five times a second, and — if it is announced — a screen reader that talks continuously while the reader types.</desc>
   <rect x="0" y="8" width="690" height="198" fill="#f9f5fb"/>
-  <text x="14" y="28" font-size="11.5" font-weight="700" fill="#b07a55" font-family="inherit">debounce where throttle belongs</text>
+  <text x="14" y="28" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">debounce where throttle belongs</text>
   <rect x="14" y="38" width="324" height="118" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
   <text x="28" y="62" font-size="10" fill="#6b5f75" font-family="inherit">the counter lags visibly</text>
   <text x="28" y="84" font-size="10" fill="#6b5f75" font-family="inherit">it updates after the reader stops</text>

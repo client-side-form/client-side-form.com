@@ -135,7 +135,7 @@ The diagram below shows the full state progression from user input to settled va
   <!-- VALID -->
   <rect x="506" y="100" width="80" height="44" rx="6" class="sm-active"/>
   <text x="546" y="119" text-anchor="middle" class="sm-label">VALID</text>
-  <text x="546" y="133" text-anchor="middle" class="sm-sublabel">submit enabled</text>
+  <text x="546" y="133" text-anchor="middle" class="sm-sublabel" style="fill: var(--svg-ink, #1e1a24)">submit enabled</text>
   <!-- INVALID -->
   <rect x="318" y="176" width="80" height="44" rx="6" class="sm-box"/>
   <text x="358" y="195" text-anchor="middle" class="sm-label">INVALID</text>

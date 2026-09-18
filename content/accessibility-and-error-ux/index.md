@@ -6,7 +6,7 @@ slug: accessibility-and-error-ux
 type: section
 breadcrumb: "Accessibility & Error UX"
 datePublished: "2026-07-09"
-dateModified: "2026-07-09"
+dateModified: "2026-09-18"
 eleventyNavigation:
   key: "Accessibility and Error UX"
   order: 4
@@ -26,7 +26,7 @@ schema:
       "headline": "Accessibility & Error UX for Forms",
       "description": "Reference for accessible form error handling: ARIA live regions, aria-describedby and aria-invalid wiring, focus management, and keyboard navigation for production forms.",
       "datePublished": "2026-07-09",
-      "dateModified": "2026-07-09",
+      "dateModified": "2026-09-18",
       "author": { "@type": "Organization", "name": "client-side-form.com" },
       "publisher": { "@type": "Organization", "name": "client-side-form.com" }
     },
@@ -372,6 +372,14 @@ Read together, the three subsystems above plus message quality form a failure su
   <line x1="10" y1="182" x2="690" y2="182" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="202" font-size="10" fill="#6b5f75" font-family="inherit">Three of the four are cheap to assert in CI. Budget review time for the fourth, because nothing else will catch it.</text>
 </svg>
+
+## Beyond Errors: Everyday Keyboard and Screen-Reader Details
+
+Error handling is only part of an accessible form. Several everyday details decide whether keyboard and assistive-technology users can complete it at all. Correct [autocomplete tokens for autofill-friendly forms](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/autocomplete-tokens-for-autofill-friendly-forms/) save people with motor and cognitive disabilities from retyping personal data. [Implicit submission and the Enter key](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/implicit-submission-and-the-enter-key/) explains why a type-less button can hijack Enter. Reorderable lists need [keyboard reordering of repeatable rows](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/keyboard-reordering-of-repeatable-rows/) alongside drag-and-drop, and verification steps need [one-time code inputs](https://www.client-side-form.com/accessibility-and-error-ux/keyboard-navigation-patterns/one-time-code-inputs-keyboard-paste-and-autofill/) that accept autofill and paste.
+
+On the error side, [throttling live region announcements](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/throttling-live-region-announcements/) keeps screen readers informed without flooding them, [error styling that does not rely on colour](https://www.client-side-form.com/accessibility-and-error-ux/error-summary-and-messaging/error-styling-that-does-not-rely-on-colour/) keeps invalid fields visible in every palette and in forced-colors mode, and the [screen-reader testing matrix for form errors](https://www.client-side-form.com/accessibility-and-error-ux/aria-live-regions-for-form-errors/screen-reader-testing-matrix-for-form-errors/) gives QA a repeatable way to hear what users hear.
+
+---
 
 ## Cognitive Load and Message Quality
 

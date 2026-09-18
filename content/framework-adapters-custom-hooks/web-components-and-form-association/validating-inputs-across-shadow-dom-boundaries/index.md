@@ -271,7 +271,7 @@ The form's stylesheet cannot select the inner input. Reflect state onto the host
   <text x="28" y="84" font-size="10" fill="#6b5f75" font-family="inherit">label clicks reach the input</text>
   <text x="28" y="106" font-size="10" fill="#6b5f75" font-family="inherit">summary links reach the input</text>
   <text x="28" y="128" font-size="10" fill="#6b5f75" font-family="inherit">first-invalid routines work</text>
-  <text x="352" y="28" font-size="11.5" font-weight="700" fill="#b07a55" font-family="inherit">what is activeElement?</text>
+  <text x="352" y="28" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">what is activeElement?</text>
   <rect x="352" y="38" width="324" height="118" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
   <text x="366" y="62" font-size="10" fill="#6b5f75" font-family="inherit">the host, not the inner input</text>
   <text x="366" y="84" font-size="10" fill="#6b5f75" font-family="inherit">because they are different trees</text>

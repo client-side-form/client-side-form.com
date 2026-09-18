@@ -6,7 +6,7 @@ slug: "validation-logic-schema-integration"
 type: section
 breadcrumb: "Validation Logic & Schema Integration"
 datePublished: "2024-01-15"
-dateModified: "2026-06-23"
+dateModified: "2026-09-18"
 eleventyNavigation:
   key: "Validation Logic"
   order: 3
@@ -21,7 +21,7 @@ eleventyNavigation:
       "headline": "Validation Logic & Schema Integration",
       "description": "Schema-driven validation pipelines with Zod, async strategies, cross-field dependency graphs, and synchronous validation patterns for production-grade client-side form state.",
       "datePublished": "2024-01-15",
-      "dateModified": "2026-06-23",
+      "dateModified": "2026-09-18",
       "author": { "@type": "Organization", "name": "client-side-form.com" },
       "publisher": { "@type": "Organization", "name": "client-side-form.com" }
     },
@@ -430,9 +430,19 @@ The same boundary pays for itself the first time a rule has to run in two places
   <text x="28" y="178" font-size="10" font-weight="700" fill="#a63d6f" font-family="inherit">client-only rule</text>
   <text x="28" y="196" font-size="9.5" fill="#6b5f75" font-family="inherit">a bug — any direct API call walks past it</text>
   <rect x="346" y="158" width="304" height="46" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
-  <text x="360" y="178" font-size="10" font-weight="700" fill="#b07a55" font-family="inherit">server-only rule</text>
+  <text x="360" y="178" font-size="10" font-weight="700" fill="#1e1a24" font-family="inherit">server-only rule</text>
   <text x="360" y="196" font-size="9.5" fill="#6b5f75" font-family="inherit">a wasted trip — accepted, then rejected</text>
 </svg>
+
+## Formatted Inputs and Testing Validation
+
+Two further subsystems sit alongside the validators themselves. **Formatted inputs** — phone numbers, card numbers, currency, dates — have a raw value that is validated and a display value that is shown, and most masking bugs come from confusing the two or from rewriting the input without preserving the caret. [Input masking and formatting](https://www.client-side-form.com/validation-logic-schema-integration/input-masking-and-formatting/) separates them, with guides on [preserving caret position in masked inputs](https://www.client-side-form.com/validation-logic-schema-integration/input-masking-and-formatting/preserving-caret-position-in-masked-inputs/), [locale-aware number and currency inputs](https://www.client-side-form.com/validation-logic-schema-integration/input-masking-and-formatting/locale-aware-number-and-currency-inputs/) and [validating international phone numbers](https://www.client-side-form.com/validation-logic-schema-integration/input-masking-and-formatting/validating-international-phone-numbers/).
+
+**Testing** closes the loop. Validation bugs live in timing, wiring and races more than in rules, so [testing form validation](https://www.client-side-form.com/validation-logic-schema-integration/testing-form-validation/) layers tests by what each can observe: pure rule and property-based tests, component tests with fake timers for timing and ARIA, network-level mocks for async checks and server errors, and a thin set of real-browser tests. [Mocking async validators with MSW](https://www.client-side-form.com/validation-logic-schema-integration/testing-form-validation/mocking-async-validators-with-msw/) shows how to reproduce the out-of-order response race deterministically.
+
+On the server side, [sharing one Zod schema between client and server](https://www.client-side-form.com/validation-logic-schema-integration/server-error-reconciliation/sharing-one-zod-schema-between-client-and-server/) and [Problem Details (RFC 9457) for form errors](https://www.client-side-form.com/validation-logic-schema-integration/server-error-reconciliation/problem-details-rfc-9457-for-form-errors/) keep the rules and the error format consistent across the boundary.
+
+---
 
 ## Error Propagation & Accessibility
 

@@ -352,7 +352,7 @@ Vue offers three ways to make form state reactive, and they differ in exactly th
   <text x="384" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Replace wholesale?</text>
   <text x="536" y="36" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">Suits</text>
   <text x="24" y="66" font-size="10" fill="#1e1a24" font-family="inherit">ref({ …fields })</text>
-  <text x="176" y="66" font-size="10" fill="#b07a55" font-family="inherit">every reader of the ref</text>
+  <text x="176" y="66" font-size="10" fill="#1e1a24" font-family="inherit">every reader of the ref</text>
   <text x="384" y="66" font-size="10" fill="#2d6342" font-family="inherit">yes, naturally</text>
   <text x="536" y="66" font-size="10" fill="#6b5f75" font-family="inherit">up to ~40 fields</text>
   <line x1="10" y1="80" x2="690" y2="80" stroke="#cbb8d9" stroke-width="1"/>

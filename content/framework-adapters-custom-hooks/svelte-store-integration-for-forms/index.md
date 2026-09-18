@@ -468,7 +468,7 @@ Auto-subscription is the other place Svelte's ergonomics hide a lifetime. The `$
   <text x="28" y="80" font-size="10" fill="#6b5f75" font-family="inherit">and unsubscribe() on destroy</text>
   <text x="28" y="102" font-size="10" fill="#2d6342" font-family="inherit">lifetime handled for you</text>
   <text x="28" y="124" font-size="10" fill="#6b5f75" font-family="inherit">always the current value</text>
-  <text x="346" y="26" font-size="11.5" font-weight="700" fill="#b07a55" font-family="inherit">inside a plain module: subscribe()</text>
+  <text x="346" y="26" font-size="11.5" font-weight="700" fill="#1e1a24" font-family="inherit">inside a plain module: subscribe()</text>
   <rect x="346" y="36" width="304" height="106" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
   <text x="360" y="58" font-size="10" fill="#6b5f75" font-family="inherit">no $ prefix available at all</text>
   <text x="360" y="80" font-size="10" fill="#6b5f75" font-family="inherit">you own the returned function</text>

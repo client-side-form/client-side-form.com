@@ -291,7 +291,7 @@ The submission state each outcome leaves behind is worth writing down too, becau
   <text x="480" y="134" font-size="10" fill="#6b5f75" font-family="inherit">read the summary</text>
   <line x1="10" y1="148" x2="680" y2="148" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="168" font-size="10" fill="#1e1a24" font-family="inherit">5xx or network</text>
-  <text x="190" y="168" font-size="10" fill="#b07a55" font-family="inherit">failed, retryable</text>
+  <text x="190" y="168" font-size="10" fill="#1e1a24" font-family="inherit">failed, retryable</text>
   <text x="350" y="168" font-size="10" fill="#2d6342" font-family="inherit">yes</text>
   <text x="480" y="168" font-size="10" fill="#6b5f75" font-family="inherit">wait, or retry now</text>
   <text x="14" y="226" font-size="10" fill="#6b5f75" font-family="inherit">Only the first row discards the key. Every failure keeps it, which is what makes any retry safe.</text>

@@ -214,7 +214,7 @@ Compare that with the optional-plus-refinement shape, where `postcode` is `strin
   <line x1="10" y1="114" x2="680" y2="114" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">optional + refinement</text>
   <text x="220" y="134" font-size="10" fill="#a63d6f" font-family="inherit">no</text>
-  <text x="400" y="134" font-size="10" fill="#b07a55" font-family="inherit">whatever the rule says</text>
+  <text x="400" y="134" font-size="10" fill="#1e1a24" font-family="inherit">whatever the rule says</text>
   <text x="14" y="192" font-size="10" fill="#6b5f75" font-family="inherit">The middle row is why the discriminator matters: without it every branch is attempted and every branch’s errors are reported.</text>
 </svg>
 
@@ -275,7 +275,7 @@ If the API accepts a flat object with optional fields, the union has to be flatt
   <text x="430" y="102" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">submitted</text>
   <path d="M505,80 H527" stroke="#7b4f8a" stroke-width="1.4"/>
   <rect x="527" y="42" width="149" height="76" rx="8" fill="#ede5f2" stroke="#b07a55" stroke-width="1.5"/>
-  <text x="601" y="66" text-anchor="middle" font-size="10.5" font-weight="700" fill="#b07a55" font-family="inherit">its old values</text>
+  <text x="601" y="66" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e1a24" font-family="inherit">its old values</text>
   <text x="601" y="86" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">kept or dropped —</text>
   <text x="601" y="102" text-anchor="middle" font-size="9.5" fill="#6b5f75" font-family="inherit">decide once</text>
   <text x="14" y="142" font-size="10" fill="#6b5f75" font-family="inherit">Deriving the rendered field list from the union is what stops a new branch shipping without its fields appearing.</text>

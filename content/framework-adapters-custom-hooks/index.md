@@ -6,7 +6,7 @@ slug: framework-adapters-custom-hooks
 type: section
 breadcrumb: "Framework Adapters & Custom Hooks"
 datePublished: "2024-01-15"
-dateModified: "2026-06-23"
+dateModified: "2026-09-18"
 eleventyNavigation:
   key: "Framework Adapters"
   order: 2
@@ -21,7 +21,7 @@ eleventyNavigation:
       "headline": "Framework Adapters & Custom Hooks for Form State",
       "description": "Architecture guide for building framework adapters and custom hooks that manage form state across React, Vue, and Svelte — covering state lifecycles, validation pipelines, SSR hydration, and memory teardown.",
       "datePublished": "2024-01-15",
-      "dateModified": "2026-06-23",
+      "dateModified": "2026-09-18",
       "author": { "@type": "Organization", "name": "client-side-form.com" },
       "publisher": { "@type": "Organization", "name": "client-side-form.com" }
     },
@@ -485,6 +485,12 @@ The row that varies most is `subscribe`, and it varies for a structural reason w
   <text x="348" y="168" font-size="10" fill="#6b5f75" font-family="inherit">that emitEvent can be left at its default</text>
   <text x="14" y="206" font-size="10" fill="#6b5f75" font-family="inherit">Top two rows fail by being late; bottom two fail by being immediate. An adapter written against one pair breaks on the other.</text>
 </svg>
+
+## Newer Framework Primitives
+
+Each framework has recently added primitives that change how form adapters are written. React 19's actions move submission state into [useActionState](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/form-submission-with-react-19-useactionstate/), and large React forms stay fast with a [form store built on useSyncExternalStore](https://www.client-side-form.com/framework-adapters-custom-hooks/react-form-hook-architecture/building-a-form-store-with-usesyncexternalstore/). Vue 3.4's [defineModel](https://www.client-side-form.com/framework-adapters-custom-hooks/vue-composition-api-form-adapters/custom-form-inputs-with-definemodel/) and Svelte 5's [bindable props](https://www.client-side-form.com/framework-adapters-custom-hooks/svelte-store-integration-for-forms/bindable-props-for-svelte-5-form-inputs/) simplify custom inputs, while Angular's [typed reactive forms](https://www.client-side-form.com/framework-adapters-custom-hooks/angular-reactive-forms-adapters/typed-reactive-forms-in-angular/) and [signals bridge](https://www.client-side-form.com/framework-adapters-custom-hooks/angular-reactive-forms-adapters/bridging-angular-signals-and-reactive-forms/) bring type safety and fine-grained reactivity to existing forms. On the server-rendered side, [returning validation errors from Next.js server actions](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/returning-validation-errors-from-nextjs-server-actions/) and [preserving input typed before hydration](https://www.client-side-form.com/framework-adapters-custom-hooks/hydration-sync-for-ssr-forms/preserving-input-typed-before-hydration/) cover the gaps between server and client.
+
+---
 
 ## Error Propagation & Accessibility
 

@@ -182,7 +182,7 @@ Virtualising a form is not the same as virtualising a list, because a form field
   <text x="24" y="100" font-size="10" fill="#1e1a24" font-family="inherit">content-visibility: auto</text>
   <text x="178" y="100" font-size="10" fill="#6b5f75" font-family="inherit">in the document</text>
   <text x="330" y="100" font-size="10" fill="#2d6342" font-family="inherit">near flat</text>
-  <text x="452" y="100" font-size="10" fill="#b07a55" font-family="inherit">stable scrollbar, without a size hint</text>
+  <text x="452" y="100" font-size="10" fill="#1e1a24" font-family="inherit">stable scrollbar, without a size hint</text>
   <line x1="10" y1="114" x2="690" y2="114" stroke="#cbb8d9" stroke-width="1"/>
   <text x="24" y="134" font-size="10" fill="#1e1a24" font-family="inherit">true virtualisation</text>
   <text x="178" y="134" font-size="10" fill="#a63d6f" font-family="inherit">removed</text>
